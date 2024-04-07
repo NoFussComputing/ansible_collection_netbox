@@ -110,7 +110,8 @@ RUN mkdir -p /tmp/collection; \
     ansible-galaxy collection install --force-with-deps --pre \
     /tmp/collection/.; \
     rm -Rf /tmp/collection; \
-  fi;
+  fi; \
+  chmod +x /etc/cron.d/*;
 
 
 WORKDIR /root
