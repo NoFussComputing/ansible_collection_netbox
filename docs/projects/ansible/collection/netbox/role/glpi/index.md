@@ -75,7 +75,8 @@ ansible-rulebook -r nofusscomputing.netbox.glpi --vars "my-vars.yaml"
 the following variables are required for the rulebook.
 
 ``` yaml
-nofusscomputing_netbox_eda_port: 5000    # Optional, Integer. the port number the EDA rulebook will listen on.
+nofusscomputing_netbox_eda_port: 5000           # Optional, Integer. the port number the EDA rulebook will listen on.
+nofusscomputing_netbox_api_username: ansible    # Optional, string. Username of the API user. Recommend setting to prevent update loops.
 
 # See default variables below for explanation
 nfc_pb_netbox_netbox_token:

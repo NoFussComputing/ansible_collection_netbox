@@ -29,6 +29,8 @@
             or
           'device_type' not in event.payload.data
         )
+          and
+        '{{ nofusscomputing_netbox_api_username }}' != event.payload.username
 
       actions:
 
