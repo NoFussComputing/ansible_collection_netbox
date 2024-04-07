@@ -21,7 +21,7 @@ about: https://gitlab.com/nofusscomputing/projects/ansible/collections/netbox
 
 </span>
 
-The intent of this collection is to enable integration from NetBox to other systems; With the sole focus being on NetBox being the Single Source of Truth.
+The intent of this collection is to enable integration from NetBox to other systems; With the sole focus being on NetBox being the Single Source of Truth. This collection is published on Ansible Galaxy and can be installed by running `ansible-galaxy collection install nofusscomputing.netbox`.
 
 
 ## Requirements

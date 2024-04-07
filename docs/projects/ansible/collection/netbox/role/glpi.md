@@ -8,6 +8,8 @@ about: https://gitlab.com/nofusscomputing/projects/ansible/collections/netbox
 
 This role, `netbox_glpi` is part of the Ansible collection `nofusscomputing.netbox` and contains all of the logic to setup GLPI and NetBox so that the data from NetBox can be synchronized to GLPI.
 
+There are two methods available to take advantage of this role: running the playbooks and rulebook manually or by deploying the docker container we publish. The docker container is intended to be the all-in-one solution for integrating NetBox with GLPI. The container is published to Docker Hub and can be fetched by running `docker pull nofusscomputing/netbox-glpi:dev`.
+
 
 ## Features
 
@@ -110,11 +112,27 @@ nfc_pb_netbox_itam_glpi_user_token:
 
 ```
 
+
 ### Docker Setup
 
 We build and publish a docker container for the EDA endpoint that you can use within your environment. Doesn't matter if it's a simple docker-compose or kubernetes setup.
 
 The container already automagically starts an EDA rulebook that is listening for connections from NetBox. To setup the container you must configure the rulebook via a vars file. Mount your a vars file to path `/root/var.yaml`. The content of this vars file is mentioned in the previous section.
+
+
+
+Once you have the container running all available playbooks can be run from within the the container. i.e. `docker run -ti <container name> ansible-playbook nofusscomputing.netbox.glpi --extra-vars "@/root/vars.yaml" --tags setup` 
+
+
+#### Updating the container
+
+To update the container to a newer version, the following steps should be followed:
+
+1. pull the new container
+
+1. relaunch the deployment using the new container
+
+1. run the setup command `docker run -ti <container name> ansible-playbook nofusscomputing.netbox.glpi --extra-vars "@/root/vars.yaml" --tags setup`
 
 
 ## Default Variables
