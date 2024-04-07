@@ -30,4 +30,4 @@
       docker run \
         --rm \
         $DOCKER_IMAGE_BUILD_REGISTRY/$DOCKER_IMAGE_BUILD_NAME:$DOCKER_IMAGE_BUILD_TAG \
-        ansible-galaxy collection list | grep nofusscomputing.phpipam_scan_agent;
+        ansible-galaxy collection list | grep nofusscomputing.${ANSIBLE_GALAXY_PACKAGE_NAME};
