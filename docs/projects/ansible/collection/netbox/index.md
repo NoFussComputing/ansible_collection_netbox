@@ -16,10 +16,21 @@ about: https://gitlab.com/nofusscomputing/projects/ansible/collections/netbox
 
 
 [![Downloads](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fgalaxy.ansible.com%2Fapi%2Fv3%2Fplugin%2Fansible%2Fcontent%2Fpublished%2Fcollections%2Findex%2Fnofusscomputing%2Fphpipam_scan_agent%2F&query=%24.download_count&style=plastic&logo=ansible&logoColor=white&label=Galaxy%20Downloads&labelColor=black&color=cyan)](https://galaxy.ansible.com/ui/repo/published/nofusscomputing/netbox/)
-[![Docker Pulls](https://img.shields.io/docker/pulls/nofusscomputing/netbox-glpi?style=plastic&logo=docker&logoColor=0db7ed&color=0db7ed)](https://hub.docker.com/r/nofusscomputing/netbox-glpi)
+[![Docker Pulls (netbox-glpi)](https://img.shields.io/docker/pulls/nofusscomputing/netbox-glpi?style=plastic&logo=docker&logoColor=0db7ed&color=0db7ed)](https://hub.docker.com/r/nofusscomputing/netbox-glpi)
 
 
 </span>
 
 The intent of this collection is to enable integration from NetBox to other systems; With the sole focus being on NetBox being the Single Source of Truth.
 
+
+## Requirements
+
+Any item that has specific requirements will be notated within its documentation. Items covered under the requirements heading are those items that without the software wont function as intended.
+
+
+## Features
+
+- [GLPI Integration](role/glpi/index.md)
+
+- Foreman Integration _Future_

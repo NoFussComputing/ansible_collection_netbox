@@ -1,2 +1,11 @@
 ---
 
+- name: Setup Netbox
+  ansible.builtin.include_tasks:
+    file: tasks/setup/netbox.yaml
+    apply:
+      tags:
+        - always
+  tags:
+    - never
+    - setup
