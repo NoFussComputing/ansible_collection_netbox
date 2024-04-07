@@ -98,10 +98,18 @@ nfc_pb_netbox_itam_glpi_user_token:
 
 ## What gets synced from NetBox to GLPI
 
-- Device and Virtual Machine with its type set to `computer`.
+- Device with its type set to `computer`.
+
+- Device with its type set to `networkequipment`.
 
     The following fields are kept in sync:
 
     - Name
 
     - Serial Number
+
+- Virtual Machine with its type set to `computer`.
+
+    The following fields are kept in sync:
+
+    - Name
