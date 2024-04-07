@@ -37,7 +37,7 @@ The following requirements to use this collection are as follows:
 
 - NetBox
 
-    - User with `write` permissions to devices
+    - User with `write` permissions to devices and Virtual Machines
 
     - ALL devices will need to have `itil_item_type` field set to it's GLPI item type. This will be possible only after running the [setup steps](index.md#setup).
 
@@ -98,7 +98,9 @@ nfc_pb_netbox_itam_glpi_user_token:
 
 ## What gets synced from NetBox to GLPI
 
-- Computers.
+- Device and Virtual Machine with its type set to `computer`.
+
+    The following fields are kept in sync:
 
     - Name
 

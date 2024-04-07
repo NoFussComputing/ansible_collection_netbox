@@ -184,6 +184,7 @@
         "display": "ITIL Item ID",
         "content_types": [
           "dcim.device"
+          "virtualization.virtualmachine"
         ],
         "type": "select",
         "object_type": null,
