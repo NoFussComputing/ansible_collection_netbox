@@ -6,3 +6,20 @@ template: project.html
 about: https://gitlab.com/nofusscomputing/projects/ansible/collections/netbox
 ---
 
+<span style="text-align: center;">
+
+![Project Status - Active](https://img.shields.io/badge/Project%20Status-Active-green?logo=gitlab&style=plastic)
+
+
+![branch release version](https://img.shields.io/badge/dynamic/yaml?color=ff782e&logo=gitlab&style=plastic&label=Stable%20Release&query=%24.commitizen.version&url=https%3A//gitlab.com/nofusscomputing/projects/ansible/collections/phpipam_scan_agent%2F-%2Fraw%2Fmaster%2F.cz.yaml) 
+![branch release version](https://img.shields.io/badge/dynamic/yaml?color=ff782e&logo=gitlab&style=plastic&label=Dev%20Release&query=%24.commitizen.version&url=https%3A//gitlab.com/nofusscomputing/projects/ansible/collections/phpipam_scan_agent%2F-%2Fraw%2Fdevelopment%2F.cz.yaml)
+
+
+[![Downloads](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fgalaxy.ansible.com%2Fapi%2Fv3%2Fplugin%2Fansible%2Fcontent%2Fpublished%2Fcollections%2Findex%2Fnofusscomputing%2Fphpipam_scan_agent%2F&query=%24.download_count&style=plastic&logo=ansible&logoColor=white&label=Galaxy%20Downloads&labelColor=black&color=cyan)](https://galaxy.ansible.com/ui/repo/published/nofusscomputing/netbox/)
+[![Docker Pulls](https://img.shields.io/docker/pulls/nofusscomputing/netbox-glpi?style=plastic&logo=docker&logoColor=0db7ed&color=0db7ed)](https://hub.docker.com/r/nofusscomputing/netbox-glpi)
+
+
+</span>
+
+The intent of this collection is to enable integration from NetBox to other systems; With the sole focus being on NetBox being the Single Source of Truth.
+

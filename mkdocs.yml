@@ -21,14 +21,6 @@ nav:
 
     - projects/ansible/index.md
 
-    - Execution Environment:
-
-      - projects/ansible/execution_environment/index.md
-
-    - Playbooks:
-
-      - projects/ansible/playbooks/index.md
-
     - Collections:
 
       - projects/ansible/collection/index.md
@@ -36,6 +28,10 @@ nav:
       - NetBox:
 
         - projects/ansible/collection/netbox/index.md
+
+        - Roles:
+
+          - projects/ansible/collection/netbox/role/glpi.md
 
 - Operations: 
 

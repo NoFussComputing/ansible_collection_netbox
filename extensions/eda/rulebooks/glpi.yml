@@ -1,0 +1,27 @@
+- name: GLPI
+  hosts: all
+
+  sources:
+    - name: Webhook
+      ansible.eda.webhook:
+        host: 0.0.0.0
+        port: "{{ nofusscomputing_netbox_eda_port | default(5000) | int }}"
+        # token: fff
+        # token: "{{ nofusscomputing_netbox_eda_token | default('no-token-set') }}"
+        # hmac_header: X-Hook-Signature
+
+  rules:
+
+    - name: Process inbound data from NetBox
+      condition: event.payload.data.custom_fields.itil_item_type == 'computer'
+      actions:
+
+
+        - print_event:
+            pretty: true
+
+
+        - run_playbook:
+            name: nofusscomputing.netbox.itam
+            extra_vars:
+              netbox: "{{ event.payload }}"

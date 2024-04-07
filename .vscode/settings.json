@@ -11,4 +11,11 @@
     },
     "gitlab.aiAssistedCodeSuggestions.enabled": false,
     "gitlab.duoChat.enabled": false,
+    "cSpell.words": [
+        "Computings",
+        "GLPI",
+        "itil",
+        "NetBox",
+        "nofusscomputing"
+    ],
 }

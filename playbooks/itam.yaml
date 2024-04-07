@@ -1,0 +1,31 @@
+---
+- name: Update GLPI as the ITAM
+  hosts: |-
+    {%- if nfc_pb_host is defined -%}
+
+      {{ nfc_pb_host }}
+
+    {%- else -%}
+
+      {%- if ansible_limit is defined -%}
+
+        {{ ansible_limit }}
+
+      {%- else -%}
+
+        localhost
+
+      {%- endif -%}
+
+    {%- endif %}
+  become: false
+  gather_facts: false
+
+
+  tasks:
+
+
+    - name: NetBox <-> GLPI
+      ansible.builtin.include_role:
+        name: nofusscomputing.netbox.netbox_glpi
+        tasks_from: update.yaml
