@@ -14,7 +14,7 @@
   delegate_to: localhost
   register: glpi_api_get_item
   no_log: >
-    {%- if not force_logging | default(false) -%}
+    {%- if not nfc_pb_netbox_force_logging | default(false) -%}
       true
     {%- else -%}
       false
@@ -44,7 +44,7 @@
   delegate_to: localhost
   register: glpi_api_post_item
   no_log: >
-    {%- if not force_logging | default(false) -%}
+    {%- if not nfc_pb_netbox_force_logging | default(false) -%}
       true
     {%- else -%}
       false
@@ -72,7 +72,7 @@
   delegate_to: localhost
   register: glpi_api_patch_item
   no_log: >
-    {%- if not force_logging | default(false) -%}
+    {%- if not nfc_pb_netbox_force_logging | default(false) -%}
       true
     {%- else -%}
       false
@@ -97,11 +97,11 @@
 
 - name: Update ITIL Item ID in netbox
   ansible.builtin.uri:
-    url: "{{ netbox_url }}/api/dcim/devices/{{
+    url: "{{ nfc_pb_netbox_netbox_url }}/api/dcim/devices/{{
               netbox.data.id | lower }}/"
     method: PATCH
     headers:
-      Authorization: Token {{ netbox_token }}
+      Authorization: Token {{ nfc_pb_netbox_netbox_token }}
     body_format: json
     body: "{{ api_body_netbox | from_yaml }}"
     status_code:
@@ -111,7 +111,7 @@
   delegate_to: localhost
   register: netbox_api_patch_item
   no_log: >
-    {%- if not force_logging | default(false) -%}
+    {%- if not nfc_pb_netbox_force_logging | default(false) -%}
       true
     {%- else -%}
       false
