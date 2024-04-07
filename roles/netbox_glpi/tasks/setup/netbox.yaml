@@ -9,6 +9,7 @@
         - dcim.device
         - virtualization.virtualmachine
       name: itil_item_id
+      label: GLPI Item ID
       description: The item ID from the ITIL
       group_name: ITSM
       type: integer
@@ -189,7 +190,7 @@
         "type": "select",
         "object_type": null,
         "name": "itil_item_type",
-        "label": "GLPI Item ID",
+        "label": "GLPI Item Type",
         "group_name": "ITSM",
         "description": "GLPI Item Type",
         "required": true,
