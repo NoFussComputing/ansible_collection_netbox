@@ -183,7 +183,7 @@
       {
         "display": "ITIL Item ID",
         "content_types": [
-          "dcim.device"
+          "dcim.device",
           "virtualization.virtualmachine"
         ],
         "type": "select",

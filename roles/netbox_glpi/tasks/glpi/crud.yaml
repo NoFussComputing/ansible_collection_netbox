@@ -97,8 +97,7 @@
 
 - name: Update ITIL Item ID in netbox
   ansible.builtin.uri:
-    url: "{{ nfc_pb_netbox_netbox_url }}/api/dcim/devices/{{
-              netbox.data.id | lower }}/"
+    url: "{{ nfc_pb_netbox_netbox_url }}{{ netbox.data.url }}"
     method: PATCH
     headers:
       Authorization: Token {{ nfc_pb_netbox_netbox_token }}

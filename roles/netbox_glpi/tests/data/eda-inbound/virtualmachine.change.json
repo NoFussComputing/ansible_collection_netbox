@@ -1,0 +1,116 @@
+{
+    "data": {
+      "cluster": {
+        "display": "fgdfgd",
+        "id": 1,
+        "name": "fgdfgd",
+        "url": "/api/virtualization/clusters/1/"
+      },
+      "comments": "",
+      "config_template": {
+        "display": "gfdgdfgfd",
+        "id": 1,
+        "name": "gfdgdfgfd",
+        "url": "/api/extras/config-templates/1/"
+      },
+      "created": "2024-04-05T12: 46: 53.782681Z",
+      "custom_fields": {
+        "itil_item_id": None,
+        "itil_item_type": "computer"
+      },
+      "description": "",
+      "device": None,
+      "disk": None,
+      "display": "deployment",
+      "id": 1,
+      "interface_count": 0,
+      "last_updated": "2024-04-07T13: 08: 19.780330Z",
+      "local_context_data": {
+        "vm_id": "{{ virtualmachine.id }}"
+      },
+      "memory": 500,
+      "name": "deployment",
+      "platform": None,
+      "primary_ip": None,
+      "primary_ip4": None,
+      "primary_ip6": None,
+      "role": None,
+      "site": None,
+      "status": {
+        "label": "Active",
+        "value": "active"
+      },
+      "tags": [],
+      "tenant": None,
+      "url": "/api/virtualization/virtual-machines/1/",
+      "vcpus": 1.2,
+      "virtual_disk_count": 0
+    },
+    "event": "updated",
+    "model": "virtualmachine",
+    "request_id": "e00e1327-7da5-44ee-bac5-1e421e556ad7",
+    "snapshots": {
+      "postchange": {
+        "cluster": 1,
+        "comments": "",
+        "config_template": 1,
+        "created": "2024-04-05T12: 46: 53.782Z",
+        "custom_fields": {
+          "itil_item_id": None,
+          "itil_item_type": "computer"
+        },
+        "description": "",
+        "device": None,
+        "disk": None,
+        "interface_count": 0,
+        "last_updated": "2024-04-07T13: 08: 19.780Z",
+        "local_context_data": {
+          "vm_id": "{{ virtualmachine.id }}"
+        },
+        "memory": 500,
+        "name": "deployment",
+        "platform": None,
+        "primary_ip4": None,
+        "primary_ip6": None,
+        "role": None,
+        "site": None,
+        "status": "active",
+        "tags": [],
+        "tenant": None,
+        "vcpus": "1.20",
+        "virtual_disk_count": 0
+      },
+      "prechange": {
+        "cluster": 1,
+        "comments": "",
+        "config_template": 1,
+        "created": "2024-04-05T12: 46: 53.782Z",
+        "custom_fields": {
+          "itil_item_id": None,
+          "itil_item_type": "computer"
+        },
+        "description": "",
+        "device": None,
+        "disk": None,
+        "interface_count": 0,
+        "local_context_data": {
+          "vm_id": "{{ ""virtualmachine.id }}"
+        },
+        "memory": 500,
+        "name": "deployment",
+        "platform": None,
+        "primary_ip4": None,
+        "primary_ip6": None,
+        "role": None,
+        "site": None,
+        "status": "active",
+        "tags": [],
+        "tenant": None,
+        "vcpus": "1.20",
+        "virtual_disk_count": 0
+      }
+    },
+    "timestamp": "2024-04-07T13: 08: 19.857561+00:00",
+    "username": "admin"
+  }
+  
