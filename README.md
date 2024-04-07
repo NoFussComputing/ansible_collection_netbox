@@ -1,11 +1,19 @@
-<div align="center" width="100%">
-
+<span style="text-align: center;">
 
 # No Fuss Computing - Ansible Collection Netbox
 
 <br>
 
 ![Project Status - Active](https://img.shields.io/badge/Project%20Status-Active-green?logo=gitlab&style=plastic) 
+
+
+[![Downloads](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fgalaxy.ansible.com%2Fapi%2Fv3%2Fplugin%2Fansible%2Fcontent%2Fpublished%2Fcollections%2Findex%2Fnofusscomputing%2Fnetbox%2F&query=%24.download_count&style=plastic&logo=ansible&logoColor=white&label=Galaxy%20Downloads&labelColor=black&color=cyan)](https://galaxy.ansible.com/ui/repo/published/nofusscomputing/netbox/)
+[![Docker Pulls (netbox-glpi)](https://img.shields.io/docker/pulls/nofusscomputing/netbox-glpi?style=plastic&logo=docker&logoColor=0db7ed&color=0db7ed&label=Docker%20Pulls%20(netbox-glpi))](https://hub.docker.com/r/nofusscomputing/netbox-glpi)
+
+
+
+
+---
 
 <br>
 
@@ -31,9 +39,10 @@ This project is hosted on [gitlab](https://gitlab.com/nofusscomputing/projects/a
 ![Gitlab build status - development](https://img.shields.io/badge/dynamic/json?color=ff782e&label=Build&query=0.status&url=https%3A%2F%2Fgitlab.com%2Fapi%2Fv4%2Fprojects%2F56568566%2Fpipelines%3Fref%3Ddevelopment&logo=gitlab&style=plastic) ![branch release version](https://img.shields.io/badge/dynamic/yaml?color=ff782e&logo=gitlab&style=plastic&label=Release&query=%24.commitizen.version&url=https%3A//gitlab.com/nofusscomputing/projects/ansible/collections/netbox%2F-%2Fraw%2Fdevelopment%2F.cz.yaml)
 
 ----
+
 <br>
 
-</div>
+</span>
 
 links:
 

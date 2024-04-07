@@ -1,0 +1,48 @@
+---
+
+- name: Entities Setup and Sync
+  when: >
+    (
+      netbox.data.serial | default('') != ''
+        and
+      netbox.data.device_type is defined
+    )
+      or
+    netbox.data.device_type is not defined
+  block:
+
+
+    - name: Init GLPI Session
+      ansible.builtin.include_tasks:
+        file: tasks/glpi/init-session.yaml
+
+
+    - name: Fetch GLPI Entities
+      ansible.builtin.include_tasks:
+        file: tasks/glpi/entities_fetch.yaml
+
+
+    - name: Create/Update Netbox Entities Field
+      ansible.builtin.include_tasks:
+        file: tasks/netbox/choice_set.yaml
+      vars:
+        choice_set_name: glpi_entities
+        choice_set_display_name: glpi_entities
+        choice_set_description: "Entities Syncronized from GLPI"
+        choices: "{{ choice_set_choices | from_yaml }}"
+        field_name: itil_entity
+        field_display_name: GLPI Entity
+        field_description: GLPI Entities
+        field_content_types: [
+          "dcim.device",
+          "virtualization.virtualmachine"
+        ]
+        field_required: true
+
+
+  always:
+
+
+    - name: Kill GLPI Session
+      ansible.builtin.include_tasks:
+        file: tasks/glpi/kill-session.yaml

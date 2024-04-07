@@ -1,0 +1,30 @@
+---
+
+- name: Build Computer API Body
+  ansible.builtin.set_fact:
+    api_body_glpi: |-
+      {
+        "entities_id": {{ netbox.data.custom_fields.itil_entity }},
+        "name": "{{ netbox.data.name }}",
+        "serial": "{{ netbox.data.serial | default('') }}"
+        {%- if netbox.data.device_type is defined -%}
+        ,"otherserial": "{{ netbox.data.asset_tag | default('') }}"
+        {%-endif  %}
+      }
+  when: >
+    netbox.data.custom_fields.itil_item_type | lower == 'computer'
+
+
+- name: Build Network Device API Body
+  ansible.builtin.set_fact:
+    api_body_glpi: |-
+      {
+        "entities_id": {{ netbox.data.custom_fields.itil_entity }},
+        "name": "{{ netbox.data.name }}",
+        "serial": "{{ netbox.data.serial }}"
+        {%- if netbox.data.device_type is defined -%}
+        ,"otherserial": "{{ netbox.data.asset_tag | default('') }}"
+        {%-endif  %}
+      }
+  when: >
+    netbox.data.custom_fields.itil_item_type | lower == 'networkequipment'

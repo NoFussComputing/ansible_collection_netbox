@@ -1,0 +1,37 @@
+---
+
+- name: GLPI
+  when: >
+    (
+      netbox.data.custom_fields.itil_entity | default('') != ''
+        and
+      netbox.data.serial | default('') != ''
+        and
+      netbox.data.device_type is defined
+    )
+      or
+    netbox.data.device_type is not defined
+  block:
+
+
+    - name: Init GLPI Session
+      ansible.builtin.include_tasks:
+        file: tasks/glpi/init-session.yaml
+
+
+    - name: "[TRACE] Inbound data from netbox"
+      ansible.builtin.debug:
+        msg: "{{ netbox }}"
+
+
+    - name: GLPI Item
+      ansible.builtin.include_tasks:
+        file: tasks/glpi/crud.yaml
+
+
+  always:
+
+
+    - name: Kill GLPI Session
+      ansible.builtin.include_tasks:
+        file: tasks/glpi/kill-session.yaml
