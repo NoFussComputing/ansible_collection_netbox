@@ -55,7 +55,9 @@
     netbox_token: "{{ nfc_pb_netbox_netbox_token }}"
     data:
       name: GLPI
-      content_types: "dcim.device"
+      content_types: 
+        - "dcim.device"
+        - "virtualization.virtualmachine"
       link_text: !unsafe |-
         {%- if
           object.cf.itil_item_id != None
