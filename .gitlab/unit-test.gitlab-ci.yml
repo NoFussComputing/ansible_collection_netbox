@@ -1,0 +1,33 @@
+
+.docker_collection_installed:
+  stage: test
+  image: 
+    name: nofusscomputing/docker-buildx-qemu:dev
+    pull_policy: always
+  services:
+    - name: docker:23-dind
+      entrypoint: ["env", "-u", "DOCKER_HOST"]
+      command: ["dockerd-entrypoint.sh"]
+  variables:
+    DOCKER_HOST: tcp://docker:2375/
+    DOCKER_DRIVER: overlay2
+    DOCKER_DOCKERFILE: dockerfile
+    # See https://github.com/docker-library/docker/pull/166
+    DOCKER_TLS_CERTDIR: ""
+    GIT_STRATEGY: none
+
+  before_script:
+
+    - | # Pull the image
+      docker pull $DOCKER_IMAGE_BUILD_REGISTRY/$DOCKER_IMAGE_BUILD_NAME:$DOCKER_IMAGE_BUILD_TAG;
+
+    - | # Show local images
+      docker images;
+
+  script:
+
+    - | # Confirm the package is installed within the docker container
+      docker run \
+        --rm \
+        $DOCKER_IMAGE_BUILD_REGISTRY/$DOCKER_IMAGE_BUILD_NAME:$DOCKER_IMAGE_BUILD_TAG \
+        ansible-galaxy collection list | grep nofusscomputing.phpipam_scan_agent;
