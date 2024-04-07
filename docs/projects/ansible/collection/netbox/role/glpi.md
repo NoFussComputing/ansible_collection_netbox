@@ -89,11 +89,11 @@ This playbook will create a custom field choices containing ALL of the GLPI Enti
 
 ## Events Endpoint
 
-As part of the collection there is an EDA (Event Driven Ansible) endpoint for NetBox to use to post updates to that is the ingress for updating GLPI. This endpoint is available as a docker container or can be setup to run manually with the following command.
+As part of the collection there is an EDA (Event Driven Ansible) rulebook for NetBox to use to post updates to that is the ingress for updating GLPI. This endpoint is available as a docker container or can be setup to run manually with the following command.
 
 ``` bash
 
-ansible-rulebook -r nofusscomputing.netbox.glpi --vars "my-vars.yaml"
+ansible-rulebook -r nofusscomputing.netbox.entities --vars "my-vars.yaml"
 
 ```
 
@@ -115,9 +115,16 @@ nfc_pb_netbox_itam_glpi_user_token:
 
 ### Docker Setup
 
-We build and publish a docker container for the EDA endpoint that you can use within your environment. Doesn't matter if it's a simple docker-compose or kubernetes setup.
+We build and publish a docker container for the EDA rulebook and sync that you can use within your environment. Doesn't matter if it's a simple docker-compose or kubernetes setup.
 
-The container already automagically starts an EDA rulebook that is listening for connections from NetBox. To setup the container you must configure the rulebook via a vars file. Mount your a vars file to path `/root/var.yaml`. The content of this vars file is mentioned in the previous section.
+The container already automagically starts an EDA rulebook that is listening for connections from NetBox. To setup the container you must configure the rulebook via a vars file. Mount your a vars file to path `/root/var.yaml`. The content of this vars file is mentioned in the previous section. There is also a cronjob within the container that synchronizes the GLPI entites to NetBox. By default the job will run every 15 mins. if you wish to change this mount a new cron file to path `/etc/cron.d/glpi-entities-sync` within the container.
+
+``` crontab title="/etc/cron.d/glpi-entities-sync"
+
+--8<-- "includes/etc/cron.d/glpi-entities-sync"
+
+```
+_Default cron file for entity sync with NetBox._
 
 
 
