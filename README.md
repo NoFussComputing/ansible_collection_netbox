@@ -7,8 +7,9 @@
 ![Project Status - Active](https://img.shields.io/badge/Project%20Status-Active-green?logo=gitlab&style=plastic) 
 
 
-[![Downloads](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fgalaxy.ansible.com%2Fapi%2Fv3%2Fplugin%2Fansible%2Fcontent%2Fpublished%2Fcollections%2Findex%2Fnofusscomputing%2Fphpipam_scan_agent%2F&query=%24.download_count&style=plastic&logo=ansible&logoColor=white&label=Galaxy%20Downloads&labelColor=black&color=cyan)](https://galaxy.ansible.com/ui/repo/published/nofusscomputing/netbox/)
-[![Docker Pulls](https://img.shields.io/docker/pulls/nofusscomputing/netbox-glpi?style=plastic&logo=docker&logoColor=0db7ed&color=0db7ed)](https://hub.docker.com/r/nofusscomputing/netbox-glpi)
+[![Downloads](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fgalaxy.ansible.com%2Fapi%2Fv3%2Fplugin%2Fansible%2Fcontent%2Fpublished%2Fcollections%2Findex%2Fnofusscomputing%2Fnetbox%2F&query=%24.download_count&style=plastic&logo=ansible&logoColor=white&label=Galaxy%20Downloads&labelColor=black&color=cyan)](https://galaxy.ansible.com/ui/repo/published/nofusscomputing/netbox/)
+[![Docker Pulls (netbox-glpi)](https://img.shields.io/docker/pulls/nofusscomputing/netbox-glpi?style=plastic&logo=docker&logoColor=0db7ed&color=0db7ed&label=Docker%20Pulls%20(netbox-glpi))](https://hub.docker.com/r/nofusscomputing/netbox-glpi)
+
 
 
 

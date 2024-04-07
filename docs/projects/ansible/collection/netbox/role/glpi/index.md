@@ -1,12 +1,12 @@
 ---
-title: GLPI Role
+title: GLPI Integration
 description: No Fuss Computings NetBox Ansible Collection role glpi_netbox
 date: 2024-04-07
 template: project.html
 about: https://gitlab.com/nofusscomputing/projects/ansible/collections/netbox
 ---
 
-This role is part of the Ansible collection `nofusscomputing.netbox`, contains all of the logic to setup GLPI and NetBox so that the data from NetBox can be synchronized from netbox and kept in sync.
+This role, `netbox_glpi` is part of the Ansible collection `nofusscomputing.netbox` and contains all of the logic to setup GLPI and NetBox so that the data from NetBox can be synchronized to GLPI.
 
 
 ## Features
@@ -14,7 +14,7 @@ This role is part of the Ansible collection `nofusscomputing.netbox`, contains a
 - Devices Created/Updated within NetBox are synced to GLPI
 
     !!! info
-        Currently the only supported items for updated are those that have had `itil_item_type` field set to `computer`.
+        Currently the only supported items for updates are those that have had `itil_item_type` field set to `computer`. See [below for further details](index.md#what-gets-synced-from-netbox-to-glpi).
 
 
 ## Requirements
@@ -55,9 +55,12 @@ ansible-playbook nofusscomputing.netbox.glpi \
 
 ```
 
-This play sets up both GLPI and Netbox for the sync process. Within NetBox custom fields are created, being `itil_id` and `itil_item_type` (GLPI Item Type). These fields will be used to keep track of what GLPI item it is and the item type within GLPI respectively.
+This play sets up both NetBox for the sync process. Within NetBox custom fields are created, being `itil_id` and `itil_item_type` (GLPI Item Type). These fields will be used to keep track of what GLPI item it is and the item type within GLPI respectively.
 
 Field `itil_id` is used by the system to keep track of the GLPI item ID within netbox. Field `itil_item_type` is used for the end user to set the device GLPI type. This is used to add the item to the correct location within GLPI.
+
+!!! tip
+    If you already have your device in GLPI, you can manually set the NetBox items `itil_id` to that of the existing GLPI ID.
 
 A custom link is also created within NetBox as part of the setup. This custom link has a bit of wizardry in that it builds the GLPI link for the device. This only occurs however, when the item has been added to GLPI and there exists a GLPI ID in field `itil_id`
 
@@ -86,6 +89,12 @@ nfc_pb_netbox_itam_glpi_app_token:
 nfc_pb_netbox_itam_glpi_user_token:
 
 ```
+
+### Docker Setup
+
+We build and publish a docker container for the EDA endpoint that you can use within your environment. Doesn't matter if it's a simple docker-compose or kubernetes setup.
+
+The container already automagically starts an EDA rulebook that is listening for connections from NetBox. To setup the container you must configure the rulebook via a vars file. Mount your a vars file to path `/root/var.yaml`. The content of this vars file is mentioned in the previous section.
 
 
 ## Default Variables
