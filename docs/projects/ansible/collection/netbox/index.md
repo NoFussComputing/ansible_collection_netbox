@@ -31,6 +31,6 @@ Any item that has specific requirements will be notated within its documentation
 
 ## Features
 
-- [GLPI Integration](role/glpi/index.md)
+- [GLPI Integration](role/glpi.md)
 
 - Foreman Integration _[See Issue #1](https://gitlab.com/nofusscomputing/projects/ansible/collections/netbox/-/issues/1)_
