@@ -17,65 +17,13 @@
   delegate_to: localhost
 
 
-########################################## SoF Workaround ##########################################
-# See https://github.com/netbox-community/ansible_modules/issues/1069
-# TL;DR: choice sets dont work with module 'netbox.netbox.netbox_custom_field'
-####################################################################################################
-
-
-# Keep as eventually the netbox module may support api_get_choice_set_glpi_item_types
-#
-# - name: Create custom Field itil_item_type
-#   netbox.netbox.netbox_custom_field:
-#     netbox_url: "{{ nfc_pb_netbox_netbox_url }}"
-#     netbox_token: "{{ nfc_pb_netbox_netbox_token }}"
-#     data:
-#       content_types:
-#         - dcim.device
-#         - virtualization.virtualmachine
-#       choices:
-#         - cable:Cables
-#         - Cluster:Cluster
-#         - Computer:Computer
-#         - Entity:Entity
-#         - Location:Location
-#         - Operating System:Operating System
-#         - PDU:PDU
-#         - Phone:Phone
-#         - Software:Software
-#         - Virtual Machine:Virtual Machine
-#         - clustertype:Cluster Type
-#         - networkequipment:Network Equipment
-#         - printer:Printer
-#         - rack:Rack
-#       name: itil_item_type
-#       description: The item ID from the ITIL
-#       type: select
-#   delegate_to: localhost
-
-
-- name: Find Custom Field Set glpi_item_types
-  ansible.builtin.uri:
-    url: "{{ nfc_pb_netbox_netbox_url }}/api/extras/custom-field-choice-sets/?name=glpi_item_types"
-    method: GET
-    body_format: json
-    headers:
-      Authorization: Token {{ nfc_pb_netbox_netbox_token }}
-    status_code:
-      - 200
-  delegate_to: localhost
-  no_log: >
-    {%- if not nfc_pb_netbox_force_logging | default(false) -%}
-      true
-    {%- else -%}
-      false
-    {%-endif %}
-  register: api_get_choice_set_glpi_item_types
-
-
-- name: Create Choice set facts
-  ansible.builtin.set_fact:
-    cacheable: false
+- name: Create/Update Netbox Item Type Field
+  ansible.builtin.include_tasks:
+    file: tasks/netbox/choice_set.yaml
+  vars:
+    choice_set_name: glpi_item_types
+    choice_set_display_name: glpi_item_types
+    choice_set_description: "Available GLPI Item Types"
     choices:
       # - cable:Cables
       # - Cluster:Cluster
@@ -91,141 +39,14 @@
       - networkequipment:Network Equipment
       # - printer:Printer
       # - rack:Rack
-
-
-- name: Construct Choices API Objecct
-  ansible.builtin.set_fact:
-    cacheable: false
-    constructed_extra_choices: |-
-      [{%- for choice in choices -%}
-        ["{{ (choice | split(':'))[0] }}", "{{ (choice | split(':'))[0] }}"],
-      {%- endfor %}]
-
-
-- name: Create Custom Field Set glpi_item_types
-  ansible.builtin.uri:
-    url: "{{ nfc_pb_netbox_netbox_url }}/api/extras/custom-field-choice-sets/"
-    method: POST
-    body_format: json
-    body: {
-      "display": "glpi_item_types",
-      "name": "glpi_item_types",
-      "description": "GLPI Item Types for content sync",
-      "extra_choices": "{{ constructed_extra_choices | from_yaml }}",
-      "order_alphabetically": true,
-    }
-    headers:
-      Authorization: Token {{ nfc_pb_netbox_netbox_token }}
-    status_code:
-      - 200
-  delegate_to: localhost
-  no_log: >
-    {%- if not nfc_pb_netbox_force_logging | default(false) -%}
-      true
-    {%- else -%}
-      false
-    {%-endif %}
-  register: api_post_choice_set_glpi_item_types
-  when: >
-    api_get_choice_set_glpi_item_types.json.results | list | length == 0
-
-
-- name: Update Custom Field Set glpi_item_types
-  ansible.builtin.uri:
-    url: "{{ nfc_pb_netbox_netbox_url }}/api/extras/custom-field-choice-sets/{{ api_get_choice_set_glpi_item_types.json.results[0].id }}/"
-    method: PATCH
-    body_format: json
-    body: {
-      "extra_choices": "{{ constructed_extra_choices | from_yaml }}",
-      "order_alphabetically": true,
-    }
-    headers:
-      Authorization: Token {{ nfc_pb_netbox_netbox_token }}
-    status_code:
-      - 200
-  changed_when: true
-  delegate_to: localhost
-  no_log: >
-    {%- if not nfc_pb_netbox_force_logging | default(false) -%}
-      true
-    {%- else -%}
-      false
-    {%-endif %}
-  register: api_patch_choice_set_glpi_item_types
-  when: >
-    api_get_choice_set_glpi_item_types.json.results[0].extra_choices | from_yaml | list | sort
-      !=
-    constructed_extra_choices | from_yaml | list | sort
-
-
-- name: Find Custom Field glpi_item_types
-  ansible.builtin.uri:
-    url: "{{ nfc_pb_netbox_netbox_url }}/api/extras/custom-fields/?name=itil_item_type"
-    method: GET
-    body_format: json
-    headers:
-      Authorization: Token {{ nfc_pb_netbox_netbox_token }}
-    status_code:
-      - 200
-  delegate_to: localhost
-  no_log: >
-    {%- if not nfc_pb_netbox_force_logging | default(false) -%}
-      true
-    {%- else -%}
-      false
-    {%-endif %}
-  register: api_get_itil_item_type
-
-
-- name: Create choice_set Dict
-  ansible.builtin.set_fact:
-    cacheable: false
-    api_body_glpi_item_types: |-
-      {
-        "display": "ITIL Item ID",
-        "content_types": [
-          "dcim.device",
-          "virtualization.virtualmachine"
-        ],
-        "type": "select",
-        "object_type": null,
-        "name": "itil_item_type",
-        "label": "GLPI Item Type",
-        "group_name": "ITSM",
-        "description": "GLPI Item Type",
-        "required": true,
-        "is_cloneable": true,
-        "choice_set": {{ api_post_choice_set_glpi_item_types.json.results.id |
-                    default(api_get_choice_set_glpi_item_types.json.results[0].id) | int }},
-        "weight": 100
-      }
-
-
-- name: Create Custom Field glpi_item_types
-  ansible.builtin.uri:
-    url: "{{ nfc_pb_netbox_netbox_url }}/api/extras/custom-fields/"
-    method: POST
-    body_format: json
-    headers:
-      Authorization: Token {{ nfc_pb_netbox_netbox_token }}
-    body: "{{ api_body_glpi_item_types | from_yaml }}"
-    status_code:
-      - 201
-  delegate_to: localhost
-  # register: api_get_itil_item_type
-  no_log: >
-    {%- if not nfc_pb_netbox_force_logging | default(false) -%}
-      true
-    {%- else -%}
-      false
-    {%-endif %}
-  when: >
-    api_get_itil_item_type.json.results | list | length == 0
-
-
-########################################## EoF Workaround ##########################################
-# See https://github.com/netbox-community/ansible_modules/issues/1069
-####################################################################################################
+    field_name: itil_item_type
+    field_display_name: GLPI Item Type
+    field_description: Item Type within GLPI
+    field_content_types: [
+      "dcim.device",
+      "virtualization.virtualmachine"
+    ]
+    field_required: true
 
 
 - name: Create GLPI Automagic weblink
