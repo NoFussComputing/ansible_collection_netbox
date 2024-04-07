@@ -14,9 +14,22 @@
 
     - name: Process inbound data from NetBox
       condition: >
-        event.payload.data.custom_fields.itil_item_type == 'computer'
-          or
-        event.payload.data.custom_fields.itil_item_type == 'networkequipment'
+        (
+          event.payload.data.custom_fields.itil_item_type == 'computer'
+            or
+          event.payload.data.custom_fields.itil_item_type == 'networkequipment'
+        )
+          and
+        (
+          (
+            event.payload.data.serial != ''
+              and
+            event.payload.data.device_type is defined
+          )
+            or
+          event.payload.data.device_type is not defined
+        )
+
       actions:
 
 

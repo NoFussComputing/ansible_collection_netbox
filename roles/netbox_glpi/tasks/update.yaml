@@ -1,6 +1,14 @@
 ---
 
 - name: GLPI
+  when: >
+    (
+      netbox.data.serial != ''
+        and
+      netbox.data.device_type is defined
+    )
+      or
+    netbox.data.device_type is not defined
   block:
 
 
