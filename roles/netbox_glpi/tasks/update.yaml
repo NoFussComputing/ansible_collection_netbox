@@ -3,6 +3,8 @@
 - name: GLPI
   when: >
     (
+      netbox.data.custom_fields.itil_entity | default('') != ''
+        and
       netbox.data.serial | default('') != ''
         and
       netbox.data.device_type is defined

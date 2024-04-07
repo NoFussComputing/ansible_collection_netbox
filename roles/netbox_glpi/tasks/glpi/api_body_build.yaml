@@ -4,7 +4,7 @@
   ansible.builtin.set_fact:
     api_body_glpi: |-
       {
-        "entities_id": 0,
+        "entities_id": {{ netbox.data.custom_fields.itil_entity }},
         "name": "{{ netbox.data.name }}",
         "serial": "{{ netbox.data.serial | default('') }}"
       }
@@ -16,7 +16,7 @@
   ansible.builtin.set_fact:
     api_body_glpi: |-
       {
-        "entities_id": 0,
+        "entities_id": {{ netbox.data.custom_fields.itil_entity }},
         "name": "{{ netbox.data.name }}",
         "serial": "{{ netbox.data.serial }}"
       }

@@ -99,6 +99,9 @@
     method: PATCH
     body_format: json
     body: {
+      "display": "{{ choice_set_display_name }}",
+      "name": "{{ choice_set_name }}",
+      "description": "{{ choice_set_description }}",
       "extra_choices": "{{ constructed_extra_choices }}",
       "order_alphabetically": false,
     }
@@ -122,6 +125,10 @@
     )
       or
     api_get_choice_set.json.results[0].order_alphabetically != false
+      or
+    api_get_choice_set.json.results[0].description != choice_set_description
+      or
+    api_get_choice_set.json.results[0].display != choice_set_display_name
 
 
 - name: Find Custom Field {{ field_name }}
@@ -146,7 +153,7 @@
 - name: Create choice_set Dict for {{ field_name }}
   ansible.builtin.set_fact:
     cacheable: false
-    api_body_glpi_item_types: |-
+    netbox_api_body: |-
       {
         "content_types": {{ field_content_types }},
         "type": "select",
@@ -170,7 +177,7 @@
     body_format: json
     headers:
       Authorization: Token {{ nfc_pb_netbox_netbox_token }}
-    body: "{{ api_body_glpi_item_types | from_yaml }}"
+    body: "{{ netbox_api_body | from_yaml }}"
     status_code:
       - 201
   changed_when: true
@@ -192,7 +199,7 @@
     body_format: json
     headers:
       Authorization: Token {{ nfc_pb_netbox_netbox_token }}
-    body: "{{ api_body_glpi_item_types | from_yaml }}"
+    body: "{{ netbox_api_body | from_yaml }}"
     status_code:
       - 201
       - 200

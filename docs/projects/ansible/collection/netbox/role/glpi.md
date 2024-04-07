@@ -16,6 +16,8 @@ This role, `netbox_glpi` is part of the Ansible collection `nofusscomputing.netb
     !!! info
         Currently the only supported items for updates are those that have had `itil_item_type` field set to `computer`. See [below for further details](index.md#what-gets-synced-from-netbox-to-glpi).
 
+- Entity Sync from GLPI
+
 
 ## Requirements
 
@@ -25,7 +27,7 @@ The following requirements to use this collection are as follows:
 
     NetBox-sync:
 
-    - User that has `read/write` permissions for assets
+    - User that has `read/write` permissions for assets and to All entities within GLPI
 
     - API Application Token `Setup -> General -> API`
 
@@ -39,7 +41,7 @@ The following requirements to use this collection are as follows:
 
     - User with `write` permissions to devices and Virtual Machines
 
-    - ALL devices will need to have `itil_item_type` field set to it's GLPI item type. This will be possible only after running the [setup steps](index.md#setup).
+    - ALL items for sync to GLPI need to have fields `GLPI Item Type` and `GLPI Entity` set. Without this the item will not be added to GLPI. This will be possible only after running the [setup steps](index.md#setup).
 
 
 ## Setup
@@ -63,6 +65,24 @@ Field `itil_id` is used by the system to keep track of the GLPI item ID within n
     If you already have your device in GLPI, you can manually set the NetBox items `itil_id` to that of the existing GLPI ID.
 
 A custom link is also created within NetBox as part of the setup. This custom link has a bit of wizardry in that it builds the GLPI link for the device. This only occurs however, when the item has been added to GLPI and there exists a GLPI ID in field `itil_id`
+
+
+## Entity Sync
+
+As Part of the sync process items within NetBox that are syncronized to GLPI will need to have an entity assigned. For this to be possible, run the following playbook.
+
+``` bash
+
+ansible-playbook nofusscomputing.netbox.glpi \
+    --extra-vars "nfc_pb_netbox_netbox_url=https://my-netbox-url" \
+    --extra-vars "nfc_pb_netbox_netbox_token=my-netbox-token" \
+    --extra-vars "nfc_pb_netbox_glpi_url_glpi=https://my-glpi-url" \
+    --extra-vars "nfc_pb_netbox_itam_glpi_app_token=my-glpi-app-token" \
+    --extra-vars "nfc_pb_netbox_itam_glpi_user_token=my-glpi-api-user-token"
+
+```
+
+This playbook will create a custom field choices containing ALL of the GLPI Entities and add a custom field for the end user to select the GLPI entity the item should be added to. This play can be run as often as you would like as it will update Netbox with any new/deleted entities.
 
 
 ## Events Endpoint
@@ -118,8 +138,12 @@ The container already automagically starts an EDA rulebook that is listening for
 
     - Serial Number
 
+    - GLPI Entity
+
 - Virtual Machine with its type set to `computer`.
 
     The following fields are kept in sync:
 
     - Name
+
+    - GLPI Entity
