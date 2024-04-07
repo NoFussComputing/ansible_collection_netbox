@@ -9,6 +9,14 @@ about: https://gitlab.com/nofusscomputing/projects/ansible/collections/netbox
 This role is part of the Ansible collection `nofusscomputing.netbox`, contains all of the logic to setup GLPI and NetBox so that the data from NetBox can be synchronized from netbox and kept in sync.
 
 
+## Features
+
+- Devices Created/Updated within NetBox are synced to GLPI
+
+    !!! info
+        Currently the only supported items for updated are those that have had `itil_item_type` field set to `computer`.
+
+
 ## Requirements
 
 The following requirements to use this collection are as follows:
@@ -54,6 +62,31 @@ Field `itil_id` is used by the system to keep track of the GLPI item ID within n
 A custom link is also created within NetBox as part of the setup. This custom link has a bit of wizardry in that it builds the GLPI link for the device. This only occurs however, when the item has been added to GLPI and there exists a GLPI ID in field `itil_id`
 
 
+## Events Endpoint
+
+As part of the collection there is an EDA (Event Driven Ansible) endpoint for NetBox to use to post updates to that is the ingress for updating GLPI. This endpoint is available as a docker container or can be setup to run manually with the following command.
+
+``` bash
+
+ansible-rulebook -r nofusscomputing.netbox.glpi --vars "my-vars.yaml"
+
+```
+
+the following variables are required for the rulebook.
+
+``` yaml
+nofusscomputing_netbox_eda_port: 5000    # Optional, Integer. the port number the EDA rulebook will listen on.
+
+# See default variables below for explanation
+nfc_pb_netbox_netbox_token:
+nfc_pb_netbox_netbox_url:
+nfc_pb_netbox_glpi_url_glpi:
+nfc_pb_netbox_itam_glpi_app_token:
+nfc_pb_netbox_itam_glpi_user_token:
+
+```
+
+
 ## Default Variables
 
 ``` yaml title="defaults/main.yaml" linenums="1"
@@ -61,3 +94,12 @@ A custom link is also created within NetBox as part of the setup. This custom li
 --8<-- "roles/netbox_glpi/defaults/main.yaml"
 
 ```
+
+
+## What gets synced from NetBox to GLPI
+
+- Computers.
+
+    - Name
+
+    - Serial Number

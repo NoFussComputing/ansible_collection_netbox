@@ -1,0 +1,120 @@
+---
+
+- name: "{{ 'Search for ' + netbox.data.custom_fields.itil_item_type + ' in GLPI' }}"
+  ansible.builtin.uri:
+    url: "{{ nfc_pb_netbox_glpi_url_glpi }}/apirest.php/{{
+              netbox.data.custom_fields.itil_item_type | lower }}/?searchText[name]={{ netbox.data.name }}"
+    method: GET
+    return_content: true
+    headers:
+      App-Token: "{{ nfc_pb_netbox_itam_glpi_app_token }}"
+      Session-Token: "{{ glpi_session.json.session_token }}"
+    status_code:
+      - 200
+  delegate_to: localhost
+  register: glpi_api_get_item
+  no_log: >
+    {%- if not force_logging | default(false) -%}
+      true
+    {%- else -%}
+      false
+    {%-endif %}
+
+
+- name: Build API Creation/Update Body
+  ansible.builtin.include_tasks:
+    file: tasks/glpi/api_body_build.yaml
+
+
+- name: "{{ 'Create ' + netbox.data.custom_fields.itil_item_type + ' in GLPI' }}"
+  ansible.builtin.uri:
+    url: "{{ nfc_pb_netbox_glpi_url_glpi }}/apirest.php/{{
+              netbox.data.custom_fields.itil_item_type | lower }}/"
+    method: POST
+    return_content: true
+    headers:
+      App-Token: "{{ nfc_pb_netbox_itam_glpi_app_token }}"
+      Session-Token: "{{ glpi_session.json.session_token }}"
+    body_format: json
+    body: {
+      "input": "{{ api_body_glpi | from_yaml }}"
+    }
+    status_code:
+      - 201
+  delegate_to: localhost
+  register: glpi_api_post_item
+  no_log: >
+    {%- if not force_logging | default(false) -%}
+      true
+    {%- else -%}
+      false
+    {%-endif %}
+  when: >
+    glpi_api_get_item.json | list | length == 0
+
+
+- name: "{{ 'Update ' + netbox.data.custom_fields.itil_item_type + ' in GLPI' }}"
+  ansible.builtin.uri:
+    url: "{{ nfc_pb_netbox_glpi_url_glpi }}/apirest.php/{{
+              netbox.data.custom_fields.itil_item_type | lower }}/{{ netbox.data.custom_fields.itil_item_id }}"
+    method: PATCH
+    return_content: true
+    headers:
+      App-Token: "{{ nfc_pb_netbox_itam_glpi_app_token }}"
+      Session-Token: "{{ glpi_session.json.session_token }}"
+    body_format: json
+    body: {
+      "input": "{{ api_body_glpi | from_yaml }}"
+    }
+    status_code:
+      - 200
+      - 201
+  delegate_to: localhost
+  register: glpi_api_patch_item
+  no_log: >
+    {%- if not force_logging | default(false) -%}
+      true
+    {%- else -%}
+      false
+    {%-endif %}
+  when: >
+    api_body_glpi is defined
+
+
+- name: Build Netbox API Body
+  ansible.builtin.set_fact:
+    api_body_netbox: |-
+      {
+        "custom_fields": {
+          "itil_item_id": {{ glpi_api_get_item.json[0].id | default(glpi_api_post_item.json.id) | int }}
+        }
+      }
+  when: >
+    netbox.data.custom_fields.itil_item_id | default(0)
+      !=
+    glpi_api_get_item.json[0].id | default(glpi_api_post_item.json.id) | int
+
+
+- name: Update ITIL Item ID in netbox
+  ansible.builtin.uri:
+    url: "{{ netbox_url }}/api/dcim/devices/{{
+              netbox.data.id | lower }}/"
+    method: PATCH
+    headers:
+      Authorization: Token {{ netbox_token }}
+    body_format: json
+    body: "{{ api_body_netbox | from_yaml }}"
+    status_code:
+      - 200
+      - 201
+  changed_when: true
+  delegate_to: localhost
+  register: netbox_api_patch_item
+  no_log: >
+    {%- if not force_logging | default(false) -%}
+      true
+    {%- else -%}
+      false
+    {%-endif %}
+  when: >
+    api_body_netbox is defined

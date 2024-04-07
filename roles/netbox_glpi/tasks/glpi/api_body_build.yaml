@@ -1,0 +1,14 @@
+---
+
+- name: Build Computer API Body
+  ansible.builtin.set_fact:
+    api_body_glpi: |-
+      {
+        "entities_id": 0,
+        "name": "{{ netbox.data.name }}",
+        "serial": "{{ netbox.data.serial }}"
+      }
+  when: >
+    netbox.data.custom_fields.itil_item_type | lower == 'computer'
+      and
+    netbox.data.serial != glpi_api_get_item.json[0].serial | default('value-is-empty')
