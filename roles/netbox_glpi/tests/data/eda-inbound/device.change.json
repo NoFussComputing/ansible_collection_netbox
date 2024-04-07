@@ -1,0 +1,218 @@
+{
+  "data": {
+    "airflow": None,
+    "asset_tag": None,
+    "cluster": None,
+    "comments": "the comments field\r\nfbn",
+    "config_template": None,
+    "console_port_count": 0,
+    "console_server_port_count": 0,
+    "created": "2024-04-02T08:29:49.230457Z",
+    "custom_fields": {
+      "itil_item_id": None,
+      "itil_item_type": "computer"
+    },
+    "description": "",
+    "device_bay_count": 1,
+    "device_role": {
+      "display": "Laptop",
+      "id": 1,
+      "name": "Laptop",
+      "slug": "laptop",
+      "url": "/api/dcim/device-roles/1/"
+    },
+    "device_type": {
+      "display": "F-whatever",
+      "id": 1,
+      "manufacturer": {
+        "display": "Asus",
+        "id": 1,
+        "name": "Asus",
+        "slug": "asus",
+        "url": "/api/dcim/manufacturers/1/"
+      },
+      "model": "F-whatever",
+      "slug": "f-whatever",
+      "url": "/api/dcim/device-types/1/"
+    },
+    "display": "Laptop2",
+    "face": {
+      "label": "Front",
+      "value": "front"
+    },
+    "front_port_count": 0,
+    "id": 1,
+    "interface_count": 0,
+    "inventory_item_count": 1,
+    "last_updated": "2024-04-07T07:17:34.633852Z",
+    "latitude": None,
+    "local_context_data": None,
+    "location": None,
+    "longitude": None,
+    "module_bay_count": 0,
+    "name": "Laptop2",
+    "oob_ip": None,
+    "parent_device": None,
+    "platform": None,
+    "position": 1.0,
+    "power_outlet_count": 0,
+    "power_port_count": 1,
+    "primary_ip": None,
+    "primary_ip4": None,
+    "primary_ip6": None,
+    "rack": {
+      "display": "two",
+      "id": 1,
+      "name": "two",
+      "url": "/api/dcim/racks/1/"
+    },
+    "rear_port_count": 0,
+    "role": {
+      "display": "Laptop",
+      "id": 1,
+      "name": "Laptop",
+      "slug": "laptop",
+      "url": "/api/dcim/device-roles/1/"
+    },
+    "serial": "",
+    "site": {
+      "display": "site1",
+      "id": 1,
+      "name": "site1",
+      "slug": "site1",
+      "url": "/api/dcim/sites/1/"
+    },
+    "status": {
+      "label": "Active",
+      "value": "active"
+    },
+    "tags": [
+      {
+        "color": "f44336",
+        "display": "test",
+        "id": 1,
+        "name": "test",
+        "slug": "test",
+        "url": "/api/extras/tags/1/"
+      }
+    ],
+    "tenant": {
+      "display": "Earth",
+      "id": 1,
+      "name": "Earth",
+      "slug": "earth",
+      "url": "/api/tenancy/tenants/1/"
+    },
+    "url": "/api/dcim/devices/1/",
+    "vc_position": 1,
+    "vc_priority": None,
+    "virtual_chassis": {
+      "display": "fsdfsdfdsfds",
+      "id": 1,
+      "master": None,
+      "member_count": 1,
+      "name": "fsdfsdfdsfds",
+      "url": "/api/dcim/virtual-chassis/1/"
+    }
+  },
+  "event": "updated",
+  "model": "device",
+  "request_id": "d1cc3af1-5ec5-4a0c-a793-37e81bfb67f5",
+  "snapshots": {
+    "postchange": {
+      "airflow": "",
+      "asset_tag": None,
+      "cluster": None,
+      "comments": "the comments field\r\nfbn",
+      "config_template": None,
+      "console_port_count": 0,
+      "console_server_port_count": 0,
+      "created": "2024-04-02T08:29:49.230Z",
+      "custom_fields": {
+        "itil_id": None,
+        "itil_item_type": "computer"
+      },
+      "description": "",
+      "device_bay_count": 1,
+      "device_type": 1,
+      "face": "front",
+      "front_port_count": 0,
+      "interface_count": 0,
+      "inventory_item_count": 1,
+      "last_updated": "2024-04-07T07:17:34.633Z",
+      "latitude": None,
+      "local_context_data": None,
+      "location": None,
+      "longitude": None,
+      "module_bay_count": 0,
+      "name": "Laptop2",
+      "oob_ip": None,
+      "platform": None,
+      "position": "1.0",
+      "power_outlet_count": 0,
+      "power_port_count": 1,
+      "primary_ip4": None,
+      "primary_ip6": None,
+      "rack": 1,
+      "rear_port_count": 0,
+      "role": 1,
+      "serial": "",
+      "site": 1,
+      "status": "active",
+      "tags": [
+        "test"
+      ],
+      "tenant": 1,
+      "vc_position": 1,
+      "vc_priority": None,
+      "virtual_chassis": 1
+    },
+    "prechange": {
+      "airflow": "",
+      "asset_tag": None,
+      "cluster": None,
+      "comments": "the comments field\r\nfb",
+      "config_template": None,
+      "console_port_count": 0,
+      "console_server_port_count": 0,
+      "created": "2024-04-02T08:29:49.230Z",
+      "custom_fields": {
+        "itil_id": None,
+        "itil_item_type": "computer"
+      },
+      "description": "",
+      "device_bay_count": 1,
+      "device_type": 1,
+      "face": "front",
+      "front_port_count": 0,
+      "interface_count": 0,
+      "inventory_item_count": 1,
+      "latitude": None,
+      "local_context_data": None,
+      "location": None,
+      "longitude": None,
+      "module_bay_count": 0,
+      "name": "Laptop2",
+      "oob_ip": None,
+      "platform": None,
+      "position": "1.0",
+      "power_outlet_count": 0,
+      "power_port_count": 1,
+      "primary_ip4": None,
+      "primary_ip6": None,
+      "rack": 1,
+      "rear_port_count": 0,
+      "role": 1,
+      "serial": "",
+      "site": 1,
+      "status": "active",
+      "tags": [
+        "test"
+      ],
+      "tenant": 1,
+      "vc_position": 1,
+      "vc_priority": None,
+      "virtual_chassis": 1
+    }
+  }
+}

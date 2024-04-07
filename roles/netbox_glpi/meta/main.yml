@@ -1,0 +1,29 @@
+galaxy_info:
+
+  role_name: netbox_glpi
+
+  author: No Fuss Computing
+
+  description: Netbox and GLPI integration
+
+  issue_tracker_url: https://gitlab.com/nofusscomputing/projects/ansible/collections/netbox
+
+  license: MIT
+
+  min_ansible_version: '2.15'
+
+  platforms:
+
+    - name: Debian
+      versions:
+        - bullseye
+        - bookworm
+
+    - name: Ubuntu
+      versions:
+        - 21
+
+  galaxy_tags:
+    - glpi
+    - integration
+    - netbox

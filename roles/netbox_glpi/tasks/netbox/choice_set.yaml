@@ -1,0 +1,220 @@
+---
+
+########################################## SoF Workaround ##########################################
+# See https://github.com/netbox-community/ansible_modules/issues/1069
+# TL;DR: choice sets dont work with module 'netbox.netbox.netbox_custom_field'
+####################################################################################################
+
+
+# Keep as eventually the netbox module may support api_get_choice_set_glpi_item_types
+#
+# - name: Create custom Field itil_item_type
+#   netbox.netbox.netbox_custom_field:
+#     netbox_url: "{{ nfc_pb_netbox_netbox_url }}"
+#     netbox_token: "{{ nfc_pb_netbox_netbox_token }}"
+#     data:
+#       content_types:
+#         - dcim.device
+#         - virtualization.virtualmachine
+#       choices:
+#         - cable:Cables
+#         - Cluster:Cluster
+#         - Computer:Computer
+#         - Entity:Entity
+#         - Location:Location
+#         - Operating System:Operating System
+#         - PDU:PDU
+#         - Phone:Phone
+#         - Software:Software
+#         - Virtual Machine:Virtual Machine
+#         - clustertype:Cluster Type
+#         - networkequipment:Network Equipment
+#         - printer:Printer
+#         - rack:Rack
+#       name: itil_item_type
+#       description: The item ID from the ITIL
+#       type: select
+#   delegate_to: localhost
+
+
+- name: Construct Choices API Objecct
+  ansible.builtin.set_fact:
+    cacheable: false
+    constructed_extra_choices: |-
+      [{%- for choice in choices -%}
+        ["{{ (choice | split(':'))[0] }}", "{{ (choice | split(':'))[1] }}"],
+      {%- endfor %}]
+
+
+- name: Find Custom Choice Set {{ choice_set_name }}
+  ansible.builtin.uri:
+    url: "{{ nfc_pb_netbox_netbox_url }}/api/extras/custom-field-choice-sets/?name={{ choice_set_name }}"
+    method: GET
+    body_format: json
+    headers:
+      Authorization: Token {{ nfc_pb_netbox_netbox_token }}
+    status_code:
+      - 200
+  delegate_to: localhost
+  no_log: >
+    {%- if not nfc_pb_netbox_force_logging | default(false) -%}
+      true
+    {%- else -%}
+      false
+    {%-endif %}
+  register: api_get_choice_set
+
+
+- name: Create Custom Field Set {{ choice_set_name }}
+  ansible.builtin.uri:
+    url: "{{ nfc_pb_netbox_netbox_url }}/api/extras/custom-field-choice-sets/"
+    method: POST
+    body_format: json
+    body: {
+      "display": "{{ choice_set_display_name }}",
+      "name": "{{ choice_set_name }}",
+      "description": "{{ choice_set_description }}",
+      "extra_choices": "{{ constructed_extra_choices }}",
+      "order_alphabetically": false,
+    }
+    headers:
+      Authorization: Token {{ nfc_pb_netbox_netbox_token }}
+    status_code:
+      - 201
+  delegate_to: localhost
+  no_log: >
+    {%- if not nfc_pb_netbox_force_logging | default(false) -%}
+      true
+    {%- else -%}
+      false
+    {%-endif %}
+  register: api_post_choice_set
+  when: >
+    api_get_choice_set.json.results | list | length == 0
+
+
+- name: Update Custom Field Set {{ choice_set_name }}
+  ansible.builtin.uri:
+    url: "{{ api_get_choice_set.json.results[0].url }}"
+    method: PATCH
+    body_format: json
+    body: {
+      "display": "{{ choice_set_display_name }}",
+      "name": "{{ choice_set_name }}",
+      "description": "{{ choice_set_description }}",
+      "extra_choices": "{{ constructed_extra_choices }}",
+      "order_alphabetically": false,
+    }
+    headers:
+      Authorization: Token {{ nfc_pb_netbox_netbox_token }}
+    status_code:
+      - 200
+  changed_when: true
+  delegate_to: localhost
+  no_log: >
+    {%- if not nfc_pb_netbox_force_logging | default(false) -%}
+      true
+    {%- else -%}
+      false
+    {%-endif %}
+  when: >
+    (
+      api_get_choice_set.json.results[0].extra_choices | from_yaml | list | sort
+        !=
+      constructed_extra_choices | list | sort
+    )
+      or
+    api_get_choice_set.json.results[0].order_alphabetically != false
+      or
+    api_get_choice_set.json.results[0].description != choice_set_description
+      or
+    api_get_choice_set.json.results[0].display != choice_set_display_name
+
+
+- name: Find Custom Field {{ field_name }}
+  ansible.builtin.uri:
+    url: "{{ nfc_pb_netbox_netbox_url }}/api/extras/custom-fields/?name={{ field_name }}"
+    method: GET
+    body_format: json
+    headers:
+      Authorization: Token {{ nfc_pb_netbox_netbox_token }}
+    status_code:
+      - 200
+  delegate_to: localhost
+  no_log: >
+    {%- if not nfc_pb_netbox_force_logging | default(false) -%}
+      true
+    {%- else -%}
+      false
+    {%-endif %}
+  register: api_get_custom_field
+
+
+- name: Create choice_set Dict for {{ field_name }}
+  ansible.builtin.set_fact:
+    cacheable: false
+    netbox_api_body: |-
+      {
+        "content_types": {{ field_content_types }},
+        "type": "select",
+        "object_type": null,
+        "name": "{{ field_name }}",
+        "label": "{{ field_display_name }}",
+        "group_name": "ITSM",
+        "description": "{{ field_description }}",
+        "required": "{{ field_required }}",
+        "is_cloneable": false,
+        "choice_set": {{ api_post_choice_set.json.results.id |
+                    default(api_get_choice_set.json.results[0].id) | int }},
+        "weight": 100
+      }
+
+
+- name: Create Custom Field {{ field_name }}
+  ansible.builtin.uri:
+    url: "{{ nfc_pb_netbox_netbox_url }}/api/extras/custom-fields/"
+    method: POST
+    body_format: json
+    headers:
+      Authorization: Token {{ nfc_pb_netbox_netbox_token }}
+    body: "{{ netbox_api_body | from_yaml }}"
+    status_code:
+      - 201
+  changed_when: true
+  delegate_to: localhost
+  no_log: >
+    {%- if not nfc_pb_netbox_force_logging | default(false) -%}
+      true
+    {%- else -%}
+      false
+    {%-endif %}
+  when: >
+    api_get_custom_field.json.results | list | length == 0
+
+
+- name: Update Custom Field {{ field_name }}
+  ansible.builtin.uri:
+    url: "{{ api_get_custom_field.json.results[0].url }}"
+    method: PATCH
+    body_format: json
+    headers:
+      Authorization: Token {{ nfc_pb_netbox_netbox_token }}
+    body: "{{ netbox_api_body | from_yaml }}"
+    status_code:
+      - 201
+      - 200
+  # changed_when: true
+  delegate_to: localhost
+  no_log: >
+    {%- if not nfc_pb_netbox_force_logging | default(false) -%}
+      true
+    {%- else -%}
+      false
+    {%-endif %}
+  when: >
+    api_get_custom_field.json.results | list | length != 0
+
+
+########################################## EoF Workaround ##########################################
+# See https://github.com/netbox-community/ansible_modules/issues/1069
+####################################################################################################
