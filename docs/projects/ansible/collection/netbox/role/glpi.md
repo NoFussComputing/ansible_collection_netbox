@@ -159,11 +159,14 @@ To update the container to a newer version, the following steps should be follow
 
     The following fields are kept in sync:
 
+    - Asset Number
+
     - Name
 
     - Serial Number
 
-    - GLPI Entity
+    - Selected GLPI Entity
+
 
 - Virtual Machine with its type set to `computer`.
 

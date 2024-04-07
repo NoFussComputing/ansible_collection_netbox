@@ -7,6 +7,9 @@
         "entities_id": {{ netbox.data.custom_fields.itil_entity }},
         "name": "{{ netbox.data.name }}",
         "serial": "{{ netbox.data.serial | default('') }}"
+        {%- if netbox.data.device_type is defined -%}
+        ,"otherserial": "{{ netbox.data.asset_tag | default('') }}"
+        {%-endif  %}
       }
   when: >
     netbox.data.custom_fields.itil_item_type | lower == 'computer'
@@ -19,6 +22,9 @@
         "entities_id": {{ netbox.data.custom_fields.itil_entity }},
         "name": "{{ netbox.data.name }}",
         "serial": "{{ netbox.data.serial }}"
+        {%- if netbox.data.device_type is defined -%}
+        ,"otherserial": "{{ netbox.data.asset_tag | default('') }}"
+        {%-endif  %}
       }
   when: >
     netbox.data.custom_fields.itil_item_type | lower == 'networkequipment'
