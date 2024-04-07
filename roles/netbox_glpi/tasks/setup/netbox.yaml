@@ -77,20 +77,20 @@
   ansible.builtin.set_fact:
     cacheable: false
     choices:
-      - cable:Cables
-      - Cluster:Cluster
+      # - cable:Cables
+      # - Cluster:Cluster
       - computer:Computer
-      - Entity:Entity
-      - Location:Location
-      - Operating System:Operating System
-      - PDU:PDU
-      - Phone:Phone
-      - Software:Software
-      - Virtual Machine:Virtual Machine
-      - clustertype:Cluster Type
+      # - entity:Entity
+      # - Location:Location
+      # - Operating System:Operating System
+      # - PDU:PDU
+      # - Phone:Phone
+      # - Software:Software
+      # - Virtual Machine:Virtual Machine
+      # - clustertype:Cluster Type
       - networkequipment:Network Equipment
-      - printer:Printer
-      - rack:Rack
+      # - printer:Printer
+      # - rack:Rack
 
 
 - name: Construct Choices API Objecct
