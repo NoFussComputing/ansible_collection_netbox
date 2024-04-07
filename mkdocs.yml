@@ -31,7 +31,9 @@ nav:
 
         - Roles:
 
-          - projects/ansible/collection/netbox/role/glpi/index.md
+          - GLPI:
+
+            - projects/ansible/collection/netbox/role/glpi/index.md
 
 - Operations: 
 
