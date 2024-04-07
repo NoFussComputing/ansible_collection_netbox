@@ -110,11 +110,7 @@ RUN mkdir -p /tmp/collection; \
     ansible-galaxy collection install --force-with-deps --pre \
     /tmp/collection/.; \
     rm -Rf /tmp/collection; \
-  fi; \
-  chmod +x /etc/cron.d/*; \
-  chmod +x /bin/update-ca; \
-  chown root:root -R /etc/phpipam; \
-  chmod 740 -R /etc/phpipam;
+  fi;
 
 
 WORKDIR /root
