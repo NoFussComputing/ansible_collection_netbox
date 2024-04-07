@@ -2,4 +2,4 @@
 # Default GLPI to Netbox Entity Sync Job
 #
 
-*/15 * * * * ansible-playbook nofusscomputing.phpipam_scan_agent.agent --extra-vars "/root/vars.yaml" -v
+*/15 * * * * ansible-playbook nofusscomputing.netbox.entities --extra-vars "@/root/vars.yaml" -v
