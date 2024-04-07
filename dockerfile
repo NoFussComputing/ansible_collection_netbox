@@ -38,8 +38,9 @@ RUN mkdir -p /tmp/python_builds;
 RUN cd /tmp/python_modules; \
   mkdir -p /tmp/python_builds; \
   echo "[DEBUG] PATH=$PATH"; \
-  pip wheel --wheel-dir /tmp/python_builds --find-links . *.whl; \
-  pip wheel --wheel-dir /tmp/python_builds --find-links . *.tar.gz;
+  ls -l; \
+  pip wheel --wheel-dir /tmp/python_builds --find-links . *.whl || true; \
+  pip wheel --wheel-dir /tmp/python_builds --find-links . *.tar.gz || true;
 
 
 RUN echo $(date)\
