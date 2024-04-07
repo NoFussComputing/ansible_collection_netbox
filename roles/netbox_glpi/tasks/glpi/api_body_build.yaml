@@ -6,12 +6,10 @@
       {
         "entities_id": 0,
         "name": "{{ netbox.data.name }}",
-        "serial": "{{ netbox.data.serial }}"
+        "serial": "{{ netbox.data.serial | default('') }}"
       }
   when: >
     netbox.data.custom_fields.itil_item_type | lower == 'computer'
-      and
-    netbox.data.serial != glpi_api_get_item.json[0].serial | default('value-is-empty')
 
 
 - name: Build Network Device API Body
@@ -24,5 +22,3 @@
       }
   when: >
     netbox.data.custom_fields.itil_item_type | lower == 'networkequipment'
-      and
-    netbox.data.serial != glpi_api_get_item.json[0].serial | default('value-is-empty')

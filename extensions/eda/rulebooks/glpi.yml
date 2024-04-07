@@ -24,10 +24,10 @@
           (
             event.payload.data.serial != ''
               and
-            event.payload.data.device_type is defined
+            'device_type' in event.payload.data
           )
             or
-          event.payload.data.device_type is not defined
+          'device_type' not in event.payload.data
         )
 
       actions:

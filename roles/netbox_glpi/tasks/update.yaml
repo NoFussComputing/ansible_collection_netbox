@@ -3,7 +3,7 @@
 - name: GLPI
   when: >
     (
-      netbox.data.serial != ''
+      netbox.data.serial | default('') != ''
         and
       netbox.data.device_type is defined
     )
