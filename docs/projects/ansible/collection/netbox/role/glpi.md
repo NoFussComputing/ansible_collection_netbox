@@ -20,6 +20,8 @@ There are two methods available to take advantage of this role: running the play
 
 - Entity Sync from GLPI
 
+- NetBox Status' added to GLPI
+
 
 ## Requirements
 
@@ -81,7 +83,7 @@ A custom link is also created within NetBox as part of the setup. This custom li
 
 ### GLPI
 
-As Part of the setup process the default device status' from NetBox are added to the root entity (`recusive=yes`) within GLPI. This Dropdown field will be used for the device when it is synced from Netbox so that the Status between the two systems remain in sync. So as not to require additional permissions for the API client, the status' are setup within the default vars as a list under key `nfc_role_netbox_glpi_device_status`. This enables you to Update the available status' if you use a custom set within Netbox. This process unfortunately, is manual.
+As Part of the setup process the default device status' from NetBox are added to the root entity (`recusive=yes`) within GLPI. This Dropdown field will be used for the device when it is synced from Netbox so that the Status between the two systems remain in sync. So as not to require additional permissions for the API client, the status' are setup within the default vars as a list under key `nfc_role_netbox_glpi_device_status`. This enables you to Update the available status' if you use a custom set within Netbox. This process unfortunately, is manual. If you update the status' don't forget to run the setup job again.
 
 
 ## Entity Sync
@@ -181,6 +183,8 @@ To update the container to a newer version, the following steps should be follow
     - Serial Number
 
     - Selected GLPI Entity
+
+    - Status
 
     - UUID
 
