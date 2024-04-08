@@ -65,17 +65,17 @@ issues: https://gitlab.com/nofusscomputing/projects/ansible/collections/netbox/-
 # uses 'fnmatch' to match the files or directories. Some directories and files like 'galaxy.yml', '*.pyc', '*.retry',
 # and '.git' are always filtered. Mutually exclusive with 'manifest'
 build_ignore:
-  - .vscode/
-  - artifacts/
-  - docs/
-  - .gitlab*
-  - includes/
-  - website-template/
+  - .vscode
+  - artifacts
+  - docs
+  - .git*
+  - gitlab-ci
+  - website-template
   - .ansible-lint-ignore
   - .cz.yaml
   - .nfc_automation.yaml
   - dockerfile
-  - mkdocs.yaml
+  - mkdocs.yml
 
 # A dict controlling use of manifest directives used in building the collection artifact. The key 'directives' is a
 # list of MANIFEST.in style

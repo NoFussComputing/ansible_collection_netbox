@@ -167,6 +167,8 @@ To update the container to a newer version, the following steps should be follow
 
     - Selected GLPI Entity
 
+    - UUID
+
 
 - Virtual Machine with its type set to `computer`.
 
@@ -174,4 +176,6 @@ To update the container to a newer version, the following steps should be follow
 
     - Name
 
-    - GLPI Entity
+    - Selected GLPI Entity
+
+    - UUID

@@ -6,10 +6,11 @@
       {
         "entities_id": {{ netbox.data.custom_fields.itil_entity }},
         "name": "{{ netbox.data.name }}",
-        "serial": "{{ netbox.data.serial | default('') }}"
+        "serial": "{{ netbox.data.serial | default('') }}",
         {%- if netbox.data.device_type is defined -%}
-        ,"otherserial": "{{ netbox.data.asset_tag | default('') }}"
+        "otherserial": "{{ netbox.data.asset_tag | default('') }}",
         {%-endif  %}
+        "uuid": "{{ netbox.data.custom_fields.itil_uuid }}",
       }
   when: >
     netbox.data.custom_fields.itil_item_type | lower == 'computer'
