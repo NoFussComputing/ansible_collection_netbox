@@ -1,0 +1,63 @@
+---
+
+- name: Setup GLPI
+  block:
+
+
+    - name: Init GLPI Session
+      ansible.builtin.include_tasks:
+        file: tasks/glpi/init-session.yaml
+
+
+    - name: Setup Status
+      ansible.builtin.include_tasks:
+        file: tasks/glpi/api_create_update.yaml
+        apply:
+          tags:
+            - always
+      loop: "{{ nfc_role_netbox_glpi_device_status }}"
+      loop_control:
+        label: "{{ item }}"
+      tags:
+        - never
+        - setup
+      vars:
+        field_name: "{{ item }}"
+        field_search_entities_id: 0
+        item_type: State
+        glpi_api_object: {
+          "name": "{{ item }}",
+          "entities_id": 0,
+          "is_recursive": 1,
+          "comment": "NetBox Status",
+          "states_id": 0,
+          "completename": "{{ item }}",
+          "is_visible_computer": 1,
+          "is_visible_monitor": 0,
+          "is_visible_networkequipment": 1,
+          "is_visible_peripheral": 0,
+          "is_visible_phone": 1,
+          "is_visible_printer": 1,
+          "is_visible_softwareversion": 0,
+          "is_visible_softwarelicense": 0,
+          "is_visible_line": 0,
+          "is_visible_certificate": 0,
+          "is_visible_rack": 0,
+          "is_visible_passivedcequipment": 0,
+          "is_visible_enclosure": 0,
+          "is_visible_pdu": 0,
+          "is_visible_cluster": 0,
+          "is_visible_contract": 0,
+          "is_visible_appliance": 0,
+          "is_visible_databaseinstance": 0,
+          "is_visible_cable": 0,
+          "is_visible_unmanaged": 0
+        }
+
+
+  always:
+
+
+    - name: Kill GLPI Session
+      ansible.builtin.include_tasks:
+        file: tasks/glpi/kill-session.yaml
