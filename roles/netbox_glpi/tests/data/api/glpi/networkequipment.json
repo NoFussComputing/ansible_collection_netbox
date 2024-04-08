@@ -1,0 +1,142 @@
+{
+  "id": 4,
+  "entities_id": 2,
+  "is_recursive": 0,
+  "name": "a-network-device-created-in-netbox",
+  "ram": null,
+  "serial": "gggg",
+  "otherserial": "aud44556677",
+  "contact": null,
+  "contact_num": null,
+  "users_id_tech": 0,
+  "groups_id_tech": 0,
+  "date_mod": "2024-04-08 03:32:13",
+  "comment": null,
+  "locations_id": 0,
+  "networks_id": 0,
+  "networkequipmenttypes_id": 0,
+  "networkequipmentmodels_id": 0,
+  "manufacturers_id": 0,
+  "is_deleted": 0,
+  "is_template": 0,
+  "template_name": null,
+  "users_id": 0,
+  "groups_id": 0,
+  "states_id": 0,
+  "ticket_tco": "0.0000",
+  "is_dynamic": 0,
+  "uuid": null,
+  "date_creation": "2024-04-08 00:11:51",
+  "autoupdatesystems_id": 0,
+  "sysdescr": null,
+  "cpu": 0,
+  "uptime": "0",
+  "last_inventory_update": null,
+  "snmpcredentials_id": 0,
+  "links": [
+    {
+      "rel": "Entity",
+      "href": "http://glpi.local/apirest.php/Entity/2"
+    },
+    {
+      "rel": "ReservationItem",
+      "href": "http://glpi.local/apirest.php/NetworkEquipment/4/ReservationItem/"
+    },
+    {
+      "rel": "Document_Item",
+      "href": "http://glpi.local/apirest.php/NetworkEquipment/4/Document_Item/"
+    },
+    {
+      "rel": "Contract_Item",
+      "href": "http://glpi.local/apirest.php/NetworkEquipment/4/Contract_Item/"
+    },
+    {
+      "rel": "Infocom",
+      "href": "http://glpi.local/apirest.php/NetworkEquipment/4/Infocom/"
+    },
+    {
+      "rel": "Item_Ticket",
+      "href": "http://glpi.local/apirest.php/NetworkEquipment/4/Item_Ticket/"
+    },
+    {
+      "rel": "Item_Project",
+      "href": "http://glpi.local/apirest.php/NetworkEquipment/4/Item_Project/"
+    },
+    {
+      "rel": "NetworkPort",
+      "href": "http://glpi.local/apirest.php/NetworkEquipment/4/NetworkPort/"
+    },
+    {
+      "rel": "Item_DeviceMotherboard",
+      "href": "http://glpi.local/apirest.php/NetworkEquipment/4/Item_DeviceMotherboard/"
+    },
+    {
+      "rel": "Item_DeviceFirmware",
+      "href": "http://glpi.local/apirest.php/NetworkEquipment/4/Item_DeviceFirmware/"
+    },
+    {
+      "rel": "Item_DeviceProcessor",
+      "href": "http://glpi.local/apirest.php/NetworkEquipment/4/Item_DeviceProcessor/"
+    },
+    {
+      "rel": "Item_DeviceMemory",
+      "href": "http://glpi.local/apirest.php/NetworkEquipment/4/Item_DeviceMemory/"
+    },
+    {
+      "rel": "Item_DeviceHardDrive",
+      "href": "http://glpi.local/apirest.php/NetworkEquipment/4/Item_DeviceHardDrive/"
+    },
+    {
+      "rel": "Item_DeviceNetworkCard",
+      "href": "http://glpi.local/apirest.php/NetworkEquipment/4/Item_DeviceNetworkCard/"
+    },
+    {
+      "rel": "Item_DeviceDrive",
+      "href": "http://glpi.local/apirest.php/NetworkEquipment/4/Item_DeviceDrive/"
+    },
+    {
+      "rel": "Item_DeviceBattery",
+      "href": "http://glpi.local/apirest.php/NetworkEquipment/4/Item_DeviceBattery/"
+    },
+    {
+      "rel": "Item_DeviceGraphicCard",
+      "href": "http://glpi.local/apirest.php/NetworkEquipment/4/Item_DeviceGraphicCard/"
+    },
+    {
+      "rel": "Item_DeviceSoundCard",
+      "href": "http://glpi.local/apirest.php/NetworkEquipment/4/Item_DeviceSoundCard/"
+    },
+    {
+      "rel": "Item_DeviceControl",
+      "href": "http://glpi.local/apirest.php/NetworkEquipment/4/Item_DeviceControl/"
+    },
+    {
+      "rel": "Item_DevicePci",
+      "href": "http://glpi.local/apirest.php/NetworkEquipment/4/Item_DevicePci/"
+    },
+    {
+      "rel": "Item_DeviceCase",
+      "href": "http://glpi.local/apirest.php/NetworkEquipment/4/Item_DeviceCase/"
+    },
+    {
+      "rel": "Item_DevicePowerSupply",
+      "href": "http://glpi.local/apirest.php/NetworkEquipment/4/Item_DevicePowerSupply/"
+    },
+    {
+      "rel": "Item_DeviceGeneric",
+      "href": "http://glpi.local/apirest.php/NetworkEquipment/4/Item_DeviceGeneric/"
+    },
+    {
+      "rel": "Item_DeviceSimcard",
+      "href": "http://glpi.local/apirest.php/NetworkEquipment/4/Item_DeviceSimcard/"
+    },
+    {
+      "rel": "Item_DeviceSensor",
+      "href": "http://glpi.local/apirest.php/NetworkEquipment/4/Item_DeviceSensor/"
+    },
+    {
+      "rel": "Item_DeviceCamera",
+      "href": "http://glpi.local/apirest.php/NetworkEquipment/4/Item_DeviceCamera/"
+    }
+  ]
+}

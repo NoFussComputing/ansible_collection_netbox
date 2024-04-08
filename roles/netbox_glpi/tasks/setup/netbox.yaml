@@ -49,13 +49,30 @@
     field_required: true
 
 
+- name: Create custom Field UUID
+  netbox.netbox.netbox_custom_field:
+    netbox_url: "{{ nfc_pb_netbox_netbox_url }}"
+    netbox_token: "{{ nfc_pb_netbox_netbox_token }}"
+    data:
+      content_types:
+        - dcim.device
+        - virtualization.virtualmachine
+      name: itil_uuid
+      label: UUID
+      description: UUID of the Machine
+      type: text
+      weight: 100
+      validation_regex: "[a-f|A-F|0-9]{8}-[a-f|A-F|0-9]{4}-[a-f|A-F|0-9]{4}-[a-f|A-F|0-9]{4}-[a-f|A-F|0-9]{12}"
+  delegate_to: localhost
+
+
 - name: Create GLPI Automagic weblink
   netbox.netbox.netbox_custom_link:
     netbox_url: "{{ nfc_pb_netbox_netbox_url }}"
     netbox_token: "{{ nfc_pb_netbox_netbox_token }}"
     data:
       name: GLPI
-      content_types: 
+      content_types:
         - "dcim.device"
         - "virtualization.virtualmachine"
       link_text: !unsafe |-
