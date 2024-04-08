@@ -61,12 +61,20 @@ ansible-playbook nofusscomputing.netbox.glpi \
 
 This play sets up both NetBox for the sync process. Within NetBox custom fields are created, being `itil_id` and `itil_item_type` (GLPI Item Type). These fields will be used to keep track of what GLPI item it is and the item type within GLPI respectively.
 
+
+### NetBox
+
 Field `itil_id` is used by the system to keep track of the GLPI item ID within netbox. Field `itil_item_type` is used for the end user to set the device GLPI type. This is used to add the item to the correct location within GLPI.
 
 !!! tip
     If you already have your device in GLPI, you can manually set the NetBox items `itil_id` to that of the existing GLPI ID.
 
 A custom link is also created within NetBox as part of the setup. This custom link has a bit of wizardry in that it builds the GLPI link for the device. This only occurs however, when the item has been added to GLPI and there exists a GLPI ID in field `itil_id`
+
+
+### GLPI
+
+As Part of the setup process the default device status' from NetBox are added to the root entity (`recusive=yes`) within GLPI. This Dropdown field will be used for the device when it is synced from Netbox so that the Status between the two systems remain in sync. So as not to require additional permissions for the API client, the status' are setup within the default vars as a list under key `nfc_role_netbox_glpi_device_status`. This enables you to Update the available status' if you use a custom set within Netbox. This process unfortunately, is manual.
 
 
 ## Entity Sync

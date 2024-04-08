@@ -2,7 +2,17 @@
 
 - name: Setup Netbox
   ansible.builtin.include_tasks:
-    file: tasks/setup/netbox.yaml
+    file: tasks/netbox/setup.yaml
+    apply:
+      tags:
+        - always
+  tags:
+    - never
+    - setup
+
+- name: Setup Status
+  ansible.builtin.include_tasks:
+    file: tasks/glpi/setup.yaml
     apply:
       tags:
         - always
