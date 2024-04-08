@@ -1,21 +1,7 @@
 ---
 
-- name: Setup Netbox
-  ansible.builtin.include_tasks:
-    file: tasks/netbox/setup.yaml
-    apply:
-      tags:
-        - always
+- name: Nothing
+  ansible.builtin.debug:
+    msg: "No tasks in main"
   tags:
-    - never
-    - setup
-
-- name: Setup GLPI
-  ansible.builtin.include_tasks:
-    file: tasks/glpi/setup.yaml
-    apply:
-      tags:
-        - always
-  tags:
-    - never
-    - setup
+    - always
