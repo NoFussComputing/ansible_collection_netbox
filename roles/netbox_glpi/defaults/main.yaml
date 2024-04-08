@@ -10,3 +10,12 @@ nfc_pb_netbox_netbox_url:             # Mandatory, String. URL of netbox server.
 nfc_pb_netbox_glpi_url_glpi:           # Mandatory, String. URL of GLPI server. including protocol and port if applicable. no trailing `/`
 nfc_pb_netbox_itam_glpi_app_token:     # Mandatory, String. App Token from GLPI Settings
 nfc_pb_netbox_itam_glpi_user_token:    # Mandatory, String. Token of user with write permissions
+
+nfc_role_netbox_glpi_device_status:    # Netbox Default Device Status'
+  - Offline
+  - Active
+  - Planned
+  - Staged
+  - Failed
+  - Inventory
+  - Decommissioning

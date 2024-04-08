@@ -1,0 +1,105 @@
+---
+######################################################################
+# Reusable tasks: GLPI Create / Update
+#
+# Required Fields:
+#     field_name:                  # Mandatory, glpi name field
+#     field_search_entities_id:    # optional, glpi entity for item
+#     item_type: State             # api itemtype. case sensitive
+#     glpi_api_object:             # JSON dict that make api body
+#
+######################################################################
+
+- name: Add name field to API Object - {{ field_name }}
+  ansible.builtin.set_fact:
+    cacheable: false
+    glpi_api_object: "{{ glpi_api_object | combine(
+      {
+        'name': field_name
+      }) }}"
+  when: >
+    field_name is defined
+
+
+- name: Add entity field to API Object - {{ field_name }}
+  ansible.builtin.set_fact:
+    cacheable: false
+    glpi_api_object: "{{ glpi_api_object | combine(
+      {
+        'entities_id': field_search_entities_id | default(0)
+      }) }}"
+
+
+- name: Find Object - {{ field_name }}
+  ansible.builtin.uri:
+    url: "{{ nfc_pb_netbox_glpi_url_glpi }}/apirest.php/{{ item_type }}/?searchText[name]={{
+              field_name | urlencode
+                }}{% if field_search_entities_id is defined %}&searchText[entities_id]={{ field_search_entities_id }}{% endif %}"
+    method: GET
+    return_content: true
+    headers:
+      App-Token: "{{ nfc_pb_netbox_itam_glpi_app_token }}"
+      Session-Token: "{{ glpi_session.json.session_token }}"
+    status_code:
+      - 200
+  delegate_to: localhost
+  register: glpi_api_get
+  no_log: >
+    {%- if not nfc_pb_netbox_force_logging | default(false) -%}
+      true
+    {%- else -%}
+      false
+    {%-endif %}
+
+
+- name: Create Object - {{ field_name }}
+  ansible.builtin.uri:
+    url: "{{ nfc_pb_netbox_glpi_url_glpi }}/apirest.php/{{ item_type }}/"
+    method: POST
+    return_content: true
+    headers:
+      App-Token: "{{ nfc_pb_netbox_itam_glpi_app_token }}"
+      Session-Token: "{{ glpi_session.json.session_token }}"
+    body_format: json
+    body: {
+      "input": "{{ glpi_api_object }}"
+    }
+    status_code:
+      - 201
+  delegate_to: localhost
+  register: glpi_api_post
+  no_log: >
+    {%- if not nfc_pb_netbox_force_logging | default(false) -%}
+      true
+    {%- else -%}
+      false
+    {%-endif %}
+  when: >
+    glpi_api_get.json | list | length == 0
+
+
+- name: Update Object - {{ field_name }}
+  ansible.builtin.uri:
+    url: "{{ nfc_pb_netbox_glpi_url_glpi }}/apirest.php/{{ item_type }}/{{ glpi_api_get.json[0].id }}/"
+    method: PATCH
+    return_content: true
+    headers:
+      App-Token: "{{ nfc_pb_netbox_itam_glpi_app_token }}"
+      Session-Token: "{{ glpi_session.json.session_token }}"
+    body_format: json
+    body: {
+      "input": "{{ glpi_api_object }}"
+    }
+    status_code:
+      - 200
+      - 201
+  delegate_to: localhost
+  register: glpi_api_post
+  no_log: >
+    {%- if not nfc_pb_netbox_force_logging | default(false) -%}
+      true
+    {%- else -%}
+      false
+    {%-endif %}
+  when: >
+    glpi_api_get.json | list | length == 1

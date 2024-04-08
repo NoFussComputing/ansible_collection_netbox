@@ -41,5 +41,6 @@
 
         - run_playbook:
             name: nofusscomputing.netbox.itam
+            verbosity: 3
             extra_vars:
               netbox: "{{ event.payload | replace ('{{', '__') }}"

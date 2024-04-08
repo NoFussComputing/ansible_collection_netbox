@@ -8,8 +8,16 @@
         "name": "{{ netbox.data.name }}",
         "serial": "{{ netbox.data.serial | default('') }}",
         {%- if netbox.data.device_type is defined -%}
-        "otherserial": "{{ netbox.data.asset_tag | default('') }}",
+
+          "otherserial": "{{ netbox.data.asset_tag | default('') }}",
+
         {%-endif  %}
+
+        {%- if glpi_api_get_status.json | length == 1 -%}
+
+          "states_id": {{ glpi_api_get_status.json[0].id }},
+
+        {%- endif -%}
         "uuid": "{{ netbox.data.custom_fields.itil_uuid }}",
       }
   when: >
@@ -22,10 +30,19 @@
       {
         "entities_id": {{ netbox.data.custom_fields.itil_entity }},
         "name": "{{ netbox.data.name }}",
-        "serial": "{{ netbox.data.serial }}"
+        "serial": "{{ netbox.data.serial }}",
+
         {%- if netbox.data.device_type is defined -%}
-        ,"otherserial": "{{ netbox.data.asset_tag | default('') }}"
+
+        "otherserial": "{{ netbox.data.asset_tag | default('') }}",
+
         {%-endif  %}
+
+        {%- if glpi_api_get_status.json | length == 1 -%}
+
+          "states_id": {{ glpi_api_get_status.json[0].id }},
+
+        {%- endif -%}
       }
   when: >
     netbox.data.custom_fields.itil_item_type | lower == 'networkequipment'
