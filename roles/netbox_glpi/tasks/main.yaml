@@ -1,11 +1,7 @@
 ---
 
-- name: Setup Netbox
-  ansible.builtin.include_tasks:
-    file: tasks/setup/netbox.yaml
-    apply:
-      tags:
-        - always
+- name: Nothing
+  ansible.builtin.debug:
+    msg: "No tasks in main"
   tags:
-    - never
-    - setup
+    - always
