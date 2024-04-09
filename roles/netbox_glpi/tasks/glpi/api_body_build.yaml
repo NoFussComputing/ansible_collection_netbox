@@ -5,8 +5,17 @@
     api_body_glpi: |-
       {
         "entities_id": {{ netbox.data.custom_fields.itil_entity }},
+
         "name": "{{ netbox.data.name }}",
+
+        {%- if glpi_api_get_manufacturer.json | default([]) | list | length == 1 -%}
+
+        "manufacturers_id": {{ glpi_api_get_manufacturer.json[0].id }},
+
+        {%- endif -%}
+
         "serial": "{{ netbox.data.serial | default('') }}",
+
         {%- if netbox.data.device_type is defined -%}
 
           "otherserial": "{{ netbox.data.asset_tag | default('') }}",
@@ -18,6 +27,7 @@
           "states_id": {{ glpi_api_get_status.json[0].id }},
 
         {%- endif -%}
+
         "uuid": "{{ netbox.data.custom_fields.itil_uuid }}",
       }
   when: >
@@ -29,7 +39,15 @@
     api_body_glpi: |-
       {
         "entities_id": {{ netbox.data.custom_fields.itil_entity }},
+
         "name": "{{ netbox.data.name }}",
+
+        {%- if glpi_api_get_manufacturer.json | default([]) | list | length == 1 -%}
+
+        "manufacturers_id": {{ glpi_api_get_manufacturer.json[0].id }},
+
+        {%- endif -%}
+
         "serial": "{{ netbox.data.serial }}",
 
         {%- if netbox.data.device_type is defined -%}
