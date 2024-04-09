@@ -24,8 +24,38 @@
 
   tasks:
 
+    - name: Check if vars file exists
+      ansible.builtin.stat:
+        path: /root/vars.yaml
+      become: true
+      delegate_to: localhost
+      register: metadata_file_vars
+      tags:
+        - always
+
+
+    - name: Load vars file
+      ansible.builtin.include_vars:
+        file: /root/vars.yaml
+      no_log: >
+        {%- if not nfc_pb_netbox_force_logging | default(false) -%}
+          true
+        {%- else -%}
+          false
+        {%-endif %}
+      become: true
+      delegate_to: localhost
+      when: >
+        metadata_file_vars.stat.exists
+          and
+        nfc_pb_netbox_netbox_url is not defined
+
 
     - name: Sync GLPI Entities to NetBox
       ansible.builtin.include_role:
         name: nofusscomputing.netbox.netbox_glpi
         tasks_from: entities.yaml
+
+
+  vars:
+    ansible_connection: local

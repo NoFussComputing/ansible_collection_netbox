@@ -1,0 +1,65 @@
+---
+
+- name: Create Namesapce
+  kubernetes.core.k8s:
+    apply: true
+    template: netbox-glpi/namespace.yaml
+    server_side_apply:
+      field_manager: ansible
+      force_conflicts: true
+    state: present
+  become: true
+  diff: true
+
+
+- name: Add Secret
+  kubernetes.core.k8s:
+    apply: true
+    template: netbox-glpi/secret.yaml
+    server_side_apply:
+      field_manager: ansible
+      force_conflicts: true
+    state: present
+  become: true
+  diff: false
+  no_log: >
+    {%- if not force_logging | default(false) -%}
+      true
+    {%- else -%}
+      false
+    {%-endif %}
+
+
+- name: Add Deployment
+  kubernetes.core.k8s:
+    apply: true
+    template: netbox-glpi/deployment.yaml
+    server_side_apply:
+      field_manager: ansible
+      force_conflicts: true
+    state: present
+  become: true
+  diff: true
+
+
+- name: Add Service
+  kubernetes.core.k8s:
+    apply: true
+    template: netbox-glpi/service.yaml
+    server_side_apply:
+      field_manager: ansible
+      force_conflicts: true
+    state: present
+  become: true
+  diff: true
+
+
+- name: Wait for the server to be ready
+  ansible.builtin.command:
+    cmd: |-
+      kubectl exec -ti -n {{ nfc_role_netbox_glpi_kubernetes_namespace }} deploy/{{ nfc_role_netbox_glpi_kubernetes_instance }}
+      -- sh -c 'supervisorctl status rulebook'
+  become: true
+  changed_when: false
+  delay: 10
+  retries: 6
