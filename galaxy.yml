@@ -45,6 +45,8 @@ tags:
 # L(specifiers,https://python-semanticversion.readthedocs.io/en/latest/#requirement-specification). Multiple version
 # range specifiers can be set and are separated by ','
 dependencies:
+  ansible.eda: '>=1.4.5'
+  kubernetes.core: '>=3.0.1'
   netbox.netbox: '>=3.16.0'
 
 
