@@ -1,0 +1,7 @@
+---
+
+- name: Nothing
+  ansible.builtin.debug:
+    msg: "No tasks in main"
+  tags:
+    - always

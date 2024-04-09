@@ -1,0 +1,31 @@
+---
+- name: Sync GLPI Entities to Netbox
+  hosts: |-
+    {%- if nfc_pb_host is defined -%}
+
+      {{ nfc_pb_host }}
+
+    {%- else -%}
+
+      {%- if ansible_limit is defined -%}
+
+        {{ ansible_limit }}
+
+      {%- else -%}
+
+        localhost
+
+      {%- endif -%}
+
+    {%- endif %}
+  become: false
+  gather_facts: false
+
+
+  tasks:
+
+
+    - name: Sync GLPI Entities to NetBox
+      ansible.builtin.include_role:
+        name: nofusscomputing.netbox.netbox_glpi
+        tasks_from: entities.yaml

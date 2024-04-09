@@ -1,0 +1,20 @@
+---
+
+- name: Kill GLPI Session
+  ansible.builtin.uri:
+    url: "{{ nfc_pb_netbox_glpi_url_glpi }}/apirest.php/killSession"
+    method: GET
+    return_content: true
+    headers:
+      App-Token: "{{ nfc_pb_netbox_itam_glpi_app_token }}"
+      Session-Token: "{{ glpi_session.json.session_token }}"
+    status_code:
+      - 200
+  delegate_to: localhost
+  register: glpi_session
+  no_log: >
+    {%- if not force_logging | default(false) -%}
+      true
+    {%- else -%}
+      false
+    {%-endif %}

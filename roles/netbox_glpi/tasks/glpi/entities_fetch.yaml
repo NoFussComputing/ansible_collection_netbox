@@ -1,0 +1,28 @@
+---
+
+- name: Fetch Entities from GLPI
+  ansible.builtin.uri:
+    url: "{{ nfc_pb_netbox_glpi_url_glpi }}/apirest.php/entity"
+    method: GET
+    return_content: true
+    headers:
+      App-Token: "{{ nfc_pb_netbox_itam_glpi_app_token }}"
+      Session-Token: "{{ glpi_session.json.session_token }}"
+    status_code:
+      - 200
+  delegate_to: localhost
+  register: glpi_api_get_entities
+  no_log: >
+    {%- if not nfc_pb_netbox_force_logging | default(false) -%}
+      true
+    {%- else -%}
+      false
+    {%-endif %}
+
+
+- name: Build NetBox 'choice_set' Choices for the entites found
+  ansible.builtin.set_fact:
+    choice_set_choices: |-
+      [{%- for entity in glpi_api_get_entities.json | sort(attribute="name") -%}
+      "{{ entity.id | int }}:{{ entity.name }}",
+      {%- endfor %}]

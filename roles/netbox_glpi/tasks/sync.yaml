@@ -1,0 +1,87 @@
+---
+
+- name: Entities Setup and Sync
+  when: >
+    (
+      netbox.data.serial | default('') != ''
+        and
+      netbox.data.device_type is defined
+    )
+      or
+    netbox.data.device_type is not defined
+  block:
+
+
+    - name: Init GLPI Session
+      ansible.builtin.include_tasks:
+        file: tasks/glpi/init-session.yaml
+
+
+    - name: Fetch GLPI Entities
+      ansible.builtin.include_tasks:
+        file: tasks/glpi/entities_fetch.yaml
+
+
+    - name: Create/Update Netbox Entities Field
+      ansible.builtin.include_tasks:
+        file: tasks/netbox/choice_set.yaml
+      vars:
+        choice_set_name: glpi_entities
+        choice_set_display_name: glpi_entities
+        choice_set_description: "Entities Syncronized from GLPI"
+        choices: "{{ choice_set_choices | from_yaml }}"
+        field_name: itil_entity
+        field_display_name: GLPI Entity
+        field_description: GLPI Entities
+        field_content_types: [
+          "dcim.device",
+          "virtualization.virtualmachine"
+        ]
+        field_required: true
+
+
+    - name: Fetch Manufacturers from NetBox
+      ansible.builtin.uri:
+        url: "{{ nfc_pb_netbox_netbox_url }}/api/dcim/manufacturers/"
+        method: GET
+        body_format: json
+        headers:
+          Authorization: Token {{ nfc_pb_netbox_netbox_token }}
+        status_code:
+          - 200
+      delegate_to: localhost
+      no_log: >
+        {%- if not nfc_pb_netbox_force_logging | default(false) -%}
+          true
+        {%- else -%}
+          false
+        {%-endif %}
+      register: api_get_manufacturers
+
+
+    - name: Setup Manufacturer(s)
+      ansible.builtin.include_tasks:
+        file: tasks/glpi/api_create_update.yaml
+        apply:
+          tags:
+            - always
+      loop: "{{ api_get_manufacturers.json.results }}"
+      loop_control:
+        label: "{{ item.name }}"
+      tags:
+        - never
+        - setup
+      vars:
+        field_name: "{{ item.name }}"
+        item_type: Manufacturer
+        glpi_api_object: {
+          "comment": "NetBox Manufacturer",
+        }
+
+
+  always:
+
+
+    - name: Kill GLPI Session
+      ansible.builtin.include_tasks:
+        file: tasks/glpi/kill-session.yaml
