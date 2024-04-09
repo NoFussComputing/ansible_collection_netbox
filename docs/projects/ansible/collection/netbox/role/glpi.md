@@ -20,6 +20,8 @@ There are two methods available to take advantage of this role: running the play
 
 - Entity Sync from GLPI
 
+- Deployment of netbox-glpi container to Kubernetes
+
 - Manufacturer Sync from Netbox
 
 - NetBox Status' added to GLPI
@@ -127,6 +129,7 @@ ansible-rulebook -r nofusscomputing.netbox.entities --vars "my-vars.yaml"
 the following variables are required for the rulebook.
 
 ``` yaml
+
 nofusscomputing_netbox_eda_port: 5000           # Optional, Integer. the port number the EDA rulebook will listen on.
 nofusscomputing_netbox_api_username: ansible    # Optional, string. Username of the API user. Recommend setting to prevent update loops.
 
@@ -151,6 +154,7 @@ The container already automagically starts an EDA rulebook that is listening for
 --8<-- "includes/etc/cron.d/glpi-sync"
 
 ```
+
 _Default cron file for sync with NetBox._
 
 Once you have the container running all available playbooks can be run from within the the container. i.e. `docker run -ti <container name> ansible-playbook nofusscomputing.netbox.glpi --tags setup` 
@@ -158,7 +162,15 @@ Once you have the container running all available playbooks can be run from with
 
 #### Kubernetes Deployment
 
-As part of this role there exists a play to deploy the `nofusscomputing/netbox-glpi` container to kubernetes. The Kubernetes deployment is customizable by adjusting the variables prefixed with `nfc_role_netbox_glpi_kubernetes_`. You will also be need to configure the required variables for the API as explained in the previous section. These variables will be automagically added to the `vars.yaml` file. Manifests that are deployed can be viewed in the [repository](https://gitlab.com/nofusscomputing/projects/ansible/collections/netbox/-/tree/development/roles/netbox_glpi/templates/netbox-glpi).
+As part of this role there exists a play to deploy the `nofusscomputing/netbox-glpi` container to kubernetes. The Kubernetes deployment is customizable by adjusting the variables prefixed with `nfc_role_netbox_glpi_kubernetes_`. You will also be need to configure the required variables for the API as explained in the previous section. These variables will be automagically added to the `vars.yaml` file. Manifests that are deployed can be viewed in the [repository](https://gitlab.com/nofusscomputing/projects/ansible/collections/netbox/-/tree/development/roles/netbox_glpi/templates/netbox-glpi). To run the play use:
+
+``` bash
+
+ansible-playbook nofusscomputing.netbox.glpi \
+    -i inventory/ \
+    --tags deploy-kubernetes
+
+```
 
 
 #### Updating the container
