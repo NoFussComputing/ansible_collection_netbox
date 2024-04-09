@@ -20,6 +20,8 @@ There are two methods available to take advantage of this role: running the play
 
 - Entity Sync from GLPI
 
+- Manufacturer Sync from Netbox
+
 - NetBox Status' added to GLPI
 
 
@@ -44,6 +46,8 @@ The following requirements to use this collection are as follows:
     GLPI Setup:
 
     - User has access to add Status' to global drop downs
+
+    - User has access to add Manufacturers to global drop downs
 
 - NetBox
 
@@ -147,7 +151,7 @@ The container already automagically starts an EDA rulebook that is listening for
 --8<-- "includes/etc/cron.d/glpi-sync"
 
 ```
-_Default cron file for entity sync with NetBox._
+_Default cron file for sync with NetBox._
 
 Once you have the container running all available playbooks can be run from within the the container. i.e. `docker run -ti <container name> ansible-playbook nofusscomputing.netbox.glpi --extra-vars "@/root/vars.yaml" --tags setup` 
 
@@ -176,7 +180,7 @@ To update the container to a newer version, the following steps should be follow
 
 - Device with its type set to `computer`.
 
-- Device with its type set to `networkequipment`.
+    Device with its type set to `networkequipment`.
 
     The following fields are kept in sync:
 
