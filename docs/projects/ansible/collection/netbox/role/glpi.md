@@ -153,7 +153,7 @@ The container already automagically starts an EDA rulebook that is listening for
 ```
 _Default cron file for sync with NetBox._
 
-Once you have the container running all available playbooks can be run from within the the container. i.e. `docker run -ti <container name> ansible-playbook nofusscomputing.netbox.glpi --extra-vars "@/root/vars.yaml" --tags setup` 
+Once you have the container running all available playbooks can be run from within the the container. i.e. `docker run -ti <container name> ansible-playbook nofusscomputing.netbox.glpi --tags setup` 
 
 
 #### Updating the container
@@ -164,7 +164,7 @@ To update the container to a newer version, the following steps should be follow
 
 1. relaunch the deployment using the new container
 
-1. run the setup command `docker run -ti <container name> ansible-playbook nofusscomputing.netbox.glpi --extra-vars "@/root/vars.yaml" --tags setup`
+1. run the setup command `docker run -ti <container name> ansible-playbook nofusscomputing.netbox.glpi --tags setup`
 
 
 ## Default Variables
