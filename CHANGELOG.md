@@ -1,3 +1,17 @@
+## 0.2.0 (2024-04-09)
+
+### Feat
+
+- **eda**: set itam update play run to v1
+- **netbox-glpi**: deploy container to kubernetes and setup
+- **glpi-docker**: For all playbooks automagic load vars file
+- **glpi-docker**: dont install nmap
+
+### Fix
+
+- **glpi-docker**: set port to 5000 as was the intent
+- **eda**: ensure  EDA collection is installed
+
 ## 0.1.0 (2024-04-09)
 
 ### Feat
@@ -10,7 +24,6 @@
 - **GLPI**: sync asset number to GLPI
 - **glpi-docker**: Scheduled job to sync GLPI Entities default=15 mins
 - **glpi**: Ability to set GLPI Entity for item in NetBox
-- **glpi**: add a gate to eda to prevent processing the webhook from updating the glpi_id
 
 ### Fix
 
@@ -25,6 +38,5 @@
 - **netbox_glpi**: rearrange tasks based off of the task
 - **netbox_setup**: place netbox setup tasks in place that makes more sense
 - **netbox**: place choice set logic in its own task file
-- **glpi**: don't show items in netbox GLPI Item Type not yet supported
 
 ## 0.0.1 (2024-04-06)
