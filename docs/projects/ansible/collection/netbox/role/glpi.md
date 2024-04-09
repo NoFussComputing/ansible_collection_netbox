@@ -184,6 +184,8 @@ To update the container to a newer version, the following steps should be follow
 
     - Name
 
+    - Manufacturer
+
     - Serial Number
 
     - Selected GLPI Entity
