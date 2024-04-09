@@ -1,0 +1,117 @@
+{
+  "id": 1,
+  "url": "http://localhost:8000/api/dcim/devices/1/",
+  "display": "Laptop2",
+  "name": "Laptop2",
+  "device_type": {
+    "id": 1,
+    "url": "http://localhost:8000/api/dcim/device-types/1/",
+    "display": "F-whatever",
+    "manufacturer": {
+      "id": 1,
+      "url": "http://localhost:8000/api/dcim/manufacturers/1/",
+      "display": "Asus",
+      "name": "Asus",
+      "slug": "asus"
+    },
+    "model": "F-whatever",
+    "slug": "f-whatever"
+  },
+  "role": {
+    "id": 1,
+    "url": "http://localhost:8000/api/dcim/device-roles/1/",
+    "display": "Laptop",
+    "name": "Laptop",
+    "slug": "laptop"
+  },
+  "device_role": {
+    "id": 1,
+    "url": "http://localhost:8000/api/dcim/device-roles/1/",
+    "display": "Laptop",
+    "name": "Laptop",
+    "slug": "laptop"
+  },
+  "tenant": {
+    "id": 1,
+    "url": "http://localhost:8000/api/tenancy/tenants/1/",
+    "display": "Earth",
+    "name": "Earth",
+    "slug": "earth"
+  },
+  "platform": null,
+  "serial": "",
+  "asset_tag": null,
+  "site": {
+    "id": 1,
+    "url": "http://localhost:8000/api/dcim/sites/1/",
+    "display": "site1",
+    "name": "site1",
+    "slug": "site1"
+  },
+  "location": null,
+  "rack": {
+    "id": 1,
+    "url": "http://localhost:8000/api/dcim/racks/1/",
+    "display": "two",
+    "name": "two"
+  },
+  "position": 1.0,
+  "face": {
+    "value": "front",
+    "label": "Front"
+  },
+  "latitude": null,
+  "longitude": null,
+  "parent_device": null,
+  "status": {
+    "value": "active",
+    "label": "Active"
+  },
+  "airflow": null,
+  "primary_ip": null,
+  "primary_ip4": null,
+  "primary_ip6": null,
+  "oob_ip": null,
+  "cluster": null,
+  "virtual_chassis": {
+    "id": 1,
+    "url": "http://localhost:8000/api/dcim/virtual-chassis/1/",
+    "display": "fsdfsdfdsfds",
+    "name": "fsdfsdfdsfds",
+    "master": null,
+    "member_count": 1
+  },
+  "vc_position": 1,
+  "vc_priority": null,
+  "description": "",
+  "comments": "the comments field\r\nfbnnn",
+  "config_template": null,
+  "config_context": {},
+  "local_context_data": null,
+  "tags": [
+    {
+      "id": 1,
+      "url": "http://localhost:8000/api/extras/tags/1/",
+      "display": "test",
+      "name": "test",
+      "slug": "test",
+      "color": "f44336"
+    }
+  ],
+  "custom_fields": {
+    "itil_id": null,
+    "itil_item_type": "computer"
+  },
+  "created": "2024-04-02T08:29:49.230457Z",
+  "last_updated": "2024-04-07T08:20:14.153910Z",
+  "console_port_count": 0,
+  "console_server_port_count": 0,
+  "power_port_count": 1,
+  "power_outlet_count": 0,
+  "interface_count": 0,
+  "front_port_count": 0,
+  "rear_port_count": 0,
+  "device_bay_count": 1,
+  "module_bay_count": 0,
+  "inventory_item_count": 1
+}

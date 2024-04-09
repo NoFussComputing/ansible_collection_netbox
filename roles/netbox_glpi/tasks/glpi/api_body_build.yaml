@@ -1,0 +1,66 @@
+---
+
+- name: Build Computer API Body
+  ansible.builtin.set_fact:
+    api_body_glpi: |-
+      {
+        "entities_id": {{ netbox.data.custom_fields.itil_entity }},
+
+        "name": "{{ netbox.data.name }}",
+
+        {%- if glpi_api_get_manufacturer.json | default([]) | list | length == 1 -%}
+
+        "manufacturers_id": {{ glpi_api_get_manufacturer.json[0].id }},
+
+        {%- endif -%}
+
+        "serial": "{{ netbox.data.serial | default('') }}",
+
+        {%- if netbox.data.device_type is defined -%}
+
+          "otherserial": "{{ netbox.data.asset_tag | default('') }}",
+
+        {%-endif  %}
+
+        {%- if glpi_api_get_status.json | length == 1 -%}
+
+          "states_id": {{ glpi_api_get_status.json[0].id }},
+
+        {%- endif -%}
+
+        "uuid": "{{ netbox.data.custom_fields.itil_uuid }}",
+      }
+  when: >
+    netbox.data.custom_fields.itil_item_type | lower == 'computer'
+
+
+- name: Build Network Device API Body
+  ansible.builtin.set_fact:
+    api_body_glpi: |-
+      {
+        "entities_id": {{ netbox.data.custom_fields.itil_entity }},
+
+        "name": "{{ netbox.data.name }}",
+
+        {%- if glpi_api_get_manufacturer.json | default([]) | list | length == 1 -%}
+
+        "manufacturers_id": {{ glpi_api_get_manufacturer.json[0].id }},
+
+        {%- endif -%}
+
+        "serial": "{{ netbox.data.serial }}",
+
+        {%- if netbox.data.device_type is defined -%}
+
+        "otherserial": "{{ netbox.data.asset_tag | default('') }}",
+
+        {%-endif  %}
+
+        {%- if glpi_api_get_status.json | length == 1 -%}
+
+          "states_id": {{ glpi_api_get_status.json[0].id }},
+
+        {%- endif -%}
+      }
+  when: >
+    netbox.data.custom_fields.itil_item_type | lower == 'networkequipment'

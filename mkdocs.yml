@@ -1,0 +1,43 @@
+INHERIT: website-template/mkdocs.yml
+
+docs_dir: 'docs'
+
+repo_name: Netbox Ansible Collection
+repo_url: https://gitlab.com/nofusscomputing/projects/ansible/collections/netbox
+edit_uri: '/-/ide/project/nofusscomputing/projects/ansible/collections/netbox/edit/development/-/docs/'
+
+nav:
+- Home: index.md
+
+- Articles: 
+
+  - articles/index.md
+
+- Projects: 
+
+  - projects/index.md
+
+  - Ansible:
+
+    - projects/ansible/index.md
+
+    - Collections:
+
+      - projects/ansible/collection/index.md
+
+      - NetBox:
+
+        - projects/ansible/collection/netbox/index.md
+
+        - Roles:
+
+          - projects/ansible/collection/netbox/role/index.md
+
+          - projects/ansible/collection/netbox/role/glpi.md
+
+- Operations: 
+
+  - operations/index.md
+
+- Contact Us: contact.md
+

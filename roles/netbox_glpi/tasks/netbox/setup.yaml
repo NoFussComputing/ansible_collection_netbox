@@ -1,0 +1,95 @@
+---
+
+- name: Create custom Field itil_item_id
+  netbox.netbox.netbox_custom_field:
+    netbox_url: "{{ nfc_pb_netbox_netbox_url }}"
+    netbox_token: "{{ nfc_pb_netbox_netbox_token }}"
+    data:
+      content_types:
+        - dcim.device
+        - virtualization.virtualmachine
+      name: itil_item_id
+      label: GLPI Item ID
+      description: The item ID from the ITIL
+      group_name: ITSM
+      type: integer
+      weight: 90
+  delegate_to: localhost
+
+
+- name: Create/Update Netbox Item Type Field
+  ansible.builtin.include_tasks:
+    file: tasks/netbox/choice_set.yaml
+  vars:
+    choice_set_name: glpi_item_types
+    choice_set_display_name: glpi_item_types
+    choice_set_description: "Available GLPI Item Types"
+    choices:
+      # - cable:Cables
+      # - Cluster:Cluster
+      - computer:Computer
+      # - entity:Entity
+      # - Location:Location
+      # - Operating System:Operating System
+      # - PDU:PDU
+      # - Phone:Phone
+      # - Software:Software
+      # - Virtual Machine:Virtual Machine
+      # - clustertype:Cluster Type
+      - networkequipment:Network Equipment
+      # - printer:Printer
+      # - rack:Rack
+    field_name: itil_item_type
+    field_display_name: GLPI Item Type
+    field_description: Item Type within GLPI
+    field_content_types: [
+      "dcim.device",
+      "virtualization.virtualmachine"
+    ]
+    field_required: true
+
+
+- name: Create custom Field UUID
+  netbox.netbox.netbox_custom_field:
+    netbox_url: "{{ nfc_pb_netbox_netbox_url }}"
+    netbox_token: "{{ nfc_pb_netbox_netbox_token }}"
+    data:
+      content_types:
+        - dcim.device
+        - virtualization.virtualmachine
+      name: itil_uuid
+      label: UUID
+      description: UUID of the Machine
+      type: text
+      weight: 100
+      validation_regex: "[a-f|A-F|0-9]{8}-[a-f|A-F|0-9]{4}-[a-f|A-F|0-9]{4}-[a-f|A-F|0-9]{4}-[a-f|A-F|0-9]{12}"
+  delegate_to: localhost
+
+
+- name: Create GLPI Automagic weblink
+  netbox.netbox.netbox_custom_link:
+    netbox_url: "{{ nfc_pb_netbox_netbox_url }}"
+    netbox_token: "{{ nfc_pb_netbox_netbox_token }}"
+    data:
+      name: GLPI
+      content_types:
+        - "dcim.device"
+        - "virtualization.virtualmachine"
+      link_text: !unsafe |-
+        {%- if
+          object.cf.itil_item_id != None
+            and
+          (
+            object.cf.itil_item_type | lower == 'computer'
+              or
+            object.cf.itil_item_type | lower == 'cluster'
+              or
+            object.cf.itil_item_type | lower == 'networkequipment'
+          )
+        -%}
+        GLPI
+        {%- endif %}
+      link_url: |-
+        {{ nfc_pb_netbox_glpi_url_glpi }}/front/{{ '{{' }}
+          object.cf.itil_item_type | lower }}.form.php?id={{ '{{' }} object.cf.itil_item_id }}
+      new_window: true

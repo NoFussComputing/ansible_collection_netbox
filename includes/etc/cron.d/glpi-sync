@@ -1,0 +1,5 @@
+#
+# Default GLPI to Netbox Entity Sync Job
+#
+
+*/15 * * * * ansible-playbook nofusscomputing.netbox.sync --extra-vars "@/root/vars.yaml" -v

@@ -1,0 +1,140 @@
+[
+  {
+    "id": 1,
+    "entities_id": 0,
+    "name": "testPC",
+    "serial": "",
+    "otherserial": "",
+    "contact": "",
+    "contact_num": "",
+    "users_id_tech": 0,
+    "groups_id_tech": 0,
+    "comment": "created within GLPI",
+    "date_mod": "2024-04-07 17:25:23",
+    "autoupdatesystems_id": 0,
+    "locations_id": 0,
+    "networks_id": 0,
+    "computermodels_id": 0,
+    "computertypes_id": 0,
+    "is_template": 0,
+    "template_name": null,
+    "manufacturers_id": 0,
+    "is_deleted": 0,
+    "is_dynamic": 0,
+    "users_id": 0,
+    "groups_id": 0,
+    "states_id": 0,
+    "ticket_tco": "0.0000",
+    "uuid": "",
+    "date_creation": "2024-04-07 17:25:23",
+    "is_recursive": 0,
+    "last_inventory_update": null,
+    "last_boot": null,
+    "links": [
+      {
+        "rel": "Entity",
+        "href": "http://glpi.local/apirest.php/Entity/0"
+      },
+      {
+        "rel": "ReservationItem",
+        "href": "http://glpi.local/apirest.php/Computer/1/ReservationItem/"
+      },
+      {
+        "rel": "Document_Item",
+        "href": "http://glpi.local/apirest.php/Computer/1/Document_Item/"
+      },
+      {
+        "rel": "Contract_Item",
+        "href": "http://glpi.local/apirest.php/Computer/1/Contract_Item/"
+      },
+      {
+        "rel": "Infocom",
+        "href": "http://glpi.local/apirest.php/Computer/1/Infocom/"
+      },
+      {
+        "rel": "Item_Ticket",
+        "href": "http://glpi.local/apirest.php/Computer/1/Item_Ticket/"
+      },
+      {
+        "rel": "Item_Project",
+        "href": "http://glpi.local/apirest.php/Computer/1/Item_Project/"
+      },
+      {
+        "rel": "NetworkPort",
+        "href": "http://glpi.local/apirest.php/Computer/1/NetworkPort/"
+      },
+      {
+        "rel": "Item_DeviceMotherboard",
+        "href": "http://glpi.local/apirest.php/Computer/1/Item_DeviceMotherboard/"
+      },
+      {
+        "rel": "Item_DeviceFirmware",
+        "href": "http://glpi.local/apirest.php/Computer/1/Item_DeviceFirmware/"
+      },
+      {
+        "rel": "Item_DeviceProcessor",
+        "href": "http://glpi.local/apirest.php/Computer/1/Item_DeviceProcessor/"
+      },
+      {
+        "rel": "Item_DeviceMemory",
+        "href": "http://glpi.local/apirest.php/Computer/1/Item_DeviceMemory/"
+      },
+      {
+        "rel": "Item_DeviceHardDrive",
+        "href": "http://glpi.local/apirest.php/Computer/1/Item_DeviceHardDrive/"
+      },
+      {
+        "rel": "Item_DeviceNetworkCard",
+        "href": "http://glpi.local/apirest.php/Computer/1/Item_DeviceNetworkCard/"
+      },
+      {
+        "rel": "Item_DeviceDrive",
+        "href": "http://glpi.local/apirest.php/Computer/1/Item_DeviceDrive/"
+      },
+      {
+        "rel": "Item_DeviceBattery",
+        "href": "http://glpi.local/apirest.php/Computer/1/Item_DeviceBattery/"
+      },
+      {
+        "rel": "Item_DeviceGraphicCard",
+        "href": "http://glpi.local/apirest.php/Computer/1/Item_DeviceGraphicCard/"
+      },
+      {
+        "rel": "Item_DeviceSoundCard",
+        "href": "http://glpi.local/apirest.php/Computer/1/Item_DeviceSoundCard/"
+      },
+      {
+        "rel": "Item_DeviceControl",
+        "href": "http://glpi.local/apirest.php/Computer/1/Item_DeviceControl/"
+      },
+      {
+        "rel": "Item_DevicePci",
+        "href": "http://glpi.local/apirest.php/Computer/1/Item_DevicePci/"
+      },
+      {
+        "rel": "Item_DeviceCase",
+        "href": "http://glpi.local/apirest.php/Computer/1/Item_DeviceCase/"
+      },
+      {
+        "rel": "Item_DevicePowerSupply",
+        "href": "http://glpi.local/apirest.php/Computer/1/Item_DevicePowerSupply/"
+      },
+      {
+        "rel": "Item_DeviceGeneric",
+        "href": "http://glpi.local/apirest.php/Computer/1/Item_DeviceGeneric/"
+      },
+      {
+        "rel": "Item_DeviceSimcard",
+        "href": "http://glpi.local/apirest.php/Computer/1/Item_DeviceSimcard/"
+      },
+      {
+        "rel": "Item_DeviceSensor",
+        "href": "http://glpi.local/apirest.php/Computer/1/Item_DeviceSensor/"
+      },
+      {
+        "rel": "Item_DeviceCamera",
+        "href": "http://glpi.local/apirest.php/Computer/1/Item_DeviceCamera/"
+      }
+    ]
+  }
+]
