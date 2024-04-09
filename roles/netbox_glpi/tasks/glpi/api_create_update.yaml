@@ -13,7 +13,7 @@
 - name: Add name field to API Object - {{ field_name }}
   ansible.builtin.set_fact:
     cacheable: false
-    glpi_api_object: "{{ glpi_api_object | combine(
+    glpi_api_object_updated: "{{ glpi_api_object | combine(
       {
         'name': field_name
       }) }}"
@@ -24,10 +24,12 @@
 - name: Add entity field to API Object - {{ field_name }}
   ansible.builtin.set_fact:
     cacheable: false
-    glpi_api_object: "{{ glpi_api_object | combine(
+    glpi_api_object_updated: "{{ glpi_api_object_updated | combine(
       {
         'entities_id': field_search_entities_id | default(0)
       }) }}"
+  when: >
+    field_search_entities_id is defined
 
 
 - name: Find Object - {{ field_name }}
@@ -62,7 +64,7 @@
       Session-Token: "{{ glpi_session.json.session_token }}"
     body_format: json
     body: {
-      "input": "{{ glpi_api_object }}"
+      "input": "{{ glpi_api_object_updated }}"
     }
     status_code:
       - 201
@@ -88,7 +90,7 @@
       Session-Token: "{{ glpi_session.json.session_token }}"
     body_format: json
     body: {
-      "input": "{{ glpi_api_object }}"
+      "input": "{{ glpi_api_object_updated }}"
     }
     status_code:
       - 200
