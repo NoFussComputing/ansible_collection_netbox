@@ -65,3 +65,15 @@
         - setup
       vars:
         ansible_connection: local
+
+
+    - name: NetBox-GLPI Kubernetes Deployment
+      ansible.builtin.include_role:
+        name: nofusscomputing.netbox.netbox_glpi
+        tasks_from: kubernetes
+        apply:
+          tags:
+            - always
+      tags:
+        - never
+        - deploy-kubernetes
