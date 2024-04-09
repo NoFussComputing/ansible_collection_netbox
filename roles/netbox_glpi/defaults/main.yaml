@@ -3,8 +3,10 @@
 nfc_pb_netbox_force_logging: false    # Optional, Boolean. Don't hide sensitive data from logs. Setting this to true will have secrets logged.
 
 # NetBox
-nfc_pb_netbox_netbox_token:           # Mandatory, String. Token of user with write permissions
-nfc_pb_netbox_netbox_url:             # Mandatory, String. URL of netbox server. including protocol and port if applicable. no trailing `/`
+nfc_pb_netbox_netbox_token:                    # Mandatory, String. Token of user with write permissions
+nfc_pb_netbox_netbox_url:                      # Mandatory, String. URL of netbox server. including protocol and port if applicable. no trailing `/`
+nofusscomputing_netbox_api_username: Ansible   # Recommended, String. The username of the Netbox API user. Used to prevent update/event webhook loops.
+
 
 # GLPI
 nfc_pb_netbox_glpi_url_glpi:           # Mandatory, String. URL of GLPI server. including protocol and port if applicable. no trailing `/`
@@ -19,3 +21,30 @@ nfc_role_netbox_glpi_device_status:    # Netbox Default Device Status'
   - Failed
   - Inventory
   - Decommissioning
+
+
+########################################################################################
+# Container netbox-glpi Kubernetes Deployment
+########################################################################################
+
+
+nfc_role_netbox_glpi_kubernetes_namespace: netbox          # Namespace to create deployment in
+
+nfc_role_netbox_glpi_kubernetes_instance: netbox-glpi      # Deployment instance name
+
+nfc_role_netbox_glpi_kubernetes_image:                     # The Deployed Image
+  name: NetBox GLPI Integration                            # Optional, String. Name of the image.
+  # registry:                                              # Optional, String. Name of the registry to fetch the image from
+  image: nofusscomputing/netbox-glpi                       # Mandatory, String. Name of the image to fetch
+  tag: 0.1.0                                               # Mandatory, String. Image tag to pull
+  # sha256:                                                # Optional, String. The sh256 of the image to lock the tag to.
+
+nfc_role_netbox_glpi_kubernetes_affinity: {}               # Deployment Affinity
+
+nfc_role_netbox_glpi_kubernetes_replicas: 1                # How many deployment replicas to deploy
+
+nfc_role_netbox_glpi_kubernetes_tolerations: []            # Deployment tolerations
+
+nfc_role_netbox_glpi_kubernetes_limit_cpu: 1000m           # Pod CPU limit
+
+nfc_role_netbox_glpi_kubernetes_limit_memory: 2Gi          # Pod memory limit

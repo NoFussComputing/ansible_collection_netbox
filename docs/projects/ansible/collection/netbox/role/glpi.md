@@ -140,7 +140,7 @@ nfc_pb_netbox_itam_glpi_user_token:
 ```
 
 
-### Docker Setup
+### Container Setup
 
 We build and publish a docker container for the EDA rulebook and sync that you can use within your environment. Doesn't matter if it's a simple docker-compose or kubernetes setup.
 
@@ -154,6 +154,11 @@ The container already automagically starts an EDA rulebook that is listening for
 _Default cron file for sync with NetBox._
 
 Once you have the container running all available playbooks can be run from within the the container. i.e. `docker run -ti <container name> ansible-playbook nofusscomputing.netbox.glpi --tags setup` 
+
+
+#### Kubernetes Deployment
+
+As part of this role there exists a play to deploy the `nofusscomputing/netbox-glpi` container to kubernetes. The Kubernetes deployment is customizable by adjusting the variables prefixed with `nfc_role_netbox_glpi_kubernetes_`. You will also be need to configure the required variables for the API as explained in the previous section. These variables will be automagically added to the `vars.yaml` file. Manifests that are deployed can be viewed in the [repository](https://gitlab.com/nofusscomputing/projects/ansible/collections/netbox/-/tree/development/roles/netbox_glpi/templates/netbox-glpi).
 
 
 #### Updating the container
