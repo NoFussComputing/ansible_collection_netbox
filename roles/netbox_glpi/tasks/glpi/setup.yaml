@@ -55,44 +55,6 @@
         }
 
 
-    - name: Fetch Manufacturers from NetBox
-      ansible.builtin.uri:
-        url: "{{ nfc_pb_netbox_netbox_url }}/api/dcim/manufacturers/"
-        method: GET
-        body_format: json
-        headers:
-          Authorization: Token {{ nfc_pb_netbox_netbox_token }}
-        status_code:
-          - 200
-      delegate_to: localhost
-      no_log: >
-        {%- if not nfc_pb_netbox_force_logging | default(false) -%}
-          true
-        {%- else -%}
-          false
-        {%-endif %}
-      register: api_get_manufacturers
-
-
-    - name: Setup Manufacturer(s)
-      ansible.builtin.include_tasks:
-        file: tasks/glpi/api_create_update.yaml
-        apply:
-          tags:
-            - always
-      loop: "{{ api_get_manufacturers.json.results }}"
-      loop_control:
-        label: "{{ item.name }}"
-      tags:
-        - never
-        - setup
-      vars:
-        field_name: "{{ item.name }}"
-        item_type: Manufacturer
-        glpi_api_object: {
-          "comment": "NetBox Manufacturer",
-        }
-
   always:
 
 
