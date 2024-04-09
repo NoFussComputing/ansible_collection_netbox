@@ -20,6 +20,8 @@ There are two methods available to take advantage of this role: running the play
 
 - Entity Sync from GLPI
 
+- Manufacturer Sync from Netbox
+
 - NetBox Status' added to GLPI
 
 
@@ -44,6 +46,8 @@ The following requirements to use this collection are as follows:
     GLPI Setup:
 
     - User has access to add Status' to global drop downs
+
+    - User has access to add Manufacturers to global drop downs
 
 - NetBox
 
@@ -92,13 +96,13 @@ The following items are setup/created in netbox as part of the setup process:
 As Part of the setup process the default device status' from NetBox are added to the root entity (`recusive=yes`) within GLPI. This Dropdown field will be used for the device when it is synced from Netbox so that the Status between the two systems remain in sync. So as not to require additional permissions for the API client, the status' are setup within the default vars as a list under key `nfc_role_netbox_glpi_device_status`. This enables you to update the available status' if you use a custom set within Netbox. This process unfortunately, is manual. If you update the status' list, don't forget to run the setup job again.
 
 
-## Entity Sync
+## GLPI/NetBox Sync
 
-As Part of the sync process items within NetBox that are synchronized to GLPI will need to have an entity assigned. For this to be possible, run the following playbook.
+A play exists with the purpose of syncing items between GLPI and NetBox. The purpose of this play is to keep fields that have information from the other system in sync. To run, use the following command.
 
 ``` bash
 
-ansible-playbook nofusscomputing.netbox.entities \
+ansible-playbook nofusscomputing.netbox.sync \
     --extra-vars "nfc_pb_netbox_netbox_url=https://my-netbox-url" \
     --extra-vars "nfc_pb_netbox_netbox_token=my-netbox-token" \
     --extra-vars "nfc_pb_netbox_glpi_url_glpi=https://my-glpi-url" \
@@ -107,7 +111,7 @@ ansible-playbook nofusscomputing.netbox.entities \
 
 ```
 
-This playbook will create a custom field choices containing ALL of the GLPI Entities and add a custom field for the end user to select the GLPI entity the item should be added to. This play can be run as often as you would like as it will update Netbox with any new/deleted entities.
+This playbook will create within NetBox, a custom field choices containing ALL of the GLPI Entities and add a custom field for the end user to select the GLPI entity the item should be added to. Within GLPI all of the manufacturers found in NetBox are added to GLPI. This play can be run as often as you would like as it will update GLPI/Netbox with any updated items.
 
 
 ## Events Endpoint
@@ -140,14 +144,14 @@ nfc_pb_netbox_itam_glpi_user_token:
 
 We build and publish a docker container for the EDA rulebook and sync that you can use within your environment. Doesn't matter if it's a simple docker-compose or kubernetes setup.
 
-The container already automagically starts an EDA rulebook that is listening for connections from NetBox. To setup the container you must configure the rulebook via a vars file. Mount your a vars file to path `/root/var.yaml`. The content of this vars file is mentioned in the previous section. There is also a cronjob within the container that synchronizes the GLPI entites to NetBox. By default the job will run every 15 mins. if you wish to change this mount a new cron file to path `/etc/cron.d/glpi-entities-sync` within the container.
+The container already automagically starts an EDA rulebook that is listening for connections from NetBox. To setup the container you must configure the rulebook via a vars file. Mount your a vars file to path `/root/var.yaml`. The content of this vars file is mentioned in the previous section. There is also a cronjob within the container that synchronizes the GLPI entites to NetBox. By default the job will run every 15 mins. if you wish to change this mount a new cron file to path `/etc/cron.d/glpi-sync` within the container.
 
-``` crontab title="/etc/cron.d/glpi-entities-sync"
+``` crontab title="/etc/cron.d/glpi-sync"
 
---8<-- "includes/etc/cron.d/glpi-entities-sync"
+--8<-- "includes/etc/cron.d/glpi-sync"
 
 ```
-_Default cron file for entity sync with NetBox._
+_Default cron file for sync with NetBox._
 
 Once you have the container running all available playbooks can be run from within the the container. i.e. `docker run -ti <container name> ansible-playbook nofusscomputing.netbox.glpi --extra-vars "@/root/vars.yaml" --tags setup` 
 
@@ -176,13 +180,15 @@ To update the container to a newer version, the following steps should be follow
 
 - Device with its type set to `computer`.
 
-- Device with its type set to `networkequipment`.
+    Device with its type set to `networkequipment`.
 
     The following fields are kept in sync:
 
     - Asset Number
 
     - Name
+
+    - Manufacturer
 
     - Serial Number
 
