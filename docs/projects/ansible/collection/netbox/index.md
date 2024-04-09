@@ -31,6 +31,8 @@ Any item that has specific requirements will be notated within its documentation
 
 ## Features
 
+This feature list is for the collection as a whole. Each feature listed here does have a feature list itself. Each listed item should be looked at as a feature set.
+
 - [GLPI Integration](role/glpi.md)
 
 - Foreman Integration _[See Issue #1](https://gitlab.com/nofusscomputing/projects/ansible/collections/netbox/-/issues/1)_

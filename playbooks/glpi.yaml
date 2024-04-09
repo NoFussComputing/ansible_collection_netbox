@@ -25,6 +25,37 @@
   tasks:
 
 
+    - name: Check if vars file exists
+      ansible.builtin.stat:
+        path: /root/vars.yaml
+      become: true
+      delegate_to: localhost
+      register: metadata_file_vars
+      tags:
+        - always
+      vars:
+        ansible_connection: local
+
+
+    - name: Load vars file
+      ansible.builtin.include_vars:
+        file: /root/vars.yaml
+      no_log: >
+        {%- if not nfc_pb_netbox_force_logging | default(false) -%}
+          true
+        {%- else -%}
+          false
+        {%-endif %}
+      become: true
+      delegate_to: localhost
+      vars:
+        ansible_connection: local
+      when: >
+        metadata_file_vars.stat.exists
+          and
+        nfc_pb_netbox_netbox_url is not defined
+
+
     - name: NetBox <-> GLPI Setup
       ansible.builtin.include_role:
         name: nofusscomputing.netbox.netbox_glpi
@@ -32,3 +63,17 @@
       tags:
         - never
         - setup
+      vars:
+        ansible_connection: local
+
+
+    - name: NetBox-GLPI Kubernetes Deployment
+      ansible.builtin.include_role:
+        name: nofusscomputing.netbox.netbox_glpi
+        tasks_from: kubernetes
+        apply:
+          tags:
+            - always
+      tags:
+        - never
+        - deploy-kubernetes

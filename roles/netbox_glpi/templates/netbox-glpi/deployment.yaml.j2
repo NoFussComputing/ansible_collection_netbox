@@ -1,0 +1,108 @@
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app.kubernetes.io/component: glpi-bridge
+    app.kubernetes.io/instance: "{{ nfc_role_netbox_glpi_kubernetes_instance }}"
+    app.kubernetes.io/managed-by: Ansible
+    app.kubernetes.io/name: netbox-glpi
+  name: "{{ nfc_role_netbox_glpi_kubernetes_instance }}"
+  namespace: "{{ nfc_role_netbox_glpi_kubernetes_namespace }}"
+spec:
+  replicas: {{ nfc_role_netbox_glpi_kubernetes_replicas | int }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: glpi-bridge
+      app.kubernetes.io/instance: "{{ nfc_role_netbox_glpi_kubernetes_instance }}"
+      app.kubernetes.io/managed-by: Ansible
+      app.kubernetes.io/name: netbox-glpi
+  minReadySeconds: 10
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/component: glpi-bridge
+        app.kubernetes.io/instance: "{{ nfc_role_netbox_glpi_kubernetes_instance }}"
+        app.kubernetes.io/managed-by: Ansible
+        app.kubernetes.io/name: netbox-glpi
+    spec:
+      terminationGracePeriodSeconds: 10
+      {% if nfc_role_netbox_glpi_kubernetes_affinity | length > 0 -%}
+      affinity:
+        {{ nfc_role_netbox_glpi_kubernetes_affinity | to_nice_yaml(indent=0) | indent(8) }}
+      {% endif %}
+
+      containers:
+        - name: netbox-glpi
+          command:
+            - sh
+            - -c
+            - |
+              ansible-galaxy collection install ansible.eda;
+              
+              /usr/local/bin/supervisord -c /etc/supervisor/supervisord.conf
+          image: |-
+            {% if nfc_role_netbox_glpi_kubernetes_image.registry is defined and nfc_role_netbox_glpi_kubernetes_image != '' -%}
+              {{ nfc_role_netbox_glpi_kubernetes_image.registry }}/
+            {%- endif -%}
+              {{- nfc_role_netbox_glpi_kubernetes_image.image -}}:
+              {{- nfc_role_netbox_glpi_kubernetes_image.tag }}
+            {%- if nfc_role_netbox_glpi_kubernetes_image.sha256 is defined and nfc_role_netbox_glpi_kubernetes_image.sha256 != '' -%}
+              @sha256:{{- nfc_role_netbox_glpi_kubernetes_image.sha256 }}
+            {%- endif %}
+
+          env:
+            - name: TZ
+              value: "UTC"
+          livenessProbe:
+            exec:
+              command:
+              - supervisorctl
+              - status
+            failureThreshold: 3
+            periodSeconds: 10
+          ports:
+            - name: http
+              containerPort: 5000
+          readinessProbe:
+            exec:
+              command:
+              - supervisorctl
+              - status
+              - rulebook
+            failureThreshold: 3
+            initialDelaySeconds: 5
+            periodSeconds: 5
+          resources:
+            limits:
+              cpu: "{{ nfc_role_netbox_glpi_kubernetes_limit_cpu }}"
+              memory: "{{ nfc_role_netbox_glpi_kubernetes_limit_memory }}"
+            requests:
+              cpu: 10m
+              memory: 20Mi
+          securityContext:
+            privileged: false
+          startupProbe:
+            exec:
+              command:
+              - supervisorctl
+              - status
+            failureThreshold: 3
+            periodSeconds: 10
+          volumeMounts:
+            - name: variables
+              mountPath: /root/vars.yaml
+              subPath: vars.yaml
+      {% if nfc_role_netbox_glpi_kubernetes_tolerations | length > 0 -%}
+      tolerations:
+        {{ nfc_role_netbox_glpi_kubernetes_tolerations | to_nice_yaml(indent=0) | indent(8) }}
+      {% endif %}
+
+      volumes:
+        - name: variables
+          secret:
+            secretName: "{{ nfc_role_netbox_glpi_kubernetes_instance }}-variables"
+            items:
+              - key: vars.yaml
+                path: vars.yaml
