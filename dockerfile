@@ -67,8 +67,7 @@ RUN apk --no-cache update; \
   apk add \
     openjdk21-jdk \
     git \
-    dcron \
-    nmap;
+    dcron;
 
 
 ENV JAVA_HOME /usr/lib/jvm/java-21-openjdk
