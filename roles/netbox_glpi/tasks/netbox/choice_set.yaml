@@ -118,17 +118,21 @@
       false
     {%-endif %}
   when: >
+    api_get_choice_set.json.results | list | length != 0
+      and
     (
-      api_get_choice_set.json.results[0].extra_choices | from_yaml | list | sort
-        !=
-      constructed_extra_choices | list | sort
+      (
+        api_get_choice_set.json.results[0].extra_choices | from_yaml | list | sort
+          !=
+        constructed_extra_choices | list | sort
+      )
+        or
+      api_get_choice_set.json.results[0].order_alphabetically != false
+        or
+      api_get_choice_set.json.results[0].description != choice_set_description
+        or
+      api_get_choice_set.json.results[0].display != choice_set_display_name
     )
-      or
-    api_get_choice_set.json.results[0].order_alphabetically != false
-      or
-    api_get_choice_set.json.results[0].description != choice_set_description
-      or
-    api_get_choice_set.json.results[0].display != choice_set_display_name
 
 
 - name: Find Custom Field {{ field_name }}
