@@ -1,9 +1,12 @@
 ---
 
+# pip install kubernetes
+
+
 - name: Create Namesapce
   kubernetes.core.k8s:
     apply: true
-    template: netbox-glpi/namespace.yaml
+    template: netbox-glpi/namespace.yaml.j2
     server_side_apply:
       field_manager: ansible
       force_conflicts: true
@@ -15,7 +18,7 @@
 - name: Add Secret
   kubernetes.core.k8s:
     apply: true
-    template: netbox-glpi/secret.yaml
+    template: netbox-glpi/secret.yaml.j2
     server_side_apply:
       field_manager: ansible
       force_conflicts: true
@@ -33,7 +36,7 @@
 - name: Add Deployment
   kubernetes.core.k8s:
     apply: true
-    template: netbox-glpi/deployment.yaml
+    template: netbox-glpi/deployment.yaml.j2
     server_side_apply:
       field_manager: ansible
       force_conflicts: true
@@ -45,7 +48,7 @@
 - name: Add Service
   kubernetes.core.k8s:
     apply: true
-    template: netbox-glpi/service.yaml
+    template: netbox-glpi/service.yaml.j2
     server_side_apply:
       field_manager: ansible
       force_conflicts: true

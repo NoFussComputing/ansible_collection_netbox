@@ -14,7 +14,7 @@
   delegate_to: localhost
   register: glpi_session
   no_log: >
-    {%- if not force_logging | default(false) -%}
+    {%- if not nfc_pb_netbox_force_logging | default(false) -%}
       true
     {%- else -%}
       false
