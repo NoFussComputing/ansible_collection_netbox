@@ -1,3 +1,14 @@
+## 0.2.1 (2024-04-10)
+
+### Fix
+
+- **glpi**: manufacturer sync not to require run tags
+- **choice_set**: dont attempt to update choice_set when creating
+- **netbox-glpi**: correct kubernetes manifests extension to .yaml.j2
+- **glpi**: session init and kill to use correct no_log var
+- **glpi**: api searches must be url encoded
+- **playbooks**: ensure vars file loads when tags specified
+
 ## 0.2.0 (2024-04-09)
 
 ### Feat
@@ -37,6 +48,5 @@
 - movie eneites sync play to a play called sync
 - **netbox_glpi**: rearrange tasks based off of the task
 - **netbox_setup**: place netbox setup tasks in place that makes more sense
-- **netbox**: place choice set logic in its own task file
 
 ## 0.0.1 (2024-04-06)
