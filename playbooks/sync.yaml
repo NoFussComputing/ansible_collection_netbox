@@ -37,14 +37,16 @@
     - name: Load vars file
       ansible.builtin.include_vars:
         file: /root/vars.yaml
+      become: true
+      delegate_to: localhost
       no_log: >
         {%- if not nfc_pb_netbox_force_logging | default(false) -%}
           true
         {%- else -%}
           false
         {%-endif %}
-      become: true
-      delegate_to: localhost
+      tags:
+        - always
       when: >
         metadata_file_vars.stat.exists
           and
@@ -54,7 +56,7 @@
     - name: Sync GLPI Entities to NetBox
       ansible.builtin.include_role:
         name: nofusscomputing.netbox.netbox_glpi
-        tasks_from: entities.yaml
+        tasks_from: sync
 
 
   vars:

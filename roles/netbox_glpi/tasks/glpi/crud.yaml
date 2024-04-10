@@ -3,7 +3,7 @@
 - name: "{{ 'Search for ' + netbox.data.custom_fields.itil_item_type + ' in GLPI' }}"
   ansible.builtin.uri:
     url: "{{ nfc_pb_netbox_glpi_url_glpi }}/apirest.php/{{
-              netbox.data.custom_fields.itil_item_type | lower }}/?searchText[name]={{ netbox.data.name }}"
+              netbox.data.custom_fields.itil_item_type | lower }}/?searchText[name]={{ netbox.data.name | urlencode }}"
     method: GET
     return_content: true
     headers:
@@ -23,7 +23,7 @@
 
 - name: Search for Status ID
   ansible.builtin.uri:
-    url: "{{ nfc_pb_netbox_glpi_url_glpi }}/apirest.php/State/?searchText[name]={{ netbox.data.status.label }}&searchText[entities_id]=0"
+    url: "{{ nfc_pb_netbox_glpi_url_glpi }}/apirest.php/State/?searchText[name]={{ netbox.data.status.label | urlencode }}&searchText[entities_id]=0"
     method: GET
     return_content: true
     headers:
@@ -43,7 +43,7 @@
 
 - name: Search for Manufacturer ID
   ansible.builtin.uri:
-    url: "{{ nfc_pb_netbox_glpi_url_glpi }}/apirest.php/Manufacturer/?searchText[name]={{ netbox.data.device_type.manufacturer.name }}"
+    url: "{{ nfc_pb_netbox_glpi_url_glpi }}/apirest.php/Manufacturer/?searchText[name]={{ netbox.data.device_type.manufacturer.name | urlencode }}"
     method: GET
     return_content: true
     headers:

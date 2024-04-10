@@ -40,14 +40,16 @@
     - name: Load vars file
       ansible.builtin.include_vars:
         file: /root/vars.yaml
+      become: true
+      delegate_to: localhost
       no_log: >
         {%- if not nfc_pb_netbox_force_logging | default(false) -%}
           true
         {%- else -%}
           false
         {%-endif %}
-      become: true
-      delegate_to: localhost
+      tags:
+        - always
       vars:
         ansible_connection: local
       when: >
