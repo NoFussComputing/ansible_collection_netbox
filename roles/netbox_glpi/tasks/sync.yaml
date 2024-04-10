@@ -68,9 +68,6 @@
       loop: "{{ api_get_manufacturers.json.results }}"
       loop_control:
         label: "{{ item.name }}"
-      tags:
-        - never
-        - setup
       vars:
         field_name: "{{ item.name }}"
         item_type: Manufacturer
