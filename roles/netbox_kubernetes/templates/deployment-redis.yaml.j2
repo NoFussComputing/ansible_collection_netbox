@@ -1,0 +1,89 @@
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app.kubernetes.io/component: Redis
+    app.kubernetes.io/instance: "{{ nfc_role_netbox_kubernetes_instance_name }}"
+    app.kubernetes.io/managed-by: Ansible
+    app.kubernetes.io/name: netbox
+  name: "redis-{{ nfc_role_netbox_kubernetes_instance_name }}"
+  namespace: "{{ nfc_role_netbox_kubernetes_namespace }}"
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: Redis
+      app.kubernetes.io/instance: "{{ nfc_role_netbox_kubernetes_instance_name }}"
+      app.kubernetes.io/managed-by: Ansible
+      app.kubernetes.io/name: netbox
+  replicas: {{ nfc_role_netbox_kubernetes_redis_deployment_replicas }}
+  minReadySeconds: 10
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/component: Redis
+        app.kubernetes.io/instance: "{{ nfc_role_netbox_kubernetes_instance_name }}"
+        app.kubernetes.io/managed-by: Ansible
+        app.kubernetes.io/name: netbox
+    spec:
+      terminationGracePeriodSeconds: 10
+      # affinity:
+      #   nodeAffinity:
+      #     requiredDuringSchedulingIgnoredDuringExecution:
+      #       nodeSelectorTerms:
+      #         - matchExpressions:
+      #             - key: kubernetes.io/hostname
+      #               operator: In
+      #               values:
+      #                 - node-name-1
+      #   podAntiAffinity:
+      #     requiredDuringSchedulingIgnoredDuringExecution:
+      #     - labelSelector:
+      #         matchExpressions:
+      #         - key: app
+      #           operator: In
+      #           values:
+      #           - redis
+      #       topologyKey: "kubernetes.io/hostname"
+      containers:
+
+        - name: redis
+          image: redis:7-alpine
+          resources:
+            limits:
+              cpu: 200m
+              memory: 300Mi
+            requests:
+              cpu: 10m
+              memory: 20Mi
+          env:
+            - name: TZ
+              value: "UTC"
+
+          command:
+            - sh
+            - -c # this is to evaluate the $REDIS_PASSWORD from the env
+            - |-
+              redis-server --appendonly yes {% if nfc_role_netbox_kubernetes_redis_password | default('') != '' %}
+                --requirepass {{ nfc_role_netbox_kubernetes_redis_password }}
+              {%- endif %}
+
+          ports:
+            - containerPort: {{ nfc_role_netbox_kubernetes_redis_port }}
+              name: redis
+
+          volumeMounts:
+            - name: data
+              mountPath: /data
+
+      tolerations:
+        - effect: NoExecute
+          key: CriticalAddonsOnly
+          value: "true"
+      volumes:
+
+        - name: data
+          emptyDir:
+            sizeLimit: 2Gi
