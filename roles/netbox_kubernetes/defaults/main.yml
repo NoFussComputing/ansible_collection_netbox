@@ -59,3 +59,17 @@ nfc_role_netbox_kubernetes_configuration_logging_debug: false
 # Persistent Volume Claim
 #
 nfc_role_netbox_kubernetes_pvc_size: 5Gi
+
+#
+# NetBox Deployment
+#
+nfc_role_netbox_kubernetes_netbox_image:    # The Deployed Image
+  name: NetBox                              # Optional, String. Name of the image.
+  registry: docker.io                       # Optional, String. Name of the registry to fetch the image from
+  image: netboxcommunity/netbox             # Mandatory, String. Name of the image to fetch
+  tag: v3.7.5-2.8.0                         # Mandatory, String. Image tag to pull
+  # sha256:                                 # Optional, String. The sh256 of the image to lock the tag to.
+
+nfc_role_netbox_kubernetes_deployment_netbox_replicas: 1
+nfc_role_netbox_kubernetes_deployment_netbox_limit_cpu: 1000m
+nfc_role_netbox_kubernetes_deployment_netbox_limit_memory: 2Gi
