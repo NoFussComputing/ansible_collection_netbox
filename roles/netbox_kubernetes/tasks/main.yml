@@ -1,0 +1,13 @@
+---
+
+- name: Create Namespace
+  kubernetes.core.k8s:
+    apply: true
+    name: "{{ nfc_role_netbox_kubernetes_namespace }}"
+    kind: Namespace
+    server_side_apply:
+      field_manager: ansible
+      force_conflicts: true
+    state: present
+  become: true
+  diff: true

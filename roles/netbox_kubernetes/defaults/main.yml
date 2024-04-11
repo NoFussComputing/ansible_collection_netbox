@@ -1,2 +1,4 @@
 ---
-# defaults file for kubernetes
+
+nfc_role_netbox_kubernetes_namespace: netbox        # Namespace to deploy Netbox to
+
