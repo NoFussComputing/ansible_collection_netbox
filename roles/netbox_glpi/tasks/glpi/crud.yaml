@@ -1,9 +1,22 @@
 ---
 
+- name: GLPI API data Object
+  ansible.builtin.set_fact:
+    cacheable: false
+    glpi_api_get_item_search_params: |-
+      {%- if netbox.data.custom_fields.itil_item_id | int > 0 -%}
+        {{ netbox.data.custom_fields.itil_item_id }}/
+      {%- elif netbox.data.serial | default('') != '' -%}
+        ?searchText[serial]={{ netbox.data.serial | urlencode }}
+      {%- else -%}
+        ?searchText[name]={{ netbox.data.name | urlencode }}
+      {%- endif %}
+
+
 - name: "{{ 'Search for ' + netbox.data.custom_fields.itil_item_type + ' in GLPI' }}"
   ansible.builtin.uri:
     url: "{{ nfc_pb_netbox_glpi_url_glpi }}/apirest.php/{{
-              netbox.data.custom_fields.itil_item_type | lower }}/?searchText[name]={{ netbox.data.name | urlencode }}"
+              netbox.data.custom_fields.itil_item_type | lower }}/{{ glpi_api_get_item_search_params }}"
     method: GET
     return_content: true
     headers:
@@ -92,13 +105,16 @@
       false
     {%-endif %}
   when: >
-    glpi_api_get_item.json | list | length == 0
+    glpi_api_get_item.json.id | default(glpi_api_get_item.json[0].id) | default(0) | int
+      ==
+    0
 
 
 - name: "{{ 'Update ' + netbox.data.custom_fields.itil_item_type + ' in GLPI' }}"
   ansible.builtin.uri:
     url: "{{ nfc_pb_netbox_glpi_url_glpi }}/apirest.php/{{
-              netbox.data.custom_fields.itil_item_type | lower }}/{{ netbox.data.custom_fields.itil_item_id }}"
+              netbox.data.custom_fields.itil_item_type | lower }}/{{
+                 glpi_api_get_item.json.id | default(glpi_api_get_item.json[0].id) | default(glpi_api_post_item.json.id) | int }}"
     method: PATCH
     return_content: true
     headers:
@@ -120,7 +136,7 @@
       false
     {%-endif %}
   when: >
-    api_body_glpi is defined
+    glpi_api_post_item.json.id is not defined
 
 
 - name: Build Netbox API Body
@@ -128,13 +144,13 @@
     api_body_netbox: |-
       {
         "custom_fields": {
-          "itil_item_id": {{ glpi_api_get_item.json[0].id | default(glpi_api_post_item.json.id) | int }}
+          "itil_item_id": {{ glpi_api_get_item.json.id | default(glpi_api_get_item.json[0].id) | default(glpi_api_post_item.json.id) | int }}
         }
       }
   when: >
-    netbox.data.custom_fields.itil_item_id | default(0)
+    netbox.data.custom_fields.itil_item_id | default('')
       !=
-    glpi_api_get_item.json[0].id | default(glpi_api_post_item.json.id) | int
+    glpi_api_get_item.json.id | default(glpi_api_get_item.json[0].id) | default(glpi_api_post_item.json.id) | int
 
 
 - name: Update ITIL Item ID in netbox

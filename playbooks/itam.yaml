@@ -51,13 +51,6 @@
         nfc_pb_netbox_netbox_url is not defined
 
 
-    - name: Test data
-      ansible.builtin.include_vars:
-        file: /home/sysadmin/git/ansible_collections/nofusscomputing/netbox/roles/netbox_glpi/tests/eda-inbound/device.change.json
-        name: netbox
-      when: netbox is not defined
-
-
     - name: NetBox <-> GLPI
       ansible.builtin.include_role:
         name: nofusscomputing.netbox.netbox_glpi
