@@ -12,4 +12,16 @@ nfc_role_netbox_kubernetes_database_password:       # Mandatory, String. Postgre
 nfc_role_netbox_kubernetes_database_host:           # Mandatory, String. PostgreSQL host
 nfc_role_netbox_kubernetes_database_port: 5432
 
+#
+# NetBox Configuration
+# Notes: these configuration settings populate the extra.py configuration file
+#        As this is a python file, attention needs to be payed towards the values
+#        as some of them are python values, not yaml. if it's quoted, thats a 
+#        good indicator of it being pythonic.
+nfc_role_netbox_kubernetes_configuration_census_reporting: 'False'
 
+nfc_role_netbox_kubernetes_configuration_maps_url: 'None'
+
+nfc_role_netbox_kubernetes_configuration_metrics_enabled: 'False'
+
+nfc_role_netbox_kubernetes_configuration_logging_debug: false
