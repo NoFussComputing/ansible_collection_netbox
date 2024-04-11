@@ -18,6 +18,13 @@ nfc_role_netbox_kubernetes_database_port: 5432
 nfc_role_netbox_kubernetes_redis_enabled: true               # Optional, Boolean. Whether to deploy redis
 nfc_role_netbox_kubernetes_redis_deployment_replicas: 1      # Mandatory, Integer. How many redis replicas to deploy
 
+nfc_role_netbox_kubernetes_redis_image:    # The Deployed Image
+  name: Redis                              # Optional, String. Name of the image.
+  registry: docker.io                      # Optional, String. Name of the registry to fetch the image from
+  image: redis                             # Mandatory, String. Name of the image to fetch
+  tag: 7-alpine                            # Mandatory, String. Image tag to pull
+  # sha256:                                # Optional, String. The sh256 of the image to lock the tag to.
+
 
 # Redis connection Settings
 nfc_role_netbox_kubernetes_redis_host: localhost             # Not Required if deploying Redis.

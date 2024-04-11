@@ -50,7 +50,16 @@ spec:
       containers:
 
         - name: redis
-          image: redis:7-alpine
+          image: |-
+            {% if nfc_role_netbox_kubernetes_redis_image.registry is defined and nfc_role_netbox_kubernetes_redis_image != '' -%}
+              {{ nfc_role_netbox_kubernetes_redis_image.registry }}/
+            {%- endif -%}
+              {{- nfc_role_netbox_kubernetes_redis_image.image -}}:
+              {{- nfc_role_netbox_kubernetes_redis_image.tag }}
+            {%- if nfc_role_netbox_kubernetes_redis_image.sha256 is defined and nfc_role_netbox_kubernetes_redis_image.sha256 != '' -%}
+              @sha256:{{- nfc_role_netbox_kubernetes_redis_image.sha256 }}
+            {%- endif %}
+
           resources:
             limits:
               cpu: 200m
