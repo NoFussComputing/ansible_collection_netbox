@@ -1,4 +1,15 @@
 ---
+nfc_role_netbox_kubernetes_instance_name: netbox    # Mandatory, String. Name of the deployment
 
 nfc_role_netbox_kubernetes_namespace: netbox        # Namespace to deploy Netbox to
+
+#
+# PostgreSQL connection settings
+#
+nfc_role_netbox_kubernetes_database_name: netbox
+nfc_role_netbox_kubernetes_database_user: netbox
+nfc_role_netbox_kubernetes_database_password:       # Mandatory, String. PostgreSQL password
+nfc_role_netbox_kubernetes_database_host:           # Mandatory, String. PostgreSQL host
+nfc_role_netbox_kubernetes_database_port: 5432
+
 
