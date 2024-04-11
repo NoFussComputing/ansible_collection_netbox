@@ -6,6 +6,8 @@
     glpi_api_get_item_search_params: |-
       {%- if netbox.data.custom_fields.itil_item_id | int > 0 -%}
         {{ netbox.data.custom_fields.itil_item_id }}/
+      {%- elif netbox.data.serial | default('') != '' -%}
+        ?searchText[serial]={{ netbox.data.serial | urlencode }}
       {%- else -%}
         ?searchText[name]={{ netbox.data.name | urlencode }}
       {%- endif %}
