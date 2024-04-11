@@ -186,7 +186,7 @@ To update the container to a newer version, the following steps should be follow
 
 ## What gets synced from NetBox to GLPI
 
-Syncing of items occurs based of of the serial number for items with a serial number and by name for those items that don't. However if the item has a specified GLPI Item ID, then this field is used as the id of the item to update within GLPI.
+Syncing of items occurs based off of the presence of a field. The order of precedence is serial number then name. If the item is not found no additional search is conducted and the item will be created in GLPI. If the item that was added/updated has a GLPI item ID set, then no search is done and it is this item that will be updated in GLPI.
 
 - Device with its type set to `computer`.
 
