@@ -1,0 +1,14 @@
+galaxy_info:
+  author: No Fuss Computing
+  description: A role to deploy NetBox to Kubernetes
+
+  license: MIT
+
+  min_ansible_version: '2.15'
+
+  galaxy_tags:
+    - deployment
+    - kubernetes
+    - netbox
+
+dependencies: []
