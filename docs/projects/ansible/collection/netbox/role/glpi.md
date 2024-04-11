@@ -184,16 +184,9 @@ To update the container to a newer version, the following steps should be follow
 1. run the setup command `docker run -ti <container name> ansible-playbook nofusscomputing.netbox.glpi --tags setup`
 
 
-## Default Variables
-
-``` yaml title="defaults/main.yaml" linenums="1"
-
---8<-- "roles/netbox_glpi/defaults/main.yaml"
-
-```
-
-
 ## What gets synced from NetBox to GLPI
+
+Syncing of items occurs based of of the serial number for items with a serial number and by name for those items that don't. However if the item has a specified GLPI Item ID, then this field is used as the id of the item to update within GLPI.
 
 - Device with its type set to `computer`.
 
@@ -203,13 +196,13 @@ To update the container to a newer version, the following steps should be follow
 
     - Asset Number
 
-    - Name
-
     - Manufacturer
 
-    - Serial Number
+    - Name
 
     - Selected GLPI Entity
+
+    - Serial Number
 
     - Status
 
@@ -225,3 +218,12 @@ To update the container to a newer version, the following steps should be follow
     - Selected GLPI Entity
 
     - UUID
+
+
+## Default Variables
+
+``` yaml title="defaults/main.yaml" linenums="1"
+
+--8<-- "roles/netbox_glpi/defaults/main.yaml"
+
+```
