@@ -36,7 +36,7 @@ nfc_role_netbox_glpi_kubernetes_image:                     # The Deployed Image
   name: NetBox GLPI Integration                            # Optional, String. Name of the image.
   # registry:                                              # Optional, String. Name of the registry to fetch the image from
   image: nofusscomputing/netbox-glpi                       # Mandatory, String. Name of the image to fetch
-  tag: 0.2.1                                               # Mandatory, String. Image tag to pull
+  tag: 0.3.0                                               # Mandatory, String. Image tag to pull
   # sha256:                                                # Optional, String. The sh256 of the image to lock the tag to.
 
 nfc_role_netbox_glpi_kubernetes_affinity: {}               # Deployment Affinity

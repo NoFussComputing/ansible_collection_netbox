@@ -1,3 +1,10 @@
+## 0.3.0 (2024-04-11)
+
+### Feat
+
+- **glpi**: search by serial number then name within GLPI if no ID present
+- **glpi**: if GLPI ID present update that item
+
 ## 0.2.1 (2024-04-10)
 
 ### Fix
@@ -33,8 +40,6 @@
 - **glpi**: As part of setup, add device status to GLPI that Netbox uses.
 - **glpi**: netbox UUID Custom filed with sync to GLPI
 - **GLPI**: sync asset number to GLPI
-- **glpi-docker**: Scheduled job to sync GLPI Entities default=15 mins
-- **glpi**: Ability to set GLPI Entity for item in NetBox
 
 ### Fix
 
