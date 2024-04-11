@@ -1,5 +1,15 @@
 ---
 
+- name: Check Required Fields
+  ansible.builtin.assert:
+    that:
+      - nfc_role_netbox_kubernetes_database_password is defined
+      - nfc_role_netbox_kubernetes_database_password != ''
+      - nfc_role_netbox_kubernetes_database_host is defined
+      - nfc_role_netbox_kubernetes_database_host != ''
+    msg: "You are missing a required field"
+
+
 - name: Create Namespace
   kubernetes.core.k8s:
     apply: true

@@ -26,15 +26,6 @@
 
     # ToDo: Add environmental var check so that deployment with AWX can occur using credentials
 
-    - name: Check Required Fields
-      ansible.builtin.assert:
-        that:
-          - nfc_role_netbox_kubernetes_database_password is defined
-          - nfc_role_netbox_kubernetes_database_password != ''
-          - nfc_role_netbox_kubernetes_database_host is defined
-          - nfc_role_netbox_kubernetes_database_host != ''
-        msg: "You are missing a required field"
-
 
     - name: NetBox Kubernetes Deploy
       ansible.builtin.include_role:
