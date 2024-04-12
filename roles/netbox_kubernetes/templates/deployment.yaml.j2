@@ -28,24 +28,10 @@ spec:
         app.kubernetes.io/name: netbox
     spec:
       terminationGracePeriodSeconds: 10
-      # affinity:
-      #   nodeAffinity:
-      #     requiredDuringSchedulingIgnoredDuringExecution:
-      #       nodeSelectorTerms:
-      #         - matchExpressions:
-      #             - key: kubernetes.io/hostname
-      #               operator: In
-      #               values:
-      #                 - node-name
-      #   podAntiAffinity:
-      #     requiredDuringSchedulingIgnoredDuringExecution:
-      #     - labelSelector:
-      #         matchExpressions:
-      #         - key: app
-      #           operator: In
-      #           values:
-      #           - freeipa
-      #       topologyKey: "kubernetes.io/hostname"
+      {% if nfc_role_netbox_kubernetes_affinity | length > 0 -%}
+      affinity:
+        {{ nfc_role_netbox_kubernetes_affinity | to_nice_yaml(indent=0) | indent(8) }}
+      {% endif +%}
       containers:
 
         - name: web

@@ -67,9 +67,32 @@ nfc_role_netbox_kubernetes_configuration_logging_debug: false
 #
 nfc_role_netbox_kubernetes_pvc_size: 5Gi
 
+
 #
 # NetBox Deployment
 #
+
+nfc_role_netbox_kubernetes_affinity:
+  podAntiAffinity:
+    preferredDuringSchedulingIgnoredDuringExecution:
+      - weight: 100
+        podAffinityTerm:
+          labelSelector:
+            matchExpressions:
+              - key: app.kubernetes.io/component
+                operator: In
+                values:
+                  - NetBox
+          topologyKey: kubernetes.io/hostname
+  # nodeAffinity:
+  #   requiredDuringSchedulingIgnoredDuringExecution:
+  #     nodeSelectorTerms:
+  #       - matchExpressions:
+  #           - key: kubernetes.io/hostname
+  #             operator: In
+  #             values:
+  #               - node-name
+
 nfc_role_netbox_kubernetes_netbox_image:    # The Deployed Image
   name: NetBox                              # Optional, String. Name of the image.
   registry: docker.io                       # Optional, String. Name of the registry to fetch the image from
@@ -77,14 +100,16 @@ nfc_role_netbox_kubernetes_netbox_image:    # The Deployed Image
   tag: v3.7.5-2.8.0                         # Mandatory, String. Image tag to pull
   # sha256:                                 # Optional, String. The sh256 of the image to lock the tag to.
 
-nfc_role_netbox_kubernetes_deployment_netbox_replicas: 1
 nfc_role_netbox_kubernetes_deployment_netbox_limit_cpu: 1000m
 nfc_role_netbox_kubernetes_deployment_netbox_limit_memory: 2Gi
+
+nfc_role_netbox_kubernetes_deployment_netbox_replicas: 1
 
 #
 # NetBox Ingress
 #
 nfc_role_netbox_kubernetes_ingress_enabled: false
+
 nfc_role_netbox_kubernetes_fqdn_name: my-netbox.com    # Mandatory, String. Mandatory if deploying Ingress
 
 
