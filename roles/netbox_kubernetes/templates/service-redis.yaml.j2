@@ -17,5 +17,5 @@ spec:
     app.kubernetes.io/name: netbox
   ports:
     - name: redis
-      port: 5379
+      port: {{ nfc_role_netbox_kubernetes_redis_port }}
       targetPort: redis

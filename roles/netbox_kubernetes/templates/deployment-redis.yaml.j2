@@ -75,7 +75,7 @@ spec:
             - sh
             - -c # this is to evaluate the $REDIS_PASSWORD from the env
             - |-
-              redis-server --appendonly yes {% if nfc_role_netbox_kubernetes_redis_password | default('') != '' %}
+              redis-server --appendonly yes {% if nfc_role_netbox_kubernetes_redis_password | default('') != '' -%}
                 --requirepass {{ nfc_role_netbox_kubernetes_redis_password }}
               {%- endif %}
 
