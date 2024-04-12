@@ -201,3 +201,18 @@
 
   become: true
   diff: true
+
+
+- name: NetBox-GLPI Kubernetes Deployment
+  ansible.builtin.include_role:
+    name: nofusscomputing.netbox.netbox_glpi
+    tasks_from: kubernetes
+    apply:
+      tags:
+        - always
+  vars:
+    nfc_role_netbox_glpi_kubernetes_instance: "{{ nfc_role_netbox_kubernetes_instance_name }}"
+    nfc_role_netbox_glpi_kubernetes_namespace: "{{ nfc_role_netbox_kubernetes_namespace }}"
+    nfc_pb_netbox_netbox_url: "web-{{ nfc_role_netbox_kubernetes_instance_name }}.{{ nfc_role_netbox_kubernetes_namespace }}.svc"
+  when: >
+    nfc_role_netbox_kubernetes_integration_glpi_deploy

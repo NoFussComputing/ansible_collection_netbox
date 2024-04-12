@@ -17,6 +17,22 @@ ansible-playbook -i inventory/ --limit <your hostname> nofusscomputing.netbox.ku
 ```
 
 
+## Features
+
+- NetBox Deployment
+
+- NetBox Service
+
+- PVC for Netbox Data
+
+- Redis Deployment
+
+- Deployment of the [NetBox-GLPI Integration](glpi.md#kubernetes-deployment)
+
+    !!! note
+        Deploying the netbox-glpi integration via this role, regardless of you custom variables. Sets the following variables to match this roles variables: Intstance Name, Namespace, and netbox API URL.
+
+
 ## Kubernetes Manifests
 
 All manifests within this role, are Jinja Templates. They obtain their variables from `defaults/main.yaml`

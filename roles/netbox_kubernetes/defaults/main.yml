@@ -1,4 +1,14 @@
 ---
+#
+# GLPI Integration
+#
+# Notes:
+#   Even though the deployment of netbox-glpi is occurring as part of this role
+#   you will still need to configure the required variables for role
+#   nofusscomputing.netbox.netbox_glpi
+nfc_role_netbox_kubernetes_integration_glpi_deploy: true
+
+
 nfc_role_netbox_kubernetes_instance_name: netbox    # Mandatory, String. Name of the deployment
 
 nfc_role_netbox_kubernetes_namespace: netbox        # Namespace to deploy Netbox to
