@@ -33,7 +33,7 @@ nfc_role_netbox_kubernetes_redis_username: ''                # Optional, String.
 nfc_role_netbox_kubernetes_redis_password: ''                # Optional, String. Redis Password
 nfc_role_netbox_kubernetes_redis_database: 0                 # Mandatory, Integer. Database to use
 nfc_role_netbox_kubernetes_redis_ssl: 'False'
-nfc_role_netbox_kubernetes_redis_tls_skip_verify: 'True'
+nfc_role_netbox_kubernetes_redis_tls_skip_verify: 'False'
 
 
 # Redis Cache defaults to vars 'nfc_role_netbox_kubernetes_redis_'
@@ -80,3 +80,22 @@ nfc_role_netbox_kubernetes_netbox_image:    # The Deployed Image
 nfc_role_netbox_kubernetes_deployment_netbox_replicas: 1
 nfc_role_netbox_kubernetes_deployment_netbox_limit_cpu: 1000m
 nfc_role_netbox_kubernetes_deployment_netbox_limit_memory: 2Gi
+
+#
+# NetBox Ingress
+#
+nfc_role_netbox_kubernetes_ingress_enabled: false
+nfc_role_netbox_kubernetes_fqdn_name: my-netbox.com    # Mandatory, String. Mandatory if deploying Ingress
+
+
+nfc_role_netbox_kubernetes_ingress_annotations:
+  # cert-manager.io/cluster-issuer: letsencrypt-prod
+  # cert-manager.io/common-name:
+  cert-manager.io/duration: 2160h
+  cert-manager.io/private-key-algorithm: ECDSA
+  cert-manager.io/private-key-rotation-policy: Always
+  cert-manager.io/private-key-size: "384"
+  cert-manager.io/subject-countries: N/A
+  cert-manager.io/subject-organizationalunits: N/A
+  cert-manager.io/subject-organizations: N/A
+  cert-manager.io/subject-provinces: N/A

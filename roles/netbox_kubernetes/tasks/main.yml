@@ -115,3 +115,21 @@
     state: present
   become: true
   diff: true
+
+
+- name: NetBox Ingress
+  kubernetes.core.k8s:
+    apply: true
+    template: ingress.yaml.j2
+    server_side_apply:
+      field_manager: ansible
+      force_conflicts: true
+    state: |-
+      {%- if nfc_role_netbox_kubernetes_ingress_enabled -%}
+        present
+      {%- else -%}
+        absent
+      {%- endif %}
+
+  become: true
+  diff: true
