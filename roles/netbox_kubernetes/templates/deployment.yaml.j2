@@ -97,6 +97,11 @@ spec:
               subPath: redis.py
               readOnly: true
 
+            - name: config-secret
+              mountPath: /etc/netbox/config/remote_auth.py
+              subPath: remote_auth.py
+              readOnly: true
+
         - name: worker
           image: |-
             {% if nfc_role_netbox_kubernetes_netbox_image.registry is defined and nfc_role_netbox_kubernetes_netbox_image != '' -%}
@@ -180,6 +185,8 @@ spec:
               path: database.py
             - key: redis.py
               path: redis.py
+            - key: remote_auth.py
+              path: remote_auth.py
 
         - name: data
           persistentVolumeClaim:
