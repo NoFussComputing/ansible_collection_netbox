@@ -158,10 +158,10 @@ spec:
               subPath: redis.py
               readOnly: true
 
+      {% if nfc_role_netbox_kubernetes_tolerations | length > 0 -%}
       tolerations:
-        - effect: NoExecute
-          key: CriticalAddonsOnly
-          value: "true"
+        {{ nfc_role_netbox_kubernetes_tolerations | to_nice_yaml(indent=0) | indent(8) }}
+      {% endif +%}
       volumes:
 
         - name: configuration

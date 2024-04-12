@@ -105,6 +105,12 @@ nfc_role_netbox_kubernetes_deployment_netbox_limit_memory: 2Gi
 
 nfc_role_netbox_kubernetes_deployment_netbox_replicas: 1
 
+nfc_role_netbox_kubernetes_tolerations: {}
+  # - effect: NoExecute
+  #   key: CriticalAddonsOnly
+  #   value: "true"
+
+
 #
 # NetBox Ingress
 #
