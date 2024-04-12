@@ -70,12 +70,14 @@ spec:
             - name: TZ
               value: "UTC"
 
-
             - name: DB_WAIT_DEBUG
               value: "1"
 
             - name: SECRET_KEY
-              value: 'r(m)9nLGnz$(_q3N4z1k(EFsMCjjjzx08x9VhNVcfd%6RF#r!6DE@+V5Zk2X'
+              valueFrom:
+                secretKeyRef:
+                  name: "secretkey-{{ nfc_role_netbox_kubernetes_instance_name }}"
+                  key: secret_key
 
           ports:
             - containerPort: 8080
@@ -137,7 +139,10 @@ spec:
               value: "UTC"
 
             - name: SECRET_KEY
-              value: 'r(m)9nLGnz$(_q3N4z1k(EFsMCjjjzx08x9VhNVcfd%6RF#r!6DE@+V5Zk2X'
+              valueFrom:
+                secretKeyRef:
+                  name: "secretkey-{{ nfc_role_netbox_kubernetes_instance_name }}"
+                  key: secret_key
 
           volumeMounts:
             - name: data
