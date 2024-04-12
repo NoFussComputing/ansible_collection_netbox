@@ -43,3 +43,5 @@ data:
           "level": "DEBUG",
       },
     }{%- endif %}
+
+    CUSTOM_VALIDATORS = {{ nfc_role_netbox_kubernetes_configuration_validators | to_nice_json }}

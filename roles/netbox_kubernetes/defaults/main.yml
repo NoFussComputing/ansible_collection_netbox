@@ -70,6 +70,9 @@ nfc_role_netbox_kubernetes_configuration_remote_auth_keycloak_public_key: 'keycl
 nfc_role_netbox_kubernetes_configuration_remote_auth_keycloak_auth_url: 'https://your-keycloak.com/realms/<your realm name>/protocol/openid-connect/auth'
 nfc_role_netbox_kubernetes_configuration_remote_auth_keycloak_token_url: https://your-keycloak.com/realms/<your realm name>/protocol/openid-connect/token'
 
+
+nfc_role_netbox_kubernetes_configuration_validators: {}    # Optional, JSON dict.
+
 #
 # Persistent Volume Claim
 #
