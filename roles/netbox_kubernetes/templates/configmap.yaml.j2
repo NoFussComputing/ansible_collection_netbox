@@ -45,3 +45,9 @@ data:
     }{%- endif %}
 
     CUSTOM_VALIDATORS = {{ nfc_role_netbox_kubernetes_configuration_validators | to_nice_json }}
+
+{% for python_file in nfc_role_netbox_kubernetes_configuration_python_files %}
+  {{ python_file.name }}: |
+    {{ python_file.content | indent(4) }}
+
+{% endfor %}
