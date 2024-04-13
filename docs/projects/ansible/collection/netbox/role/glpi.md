@@ -157,7 +157,7 @@ The container already automagically starts an EDA rulebook that is listening for
 
 _Default cron file for sync with NetBox._
 
-Once you have the container running all available playbooks can be run from within the the container. i.e. `docker run -ti <container name> ansible-playbook nofusscomputing.netbox.glpi --tags setup` 
+Once you have the container running all available playbooks can be run from within the the container. i.e. `docker run -ti <container name> ansible-playbook nofusscomputing.netbox.glpi --tags setup`
 
 
 #### Kubernetes Deployment

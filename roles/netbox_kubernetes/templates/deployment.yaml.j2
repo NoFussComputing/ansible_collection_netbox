@@ -1,0 +1,203 @@
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app.kubernetes.io/component: NetBox
+    app.kubernetes.io/instance: "{{ nfc_role_netbox_kubernetes_instance_name }}"
+    app.kubernetes.io/managed-by: Ansible
+    app.kubernetes.io/name: netbox
+  name: "{{ nfc_role_netbox_kubernetes_instance_name }}"
+  namespace: "{{ nfc_role_netbox_kubernetes_namespace }}"
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: NetBox
+      app.kubernetes.io/instance: "{{ nfc_role_netbox_kubernetes_instance_name }}"
+      app.kubernetes.io/managed-by: Ansible
+      app.kubernetes.io/name: netbox
+  replicas: {{ nfc_role_netbox_kubernetes_deployment_netbox_replicas }}
+  minReadySeconds: 10
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/component: NetBox
+        app.kubernetes.io/instance: "{{ nfc_role_netbox_kubernetes_instance_name }}"
+        app.kubernetes.io/managed-by: Ansible
+        app.kubernetes.io/name: netbox
+    spec:
+      terminationGracePeriodSeconds: 10
+      {% if nfc_role_netbox_kubernetes_affinity | length > 0 -%}
+      affinity:
+        {{ nfc_role_netbox_kubernetes_affinity | to_nice_yaml(indent=0) | indent(8) }}
+      {% endif +%}
+      containers:
+
+        - name: web
+          image: |-
+            {% if nfc_role_netbox_kubernetes_netbox_image.registry is defined and nfc_role_netbox_kubernetes_netbox_image != '' -%}
+              {{ nfc_role_netbox_kubernetes_netbox_image.registry }}/
+            {%- endif -%}
+              {{- nfc_role_netbox_kubernetes_netbox_image.image -}}:
+              {{- nfc_role_netbox_kubernetes_netbox_image.tag }}
+            {%- if nfc_role_netbox_kubernetes_netbox_image.sha256 is defined and nfc_role_netbox_kubernetes_netbox_image.sha256 != '' -%}
+              @sha256:{{- nfc_role_netbox_kubernetes_netbox_image.sha256 }}
+            {%- endif +%}
+          resources:
+            limits:
+              cpu: "{{ nfc_role_netbox_kubernetes_deployment_netbox_limit_cpu }}"
+              memory: "{{ nfc_role_netbox_kubernetes_deployment_netbox_limit_memory }}"
+            requests:
+              cpu: 10m
+              memory: 20Mi
+
+          env:
+            - name: TZ
+              value: "UTC"
+
+            - name: DB_WAIT_DEBUG
+              value: "1"
+
+            - name: SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: "secretkey-{{ nfc_role_netbox_kubernetes_instance_name }}"
+                  key: secret_key
+
+          ports:
+            - containerPort: 8080
+              name: http
+
+          volumeMounts:
+            - name: data
+              mountPath: /opt/netbox/netbox/media
+              subPath: media
+
+            - name: data
+              mountPath: /opt/netbox/netbox/reports
+              subPath: reports
+
+            - name: data
+              mountPath: /opt/netbox/netbox/scripts
+              subPath: scripts
+
+            - name: configuration
+              mountPath: /etc/netbox/config/extra.py
+              subPath: extra.py
+              readOnly: true
+
+            - name: config-secret
+              mountPath: /etc/netbox/config/database.py
+              subPath: database.py
+              readOnly: true
+
+            - name: config-secret
+              mountPath: /etc/netbox/config/redis.py
+              subPath: redis.py
+              readOnly: true
+
+            - name: config-secret
+              mountPath: /etc/netbox/config/remote_auth.py
+              subPath: remote_auth.py
+              readOnly: true
+
+        - name: worker
+          image: |-
+            {% if nfc_role_netbox_kubernetes_netbox_image.registry is defined and nfc_role_netbox_kubernetes_netbox_image != '' -%}
+              {{ nfc_role_netbox_kubernetes_netbox_image.registry }}/
+            {%- endif -%}
+              {{- nfc_role_netbox_kubernetes_netbox_image.image -}}:
+              {{- nfc_role_netbox_kubernetes_netbox_image.tag }}
+            {%- if nfc_role_netbox_kubernetes_netbox_image.sha256 is defined and nfc_role_netbox_kubernetes_netbox_image.sha256 != '' -%}
+              @sha256:{{- nfc_role_netbox_kubernetes_netbox_image.sha256 }}
+            {%- endif %}
+
+          command:
+            - /opt/netbox/venv/bin/python
+            - /opt/netbox/netbox/manage.py
+            - rqworker
+          resources:
+            limits:
+              cpu: 500m
+              memory: 1500Mi
+            requests:
+              cpu: 10m
+              memory: 20Mi
+
+          env:
+            - name: TZ
+              value: "UTC"
+
+            - name: SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: "secretkey-{{ nfc_role_netbox_kubernetes_instance_name }}"
+                  key: secret_key
+
+          volumeMounts:
+            - name: data
+              mountPath: /opt/netbox/netbox/media
+              subPath: media
+
+            - name: data
+              mountPath: /opt/netbox/netbox/reports
+              subPath: reports
+
+            - name: data
+              mountPath: /opt/netbox/netbox/scripts
+              subPath: scripts
+
+            - name: configuration
+              mountPath: /etc/netbox/config/extra.py
+              subPath: extra.py
+              readOnly: true
+
+            {% for python_file in nfc_role_netbox_kubernetes_configuration_python_files +%}
+            - name: configuration
+              mountPath: "/etc/netbox/config/{{ python_file.name }}"
+              subPath: "{{ python_file.name }}"
+              readOnly: true
+            {% endfor %}
+
+            - name: config-secret
+              mountPath: /etc/netbox/config/database.py
+              subPath: database.py
+              readOnly: true
+
+            - name: config-secret
+              mountPath: /etc/netbox/config/redis.py
+              subPath: redis.py
+              readOnly: true
+
+      {% if nfc_role_netbox_kubernetes_tolerations | length > 0 -%}
+      tolerations:
+        {{ nfc_role_netbox_kubernetes_tolerations | to_nice_yaml(indent=0) | indent(8) }}
+      {% endif +%}
+      volumes:
+
+        - name: configuration
+          configMap:
+            name: "configuration-{{ nfc_role_netbox_kubernetes_instance_name }}"
+            items:
+              - key: extra.py
+                path: extra.py
+            {% for python_file in nfc_role_netbox_kubernetes_configuration_python_files +%}
+              - key: "{{ python_file.name }}"
+                path: "{{ python_file.name }}"
+            {% endfor %}
+
+        - name: config-secret
+          secret:
+            secretName: "configuration-{{ nfc_role_netbox_kubernetes_instance_name }}"
+            items:
+            - key: database.py
+              path: database.py
+            - key: redis.py
+              path: redis.py
+            - key: remote_auth.py
+              path: remote_auth.py
+
+        - name: data
+          persistentVolumeClaim:
+            claimName: data-{{ nfc_role_netbox_kubernetes_instance_name }}
