@@ -19,6 +19,8 @@ ansible-playbook -i inventory/ --limit <your hostname> nofusscomputing.netbox.ku
 
 ## Features
 
+- Custom python configuration files `/etc/netbox/config/*`
+
 - NetBox Deployment
 
 - NetBox Service
