@@ -1,0 +1,223 @@
+---
+
+- name: ENV Variable Secrets
+  ansible.builtin.include_tasks:
+    file: secret_envvars.yml
+
+
+- name: Check Required Fields
+  ansible.builtin.assert:
+    that:
+      - nfc_role_netbox_kubernetes_database_password is defined
+      - nfc_role_netbox_kubernetes_database_password != ''
+      - nfc_role_netbox_kubernetes_database_host is defined
+      - nfc_role_netbox_kubernetes_database_host != ''
+      - nfc_role_netbox_kubernetes_redis_database is defined
+      - nfc_role_netbox_kubernetes_redis_database != ''
+      - nfc_role_netbox_kubernetes_redis_cache_database is defined
+      - nfc_role_netbox_kubernetes_redis_cache_database != ''
+    msg: "You are missing a required field"
+
+
+- name: Create Namespace
+  kubernetes.core.k8s:
+    apply: true
+    name: "{{ nfc_role_netbox_kubernetes_namespace }}"
+    kind: Namespace
+    server_side_apply:
+      field_manager: ansible
+      force_conflicts: true
+    state: present
+  become: true
+  diff: true
+
+
+- name: Check if Secret Key exists
+  kubernetes.core.k8s_info:
+    api_version: v1
+    kind: Secret
+    name: "secretkey-{{ nfc_role_netbox_kubernetes_instance_name }}"
+    namespace: "{{ nfc_role_netbox_kubernetes_namespace }}"
+  become: true
+  no_log: >
+    {%- if not nfc_pb_netbox_force_logging | default(false) -%}
+      true
+    {%- else -%}
+      false
+    {%-endif %}
+  register: secret_key_check
+
+
+- name: Create Secret Key
+  ansible.builtin.shell:
+    cmd: |
+      set -o pipefail;
+      head /dev/urandom | tr -dc 'A-Za-z0-9.!@#$%^&*()-_+=[]{};:,./<>?' | head -c 160;
+    executable: bash
+  changed_when: false
+  delegate_to: localhost
+  no_log: >
+    {%- if not nfc_pb_netbox_force_logging | default(false) -%}
+      true
+    {%- else -%}
+      false
+    {%-endif %}
+  register: secret_key
+  when: >
+    secret_key_check.resources | length == 0
+
+
+- name: Add Secret Key
+  kubernetes.core.k8s:
+    apply: true
+    definition:
+      apiVersion: v1
+      kind: Secret
+      metadata:
+        labels:
+          app.kubernetes.io/component: NetBox
+          app.kubernetes.io/instance: "{{ nfc_role_netbox_kubernetes_instance_name }}"
+          app.kubernetes.io/managed-by: Ansible
+          app.kubernetes.io/name: netbox
+        name: "secretkey-{{ nfc_role_netbox_kubernetes_instance_name }}"
+        namespace: "{{ nfc_role_netbox_kubernetes_namespace }}"
+      type: Opaque
+      stringData:
+        secret_key: "{{ secret_key.stdout }}"
+    server_side_apply:
+      field_manager: ansible
+      force_conflicts: true
+    state: present
+  become: true
+  diff: false
+  no_log: >
+    {%- if not nfc_pb_netbox_force_logging | default(false) -%}
+      true
+    {%- else -%}
+      false
+    {%-endif %}
+  when: >
+    secret_key_check.resources | length == 0
+
+
+- name: Add Secret
+  kubernetes.core.k8s:
+    apply: true
+    template: secret.yaml.j2
+    server_side_apply:
+      field_manager: ansible
+      force_conflicts: true
+    state: present
+  become: true
+  diff: false
+  no_log: >
+    {%- if not nfc_pb_netbox_force_logging | default(false) -%}
+      true
+    {%- else -%}
+      false
+    {%-endif %}
+
+
+- name: Add ConfigMap
+  kubernetes.core.k8s:
+    apply: true
+    template: configmap.yaml.j2
+    server_side_apply:
+      field_manager: ansible
+      force_conflicts: true
+    state: present
+  become: true
+  diff: true
+
+
+- name: Deploy Redis
+  kubernetes.core.k8s:
+    apply: true
+    template: deployment-redis.yaml.j2
+    server_side_apply:
+      field_manager: ansible
+      force_conflicts: true
+    state: present
+  become: true
+  diff: true
+
+
+- name: Redis Service
+  kubernetes.core.k8s:
+    apply: true
+    template: service-redis.yaml.j2
+    server_side_apply:
+      field_manager: ansible
+      force_conflicts: true
+    state: present
+  become: true
+  diff: true
+
+
+- name: Add PVC
+  kubernetes.core.k8s:
+    apply: true
+    template: pvc.yaml.j2
+    server_side_apply:
+      field_manager: ansible
+      force_conflicts: true
+    state: present
+  become: true
+  diff: true
+
+
+- name: Deploy NetBox
+  kubernetes.core.k8s:
+    apply: true
+    template: deployment.yaml.j2
+    server_side_apply:
+      field_manager: ansible
+      force_conflicts: true
+    state: present
+  become: true
+  diff: true
+
+
+- name: NetBox Service
+  kubernetes.core.k8s:
+    apply: true
+    template: service.yaml.j2
+    server_side_apply:
+      field_manager: ansible
+      force_conflicts: true
+    state: present
+  become: true
+  diff: true
+
+
+- name: NetBox Ingress
+  kubernetes.core.k8s:
+    apply: true
+    template: ingress.yaml.j2
+    server_side_apply:
+      field_manager: ansible
+      force_conflicts: true
+    state: |-
+      {%- if nfc_role_netbox_kubernetes_ingress_enabled -%}
+        present
+      {%- else -%}
+        absent
+      {%- endif %}
+
+  become: true
+  diff: true
+
+
+- name: NetBox-GLPI Kubernetes Deployment
+  ansible.builtin.include_role:
+    name: nofusscomputing.netbox.netbox_glpi
+    tasks_from: kubernetes
+    apply:
+      tags:
+        - always
+  vars:
+    nfc_role_netbox_glpi_kubernetes_instance: "{{ nfc_role_netbox_kubernetes_instance_name }}"
+    nfc_role_netbox_glpi_kubernetes_namespace: "{{ nfc_role_netbox_kubernetes_namespace }}"
+    nfc_pb_netbox_netbox_url: "web-{{ nfc_role_netbox_kubernetes_instance_name }}.{{ nfc_role_netbox_kubernetes_namespace }}.svc"
+  when: >
+    nfc_role_netbox_kubernetes_integration_glpi_deploy

@@ -1,0 +1,33 @@
+
+---
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  {% if nfc_role_netbox_kubernetes_ingress_annotations | length > 0 -%}
+  annotations: 
+    {{ nfc_role_netbox_kubernetes_ingress_annotations | to_nice_yaml(indent=0) | indent(4) }}
+  {% endif +%}
+  labels:
+    app.kubernetes.io/component: NetBox
+    app.kubernetes.io/instance: "{{ nfc_role_netbox_kubernetes_instance_name }}"
+    app.kubernetes.io/managed-by: Ansible
+    app.kubernetes.io/name: netbox
+  name: "{{ nfc_role_netbox_kubernetes_instance_name }}"
+  namespace: "{{ nfc_role_netbox_kubernetes_namespace }}"
+spec:
+  rules:
+  - host: "{{ nfc_role_netbox_kubernetes_fqdn_name }}"
+    http:
+      paths:
+      - backend:
+          service:
+            name: netbox
+            port:
+              name: http
+        path: /
+        pathType: Prefix
+  tls:
+  - hosts:
+    - "{{ nfc_role_netbox_kubernetes_fqdn_name }}"
+    secretName: "certificate-tls-{{ nfc_role_netbox_kubernetes_instance_name }}"

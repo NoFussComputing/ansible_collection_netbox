@@ -1,0 +1,22 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app.kubernetes.io/component: NetBox
+    app.kubernetes.io/instance: "{{ nfc_role_netbox_kubernetes_instance_name }}"
+    app.kubernetes.io/managed-by: Ansible
+    app.kubernetes.io/name: netbox
+  name: "web-{{ nfc_role_netbox_kubernetes_instance_name }}"
+  namespace: "{{ nfc_role_netbox_kubernetes_namespace }}"
+spec:
+  # type: LoadBalancer
+  selector:
+    app.kubernetes.io/component: NetBox
+    app.kubernetes.io/instance: "{{ nfc_role_netbox_kubernetes_instance_name }}"
+    app.kubernetes.io/managed-by: Ansible
+    app.kubernetes.io/name: netbox
+  ports:
+    - name: http
+      port: 80
+      targetPort: http

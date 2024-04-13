@@ -1,0 +1,44 @@
+---
+- name: Netbox / GLPI
+  hosts: |-
+    {%- if nfc_pb_host is defined -%}
+
+      {{ nfc_pb_host }}
+
+    {%- else -%}
+
+      {%- if ansible_limit is defined -%}
+
+        {{ ansible_limit }}
+
+      {%- else -%}
+
+        localhost
+
+      {%- endif -%}
+
+    {%- endif %}
+  become: false
+  gather_facts: false
+
+
+  tasks:
+
+    # ToDo: Add environmental var check so that deployment with AWX can occur using credentials
+
+
+    - name: NetBox Kubernetes Deploy
+      ansible.builtin.include_role:
+        name: nofusscomputing.netbox.netbox_kubernetes
+
+
+    # - name: NetBox-GLPI Kubernetes Deployment
+    #   ansible.builtin.include_role:
+    #     name: nofusscomputing.netbox.netbox_glpi
+    #     tasks_from: kubernetes
+    #     apply:
+    #       tags:
+    #         - always
+    #   tags:
+    #     - never
+    #     - deploy-kubernetes

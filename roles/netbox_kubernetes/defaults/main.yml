@@ -1,0 +1,162 @@
+---
+#
+# GLPI Integration
+#
+# Notes:
+#   Even though the deployment of netbox-glpi is occurring as part of this role
+#   you will still need to configure the required variables for role
+#   nofusscomputing.netbox.netbox_glpi
+nfc_role_netbox_kubernetes_integration_glpi_deploy: false
+
+
+nfc_role_netbox_kubernetes_instance_name: netbox    # Mandatory, String. Name of the deployment
+
+nfc_role_netbox_kubernetes_namespace: netbox        # Namespace to deploy Netbox to
+
+#
+# PostgreSQL connection settings
+#
+nfc_role_netbox_kubernetes_database_name: netbox
+nfc_role_netbox_kubernetes_database_user: netbox
+nfc_role_netbox_kubernetes_database_password:       # Mandatory, String. PostgreSQL password
+nfc_role_netbox_kubernetes_database_host:           # Mandatory, String. PostgreSQL host
+nfc_role_netbox_kubernetes_database_port: 5432
+
+#
+# Redis Deployment
+#
+nfc_role_netbox_kubernetes_redis_enabled: true               # Optional, Boolean. Whether to deploy redis
+nfc_role_netbox_kubernetes_redis_deployment_replicas: 1      # Mandatory, Integer. How many redis replicas to deploy
+
+nfc_role_netbox_kubernetes_redis_image:    # The Deployed Image
+  name: Redis                              # Optional, String. Name of the image.
+  registry: docker.io                      # Optional, String. Name of the registry to fetch the image from
+  image: redis                             # Mandatory, String. Name of the image to fetch
+  tag: 7-alpine                            # Mandatory, String. Image tag to pull
+  # sha256:                                # Optional, String. The sh256 of the image to lock the tag to.
+
+
+# Redis connection Settings
+nfc_role_netbox_kubernetes_redis_host: localhost             # Not Required if deploying Redis.
+nfc_role_netbox_kubernetes_redis_port: 6379                  # Mandatory, Integer. Port for redis to connect. (Deployment uses this port number too)
+nfc_role_netbox_kubernetes_redis_username: ''                # Optional, String. Redis Username
+nfc_role_netbox_kubernetes_redis_password: ''                # Optional, String. Redis Password
+nfc_role_netbox_kubernetes_redis_database: 0                 # Mandatory, Integer. Database to use
+nfc_role_netbox_kubernetes_redis_ssl: 'False'
+nfc_role_netbox_kubernetes_redis_tls_skip_verify: 'False'
+
+
+# Redis Cache defaults to vars 'nfc_role_netbox_kubernetes_redis_'
+# nfc_role_netbox_kubernetes_redis_cache_host:               # Optional, Defaults to nfc_role_netbox_kubernetes_redis_*
+# nfc_role_netbox_kubernetes_redis_cache_port:               # Optional, Defaults to nfc_role_netbox_kubernetes_redis_*
+# nfc_role_netbox_kubernetes_redis_cache_username:           # Optional, Defaults to nfc_role_netbox_kubernetes_redis_*
+# nfc_role_netbox_kubernetes_redis_cache_password:           # Optional, Defaults to nfc_role_netbox_kubernetes_redis_*
+nfc_role_netbox_kubernetes_redis_cache_database: 1           # Mandatory, Integer. Database to use
+# nfc_role_netbox_kubernetes_redis_cache_ssl:                # Optional, Defaults to nfc_role_netbox_kubernetes_redis_*
+# nfc_role_netbox_kubernetes_redis_cache_tls_skip_verify:    # Optional, Defaults to nfc_role_netbox_kubernetes_redis_*
+
+
+#
+# NetBox Configuration
+#
+# Notes: these configuration settings populate the extra.py configuration file
+#        As this is a python file, attention needs to be payed towards the values
+#        as some of them are python values, not yaml. if it's quoted, thats a 
+#        good indicator of it being pythonic.
+nfc_role_netbox_kubernetes_configuration_census_reporting: 'False'
+
+nfc_role_netbox_kubernetes_configuration_maps_url: 'None'
+
+nfc_role_netbox_kubernetes_configuration_metrics_enabled: 'False'
+
+nfc_role_netbox_kubernetes_configuration_logging_debug: false
+
+nfc_role_netbox_kubernetes_configuration_python_files: []    # Optional, List. Custom Python Configuration files.
+  # - name: validators.py
+  #   content: |
+  #     {{ lookup('file', 'my_validators.py') }}
+  # - name: other.py
+  #   content: |
+  #     any valid netbox config
+
+
+# Remote Auth
+nfc_role_netbox_kubernetes_configuration_remote_auth_enabled: false
+
+nfc_role_netbox_kubernetes_configuration_remote_auth_keycloak_client: 'your keycloak oidc client id'
+nfc_role_netbox_kubernetes_configuration_remote_auth_keycloak_secret: 'your keycloak oidc client secret'
+nfc_role_netbox_kubernetes_configuration_remote_auth_keycloak_public_key: 'keycloak oidc public key'
+nfc_role_netbox_kubernetes_configuration_remote_auth_keycloak_auth_url: 'https://your-keycloak.com/realms/<your realm name>/protocol/openid-connect/auth'
+nfc_role_netbox_kubernetes_configuration_remote_auth_keycloak_token_url: 'https://your-keycloak.com/realms/<your realm name>/protocol/openid-connect/token'
+
+
+nfc_role_netbox_kubernetes_configuration_validators: {}    # Optional, JSON dict.
+
+#
+# Persistent Volume Claim
+#
+nfc_role_netbox_kubernetes_pvc_size: 5Gi
+
+
+#
+# NetBox Deployment
+#
+
+nfc_role_netbox_kubernetes_affinity:
+  podAntiAffinity:
+    preferredDuringSchedulingIgnoredDuringExecution:
+      - weight: 100
+        podAffinityTerm:
+          labelSelector:
+            matchExpressions:
+              - key: app.kubernetes.io/component
+                operator: In
+                values:
+                  - NetBox
+          topologyKey: kubernetes.io/hostname
+  # nodeAffinity:
+  #   requiredDuringSchedulingIgnoredDuringExecution:
+  #     nodeSelectorTerms:
+  #       - matchExpressions:
+  #           - key: kubernetes.io/hostname
+  #             operator: In
+  #             values:
+  #               - node-name
+
+nfc_role_netbox_kubernetes_netbox_image:    # The Deployed Image
+  name: NetBox                              # Optional, String. Name of the image.
+  registry: docker.io                       # Optional, String. Name of the registry to fetch the image from
+  image: netboxcommunity/netbox             # Mandatory, String. Name of the image to fetch
+  tag: v3.7.5-2.8.0                         # Mandatory, String. Image tag to pull
+  # sha256:                                 # Optional, String. The sh256 of the image to lock the tag to.
+
+nfc_role_netbox_kubernetes_deployment_netbox_limit_cpu: 1000m
+nfc_role_netbox_kubernetes_deployment_netbox_limit_memory: 2Gi
+
+nfc_role_netbox_kubernetes_deployment_netbox_replicas: 1
+
+nfc_role_netbox_kubernetes_tolerations: {}
+  # - effect: NoExecute
+  #   key: CriticalAddonsOnly
+  #   value: "true"
+
+
+#
+# NetBox Ingress
+#
+nfc_role_netbox_kubernetes_ingress_enabled: false
+
+nfc_role_netbox_kubernetes_fqdn_name: my-netbox.com    # Mandatory, String. Mandatory if deploying Ingress
+
+
+nfc_role_netbox_kubernetes_ingress_annotations:
+  # cert-manager.io/cluster-issuer: letsencrypt-prod
+  # cert-manager.io/common-name:
+  cert-manager.io/duration: 2160h
+  cert-manager.io/private-key-algorithm: ECDSA
+  cert-manager.io/private-key-rotation-policy: Always
+  cert-manager.io/private-key-size: "384"
+  cert-manager.io/subject-countries: N/A
+  cert-manager.io/subject-organizationalunits: N/A
+  cert-manager.io/subject-organizations: N/A
+  cert-manager.io/subject-provinces: N/A
