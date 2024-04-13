@@ -35,6 +35,8 @@ nav:
 
           - projects/ansible/collection/netbox/role/glpi.md
 
+          - projects/ansible/collection/netbox/role/kubernetes.md
+
 - Operations: 
 
   - operations/index.md

@@ -1,0 +1,47 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  labels:
+    app.kubernetes.io/component: NetBox
+    app.kubernetes.io/instance: "{{ nfc_role_netbox_kubernetes_instance_name }}"
+    app.kubernetes.io/managed-by: Ansible
+    app.kubernetes.io/name: netbox
+  name: "configuration-{{ nfc_role_netbox_kubernetes_instance_name }}"
+  namespace: "{{ nfc_role_netbox_kubernetes_namespace }}"
+data:
+  extra.py: |-
+    CENSUS_REPORTING_ENABLED = {{ nfc_role_netbox_kubernetes_configuration_census_reporting }}
+
+    # Normal Person date formatting
+    DATE_FORMAT = 'j N Y'                # 26 June 2016
+    SHORT_DATE_FORMAT = 'Y-m-d'          # 2016-06-26
+    TIME_FORMAT = 'H:i:s'
+    SHORT_TIME_FORMAT = 'H:i:s'          # 13:23:00
+    DATETIME_FORMAT = 'j N Y H:i:s'      # 26 June 2016 13:23:00
+    SHORT_DATETIME_FORMAT = 'Y-m-d H:i'  # 2016-06-26 13:23
+
+    MAPS_URL= {{ nfc_role_netbox_kubernetes_configuration_maps_url }}
+    METRICS_ENABLED = {{ nfc_role_netbox_kubernetes_configuration_metrics_enabled }}
+    PREFER_IPV4 = True
+
+    LOGIN_REQUIRED = True
+    LOGIN_TIMEOUT = 900 # Seconds
+    LOGIN_PERSISTENCE = True
+
+    {% if nfc_role_netbox_kubernetes_configuration_logging_debug -%}
+    LOGGING = {
+      "version": 1,
+      "disable_existing_loggers": False,
+      "handlers": {
+          "console": {
+              "class": "logging.StreamHandler",
+          },
+      },
+      "root": {
+          "handlers": ["console"],
+          "level": "DEBUG",
+      },
+    }{%- endif %}
+
+    CUSTOM_VALIDATORS = {{ nfc_role_netbox_kubernetes_configuration_validators | to_nice_json }}
