@@ -30,7 +30,7 @@ ansible-playbook -i inventory/ --limit <your hostname> nofusscomputing.netbox.ku
 - Deployment of the [NetBox-GLPI Integration](glpi.md#kubernetes-deployment)
 
     !!! note
-        Deploying the netbox-glpi integration via this role, regardless of you custom variables. Sets the following variables to match this roles variables: Intstance Name, Namespace, and netbox API URL.
+        Deploying the netbox-glpi integration via this role, regardless of your custom variables. Sets the following variables to match this roles variables: Intstance Name, Namespace, and netbox API URL.
 
 
 ## Kubernetes Manifests
@@ -121,6 +121,8 @@ As part of this role variables that are considered secrets can be set via enviro
 - `REDIS_USER` = `nfc_role_netbox_kubernetes_redis_username`
 
 - `REDIS_PASSWORD` = `nfc_role_netbox_kubernetes_redis_password`
+
+The above listed variables will default to the value within your inventory if not set via an environmental variable.
 
 ``` yaml title="defaults/main.yaml" linenums="1"
 
