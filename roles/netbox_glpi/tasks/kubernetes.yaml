@@ -13,6 +13,8 @@
     state: present
   become: true
   diff: true
+  when:
+    nfc_role_netbox_kubernetes_namespace is not defined
 
 
 - name: Add Secret
@@ -60,7 +62,7 @@
 - name: Wait for the server to be ready
   ansible.builtin.command:
     cmd: |-
-      kubectl exec -ti -n {{ nfc_role_netbox_glpi_kubernetes_namespace }} deploy/{{ nfc_role_netbox_glpi_kubernetes_instance }}
+      kubectl exec -ti -n {{ nfc_role_netbox_glpi_kubernetes_namespace }} deploy/netbox-glpi
       -- sh -c 'supervisorctl status rulebook'
   become: true
   changed_when: false
