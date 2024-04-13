@@ -1,3 +1,27 @@
+## 0.4.0 (2024-04-13)
+
+### Feat
+
+- **kubernetes**: Optionally deploy specified netbox python config files
+- **kubernetes**: by default don't deploy the glpi integration
+- **kubernetes**: Ability to set secret vars via environmental vars
+- **kubernetes**: configurable custom validators
+- **kubernetes**: configurable keycloak remote auth
+- **kubernetes**: netbox deployment configurable tolerations
+- **kubernetes**: netbox deployment configurable affinity
+- **kubernetes**: generate cookie secret key during install
+- **kubernetes**: Optionally Deploy Ingress for netbox
+- **kubernetes**: Configurable Redis image
+- **kubernetes**: Deploy Netbox
+- **kubernetes**: Deploy Redis
+- **kubernetes**: Create configuration configmap
+
+### Fix
+
+- **kubernetes**: Optionally deploy netbox-glpi integration as part of kubernetes deployment
+- **kubernetes**: keycloak remote auth templating errors
+- **kubernetes**: Ensure redis service uses configured port
+
 ## 0.3.0 (2024-04-11)
 
 ### Feat
