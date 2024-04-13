@@ -104,6 +104,24 @@ All manifests within this role, are Jinja Templates. They obtain their variables
 
 ## Default Variables
 
+As part of this role variables that are considered secrets can be set via environmental variables on the Ansible controller. This allows these values to be set via an AWX credential. The available variables are:
+
+- `POSTGRES_HOST` = `nfc_role_netbox_kubernetes_database_host`
+
+- `POSTGRES_PORT` = `nfc_role_netbox_kubernetes_database_port`
+
+- `POSTGRES_USER` = `nfc_role_netbox_kubernetes_database_user`
+
+- `POSTGRES_PASSWORD` = `nfc_role_netbox_kubernetes_database_password`
+
+- `REDIS_HOST` = `nfc_role_netbox_kubernetes_redis_host`
+
+- `REDIS_PORT` = `nfc_role_netbox_kubernetes_redis_port`
+
+- `REDIS_USER` = `nfc_role_netbox_kubernetes_redis_username`
+
+- `REDIS_PASSWORD` = `nfc_role_netbox_kubernetes_redis_password`
+
 ``` yaml title="defaults/main.yaml" linenums="1"
 
 --8<-- "roles/netbox_kubernetes/defaults/main.yml"

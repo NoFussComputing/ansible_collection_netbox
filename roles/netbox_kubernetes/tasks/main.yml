@@ -1,5 +1,10 @@
 ---
 
+- name: ENV Variable Secrets
+  ansible.builtin.include_tasks:
+    file: secret_envvars.yml
+
+
 - name: Check Required Fields
   ansible.builtin.assert:
     that:
