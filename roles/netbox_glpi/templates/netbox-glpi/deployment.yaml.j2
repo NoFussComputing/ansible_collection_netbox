@@ -102,7 +102,7 @@ spec:
       volumes:
         - name: variables
           secret:
-            secretName: "{{ nfc_role_netbox_glpi_kubernetes_instance }}-variables"
+            secretName: "netbox-glpi-variables"
             items:
               - key: vars.yaml
                 path: vars.yaml
