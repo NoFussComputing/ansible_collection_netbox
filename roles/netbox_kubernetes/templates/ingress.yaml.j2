@@ -22,7 +22,7 @@ spec:
       paths:
       - backend:
           service:
-            name: netbox
+            name: "web-{{ nfc_role_netbox_kubernetes_instance_name }}"
             port:
               name: http
         path: /
