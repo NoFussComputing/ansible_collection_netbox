@@ -73,11 +73,9 @@ nfc_role_netbox_kubernetes_configuration_logging_debug: false
 
 nfc_role_netbox_kubernetes_configuration_python_files: []    # Optional, List. Custom Python Configuration files.
   # - name: validators.py
-  #   content: |
-  #     {{ lookup('file', 'my_validators.py') }}
+  #   file_path: "{{ lookup('file', 'my_validators.py') }}"
   # - name: other.py
-  #   content: |
-  #     any valid netbox config
+  #   file_path: "{{ inventory_dir + '/../files/custom_config_file.py' }}"
 
 
 # Remote Auth
