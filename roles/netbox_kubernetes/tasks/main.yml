@@ -206,6 +206,7 @@
 
   become: true
   diff: true
+  retries: 3
 
 
 - name: NetBox-GLPI Kubernetes Deployment
