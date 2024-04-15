@@ -87,6 +87,13 @@ spec:
               subPath: extra.py
               readOnly: true
 
+            {% for python_file in nfc_role_netbox_kubernetes_configuration_python_files +%}
+            - name: configuration
+              mountPath: "/etc/netbox/config/{{ python_file.name }}"
+              subPath: "{{ python_file.name }}"
+              readOnly: true
+            {% endfor %}
+
             - name: config-secret
               mountPath: /etc/netbox/config/database.py
               subPath: database.py
@@ -183,8 +190,8 @@ spec:
               - key: extra.py
                 path: extra.py
             {% for python_file in nfc_role_netbox_kubernetes_configuration_python_files +%}
-              - key: "{{ python_file.name }}"
-                path: "{{ python_file.name }}"
+              - key: {{ python_file.name }}
+                path: {{ python_file.name }}
             {% endfor %}
 
         - name: config-secret
